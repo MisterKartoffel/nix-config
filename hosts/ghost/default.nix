@@ -1,6 +1,6 @@
 { config, ... }: {
 	imports = [
-		../common
+		../common/core
 
 		./boot.nix
 		./filesystems.nix
@@ -8,7 +8,6 @@
 		./locale.nix
 		./networking.nix
 		./packages.nix
-		./sops.nix
 		./ssh.nix
 	];
 

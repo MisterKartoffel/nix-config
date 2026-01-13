@@ -1,6 +1,5 @@
-{ inputs, pkgs, lib, config, ... }:
-let
-	makeSystemUser = user: let
+{ lib, ... }: {
+	makeSystemUser = { user, config }: let
 		hashedPasswordFile =
 			let secret =
 				let
@@ -19,7 +18,7 @@ let
 		};
 	};
 
-	makeHomeUser = user: {
+	makeHomeUser = { user, config }: {
 		inherit (user) name;
 		value = {
 			imports = user.extraModules;
@@ -29,17 +28,5 @@ let
 				inherit (config.hostSpec) stateVersion;
 			};
 		};
-	};
-in {
-	users = {
-		users = lib.listToAttrs (map
-			makeSystemUser (config.hostSpec.userList or []));
-		mutableUsers = false;
-	};
-
-	home-manager = {
-		users = lib.listToAttrs (map
-			makeHomeUser (config.hostSpec.userList or []));
-		extraSpecialArgs = { inherit inputs pkgs; };
 	};
 }

@@ -13,6 +13,10 @@
 					system = metadata.hostSpec.systemArch;
 					pkgs = pkgsFor system;
 
+					customLib = nixpkgs.lib.extend (_: _: {
+						custom = import ./lib { inherit (nixpkgs) lib; };
+					});
+
 					metadataModule = { 
 						config.hostSpec = metadata.hostSpec;
 					};
@@ -20,13 +24,13 @@
 					modules = [
 						./modules/host-spec.nix
 						metadataModule
-						./modules/users.nix
 						home-manager.nixosModules.home-manager
 						./hosts/${hostname}
 					];
 
 					drv = nixpkgs.lib.nixosSystem {
 						inherit system modules;
+						lib = customLib;
 						specialArgs = { inherit inputs; };
 					};
 				in {
