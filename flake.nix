@@ -10,11 +10,11 @@
 			hostAttrs = map (hostname:
 				let
 					metadata = import ./hosts/${hostname}/metadata.nix { inherit pkgsFor; };
-					system = metadata.host.systemArch;
+					system = metadata.hostSpec.systemArch;
 					pkgs = pkgsFor system;
 
 					metadataModule = { 
-						config.hostSpec = metadata.host;
+						config.hostSpec = metadata.hostSpec;
 					};
 
 					modules = [

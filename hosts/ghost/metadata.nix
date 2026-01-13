@@ -1,15 +1,15 @@
 { pkgsFor ? null, ...}:
 let
-	host = {
+	hostSpec = {
 		hostname = "ghost";
 		stateVersion = "25.11";
 		systemArch = "x86_64-linux";
 		flakeRoot = "/home/mimikyu/nix-config";
 	};
 
-	pkgs = pkgsFor host.systemArch;
+	pkgs = pkgsFor hostSpec.systemArch;
 in {
-		host = host // {
+		hostSpec = hostSpec // {
 			userList = [
 				{
 					name = "mimikyu";
