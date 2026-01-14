@@ -1,7 +1,9 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 let
 	sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in {
+	home.packages = with pkgs; [ diff-so-fancy ];
+
 	programs.git = {
 		enable = true;
 
@@ -16,6 +18,7 @@ in {
 				sshCommand = "ssh -i ${sshKey}";
 				compression = 9;
 				editor = "nvim";
+				pager = "diff-so-fancy | less --tabs=4 -RF";
 				whitespace = "error";
 			};
 
@@ -26,15 +29,33 @@ in {
 			gpg.format = "ssh";
 			help.autocorrect = "prompt";
 			init.defaultBranch = "main";
-			interactive.singleKey = true;
 			merge.conflictstyle = "zdiff3";
-			pager.branch = false;
 			push.autoSetupRemote = true;
 
 			diff = {
 				tool = "nvimdiff";
 				algorithm = "histogram";
 				renames = "copies";
+			};
+
+			interactive = {
+				singleKey = true;
+				diffFilter = "diff-so-fancy --patch";
+			};
+
+			log = {
+				abbrevCommit = true;
+				graphColors = "blue,yellow,cyan,magenta,green,red";
+			};
+
+			pager = {
+				branch = false;
+				diff = "diff-so-fancy | $PAGER";
+			};
+
+			pull = {
+				ff = "only";
+				rebase = true;
 			};
 
 			rebase = {
@@ -48,19 +69,9 @@ in {
 				autoupdate = true;
 			};
 
-			pull = {
-				ff = "only";
-				rebase = true;
-			};
-
 			status = {
 				branch = true;
 				showStash = true;
-			};
-
-			log = {
-				abbrevCommit = true;
-				graphColors = "blue,yellow,cyan,magenta,green,red";
 			};
 
 			color = {
