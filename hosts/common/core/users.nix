@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, ... }:
+{ inputs, config, pkgs, lib, ... }:
 let
 	inherit (lib.custom) makeSystemUser makeHomeUser;
 	inherit (config.hostSpec) userList;
@@ -6,13 +6,13 @@ let
 in {
 	users = {
 		users = lib.listToAttrs (map (user:
-			makeSystemUser { inherit user config pkgs nix-secrets; }) userList);
+			makeSystemUser { inherit config pkgs user nix-secrets; }) userList);
 		mutableUsers = false;
 	};
 
 	home-manager = {
 		users = lib.listToAttrs (map (user:
-			makeHomeUser { inherit user config; }) userList);
+			makeHomeUser { inherit config user; }) userList);
 		extraSpecialArgs = { inherit inputs pkgs; };
 	};
 }

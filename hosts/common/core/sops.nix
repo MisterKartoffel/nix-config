@@ -1,4 +1,4 @@
-{ config, lib, inputs, pkgs, ... }:
+{ inputs, config, pkgs, lib, ... }:
 let
 	secretsPath = (toString inputs.nix-secrets) + "/sops/hosts";
 	userSecrets = user: {

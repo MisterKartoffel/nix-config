@@ -1,5 +1,5 @@
 { ... }: {
-	makeSystemUser = { user, config, pkgs, nix-secrets }: {
+	makeSystemUser = { config, pkgs, user, nix-secrets }: {
 		inherit (user) name;
 		value = {
 			inherit (user) extraGroups;
@@ -18,7 +18,7 @@
 		};
 	};
 
-	makeHomeUser = { user, config }: {
+	makeHomeUser = { config, user }: {
 		inherit (user) name;
 		value = {
 			imports = user.extraModules;

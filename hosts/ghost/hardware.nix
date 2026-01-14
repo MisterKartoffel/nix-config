@@ -1,4 +1,4 @@
-{ config, lib, modulesPath, pkgs, ... }: {
+{ config, lib, pkgs, modulesPath, ... }: {
 	imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
 	nixpkgs.hostPlatform = config.hostSpec.systemArch;
