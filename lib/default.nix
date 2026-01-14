@@ -1,11 +1,19 @@
-{ inputs, ... }: {
-	makeSystemUser = { user, config }: {
+{ ... }: {
+	makeSystemUser = { user, config, pkgs, nix-secrets }: {
 		inherit (user) name;
 		value = {
-			inherit (user) shell extraGroups;
-			description = inputs.nix-secrets.name;
+			inherit (user) extraGroups;
+			shell = pkgs.${user.shell};
+			description = nix-secrets.name;
 			hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
-			openssh.authorizedKeys.keyFiles = user.authorizedKeyFiles;
+
+			openssh.authorizedKeys.keyFiles =
+				let
+					keyDir = builtins.path { path = ../home/${user.name}/keys; };
+				in 
+					map (file: "${keyDir}/${file}")
+						(builtins.attrNames (builtins.readDir keyDir));
+
 			isNormalUser = true;
 		};
 	};

@@ -35,7 +35,7 @@
 					];
 
 					drv = nixpkgs.lib.nixosSystem {
-						inherit system modules;
+						inherit system modules pkgs;
 						lib = customLib;
 						specialArgs = { inherit inputs; };
 					};
