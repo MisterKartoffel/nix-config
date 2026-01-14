@@ -11,17 +11,12 @@
 				"$git_branch"
 				"$git_state"
 				"$git_status"
+				"$line_break"
 				"$character"
 			];
 
-			right_format = lib.concatStrings [
-				"$python"
-				"$cmd_duration"
-				"$time"
-				"$line_break"
-			];
-
 			directory.style = "blue";
+			time.disabled = false;
 
 			character = {
 				success_symbol = "[❯](purple)";

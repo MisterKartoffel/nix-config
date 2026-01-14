@@ -7,8 +7,8 @@
 		dotDir = "${config.xdg.configHome}/zsh";
 
 		autosuggestion.enable = true;
-
 		enableCompletion = true;
+
 		completionInit = ''
 			autoload -Uz compinit
 			compinit -C -d ${config.xdg.cacheHome}/zsh-zcompdump-$ZSH_VERSION
