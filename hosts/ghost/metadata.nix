@@ -18,6 +18,8 @@ in {
 				shell = pkgs.zsh;
 				extraGroups = [ "wheel" "video" ];
 				extraModules = [ ../../home/mimikyu ];
+				authorizedKeyFiles = builtins.attrValues
+					(builtins.readDir ../../home/mimikyu/keys);
 			}
 		];
 	};

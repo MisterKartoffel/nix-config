@@ -8,7 +8,6 @@
 		./locale.nix
 		./networking.nix
 		./packages.nix
-		./ssh.nix
 	];
 
 	system.stateVersion = config.hostSpec.stateVersion;

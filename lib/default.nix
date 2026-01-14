@@ -1,9 +1,10 @@
-{ lib, ... }: {
+{ ... }: {
 	makeSystemUser = { user, config }: {
 		inherit (user) name;
 		value = {
 			inherit (user) description shell extraGroups;
 			hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
+			openssh.authorizedKeys.keyFiles = user.authorizedKeyFiles;
 			isNormalUser = true;
 		};
 	};

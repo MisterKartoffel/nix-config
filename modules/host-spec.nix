@@ -66,6 +66,12 @@ in {
 							description = "List of home-manager modules to import for this user";
 							default = [];
 						};
+
+						authorizedKeyFiles = lib.mkOption {
+							type = types.listOf types.path;
+							description = "List of authorized SSH key files for remote access to this user";
+							default = [];
+						};
 					};
 				}
 			);
