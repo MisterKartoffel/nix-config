@@ -1,74 +1,75 @@
 { lib, ... }:
 let
-	inherit (lib) types;
+	inherit (lib.types) listOf nullOr str path package submodule;
+	inherit (lib) mkOption;
 in {
 	options.hostSpec = {
-		hostname = lib.mkOption {
-			type = types.str;
+		hostname = mkOption {
+			type = str;
 			description = "Hostname for this host";
 			default = "nixos";
 		};
 
-		stateVersion = lib.mkOption {
-			type = types.str;
+		stateVersion = mkOption {
+			type = str;
 			description = "NixOS version that was first installed in this host";
 			default = "25.11";
 		};
 
-		systemArch = lib.mkOption {
-			type = types.str;
+		systemArch = mkOption {
+			type = str;
 			description = "System architecture for this host";
 			default = "x86_64-linux";
 		};
 
-		flakeRoot = lib.mkOption {
-			type = types.str;
+		flakeRoot = mkOption {
+			type = str;
 			description = "Path to this flake on this host";
 			default = "/home/username/nix-config";
 		};
 
-		userList = lib.mkOption {
-			type = types.listOf (
-				types.submodule {
+		userList = mkOption {
+			type = listOf (
+				submodule {
 					options = {
-						name = lib.mkOption {
-							type = types.str;
+						name = mkOption {
+							type = str;
 							description = "This user's username";
 							default = "username";
 						};
 
-						description = lib.mkOption {
-							type = types.nullOr types.str;
+						description = mkOption {
+							type = nullOr str;
 							description = "This user's full name or description";
 							default = null;
 						};
 
-						email = lib.mkOption {
-							type = types.nullOr types.str;
+						email = mkOption {
+							type = nullOr str;
 							description = "This user's e-mail address";
 							default = null;
 						};
 
-						shell = lib.mkOption {
-							type = types.nullOr types.package;
+						shell = mkOption {
+							type = nullOr package;
 							description = "This user's login shell";
 							default = null;
 						};
 
-						extraGroups = lib.mkOption {
-							type = types.listOf types.str;
+						extraGroups = mkOption {
+							type = listOf str;
 							description = "Extra groups for this user";
 							default = [];
 						};
 
-						extraModules = lib.mkOption {
-							type = types.listOf types.path;
+						extraModules = mkOption {
+							type = listOf path;
 							description = "List of home-manager modules to import for this user";
 							default = [];
 						};
 
-						authorizedKeyFiles = lib.mkOption {
-							type = types.listOf types.path;
+						authorizedKeyFiles = mkOption {
+							type = listOf path;
 							description = "List of authorized SSH key files for remote access to this user";
 							default = [];
 						};
