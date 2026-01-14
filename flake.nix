@@ -4,8 +4,11 @@
 	outputs = { nixpkgs, home-manager, ... }@inputs:
 		let
 			pkgsFor = systemArch: import nixpkgs { system = systemArch; };
-			hostList = builtins.filter (name: name != "common")
-				(builtins.attrNames (builtins.readDir ./hosts));
+			hostList = let
+				hosts = builtins.readDir ./hosts;
+			in
+				builtins.filter (name: name != "common" && hosts.${name} == "directory")
+					(builtins.attrNames hosts);
 
 			hostAttrs = map (hostname:
 				let
