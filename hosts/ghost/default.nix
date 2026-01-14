@@ -1,6 +1,7 @@
 { config, ... }: {
 	imports = [
 		../common/core
+		../common/optional/audio.nix
 
 		./boot.nix
 		./filesystems.nix
