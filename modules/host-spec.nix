@@ -12,6 +12,7 @@ in {
 		stateVersion = lib.mkOption {
 			type = types.str;
 			description = "NixOS version that was first installed in this host";
+			default = "25.11";
 		};
 
 		systemArch = lib.mkOption {
@@ -23,6 +24,7 @@ in {
 		flakeRoot = lib.mkOption {
 			type = types.str;
 			description = "Path to this flake on this host";
+			default = "/home/username/nix-config";
 		};
 
 		userList = lib.mkOption {
@@ -32,6 +34,7 @@ in {
 						name = lib.mkOption {
 							type = types.str;
 							description = "This user's username";
+							default = "username";
 						};
 
 						description = lib.mkOption {
@@ -66,7 +69,9 @@ in {
 					};
 				}
 			);
+
 			description = "List of users on this host";
+			default = [];
 		};
 	};
 }
