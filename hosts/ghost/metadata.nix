@@ -9,17 +9,16 @@ let
 
 	pkgs = pkgsFor hostSpec.systemArch;
 in {
-		hostSpec = hostSpec // {
-			userList = [
-				{
-					name = "mimikyu";
-					description = "Felipe Duarte";
-					email = "felipesdrs@hotmail.com";
-					shell = pkgs.zsh;
-					passwordKey = "mimikyu/password";
-					extraGroups = [ "wheel" "video" ];
-					extraModules = [ ../../home/mimikyu ];
-				}
-			];
-		};
+	hostSpec = hostSpec // {
+		userList = [
+			{
+				name = "mimikyu";
+				description = "Felipe Duarte";
+				email = "felipesdrs@hotmail.com";
+				shell = pkgs.zsh;
+				extraGroups = [ "wheel" "video" ];
+				extraModules = [ ../../home/mimikyu ];
+			}
+		];
+	};
 }
