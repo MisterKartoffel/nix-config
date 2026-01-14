@@ -34,12 +34,6 @@ in {
 							description = "This user's username";
 						};
 
-						passwordKey = lib.mkOption {
-							type = types.str;
-							description = "The name of this user's hashedPasswordFile under sops-nix";
-							default = null;
-						};
-
 						description = lib.mkOption {
 							type = types.nullOr types.str;
 							description = "This user's full name or description";

@@ -12,16 +12,6 @@ in {
 		defaultSopsFile = "${secretsPath}/secrets.yaml";
 		validateSopsFiles = false;
 
-		secrets = {
-			"${username}/ssh_key" = {
-				key = "${username}/ssh_key";
-				path = "${homeDirectory}/.ssh/id_ed25519";
-			};
-
-			"${username}/age_key" = {
-				key = "${username}/age_key";
-				path = userKeyFile;
-			};
-		};
+		secrets."${username}/ssh_key".path = "${homeDirectory}/.ssh/id_ed25519";
 	};
 }

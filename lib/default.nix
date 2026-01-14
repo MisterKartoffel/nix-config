@@ -1,19 +1,9 @@
 { lib, ... }: {
-	makeSystemUser = { user, config }: let
-		hashedPasswordFile =
-			let secret =
-				let
-					key = user.passwordKey;
-					secrets = config.sops.secrets or {};
-				in
-					if builtins.hasAttr key secrets then builtins.getAttr key secrets else null;
-			in
-				if secret == null then null else secret.path;
-	in {
+	makeSystemUser = { user, config }: {
 		inherit (user) name;
 		value = {
 			inherit (user) description shell extraGroups;
-			inherit hashedPasswordFile;
+			hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
 			isNormalUser = true;
 		};
 	};

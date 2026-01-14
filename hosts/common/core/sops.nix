@@ -1,6 +1,14 @@
-{ inputs, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 let
 	secretsPath = builtins.toString inputs.nix-secrets;
+	userSecrets = user: {
+		"${user.name}/password".neededForUsers = true;
+		"${user.name}/age_key" = {
+			owner = user.name;
+			group = "users";
+			path = "/home/${user.name}/.config/sops/age/keys.txt";
+		};
+	};
 in {
 	environment.systemPackages = with pkgs; [ age ];
 
@@ -18,11 +26,6 @@ in {
 			generateKey = true;
 		};
 
-		secrets = {
-			"mimikyu/password" = {
-				key = "mimikyu/password";
-				neededForUsers = true;
-			};
-		};
+		secrets = lib.mkMerge (map userSecrets config.hostSpec.userList);
 	};
 }
