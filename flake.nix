@@ -17,10 +17,7 @@
 					pkgs = pkgsFor system;
 
 					customLib = nixpkgs.lib.extend (_: _: {
-						custom = import ./lib {
-							inherit (nixpkgs) lib;
-							inherit inputs;
-						};
+						custom = import ./lib { inherit (nixpkgs) lib; };
 					});
 
 					metadataModule = { 
