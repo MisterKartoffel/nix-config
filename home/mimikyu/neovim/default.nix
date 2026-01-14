@@ -1,19 +1,24 @@
 { inputs, ... }: {
 	imports = [
 		inputs.nvf.homeManagerModules.default
+		./keymaps.nix
 		./languages.nix
 		./options.nix
+		./plugins
 	];
 
 	programs.nvf = {
 		enable = true;
 		settings.vim = {
+			extraLuaFiles = [ ./functions.lua ];
+
 			theme = {
 				enable = true;
 				name = "catppuccin";
 				style = "mocha";
 				transparent = true;
 			};
+
 			ui.colorizer = {
 				enable = true;
 				setupOpts.filetypes."*" = {
@@ -23,6 +28,7 @@
 					always_update = true;
 				};
 			};
+
 			git.gitsigns = {
 				enable = true;
 				mappings = {
@@ -35,16 +41,8 @@
 					previewHunk = "<leader>gv";
 				};
 			};
-			statusline.lualine = {
-				enable = true;
-				icons.enable = true;
-			};
-			utility.oil-nvim = {
-				enable = true;
-				setupOpts = {
-					watch_for_changes = true;
-				};
-			};
+
+			visuals.nvim-web-devicons.enable = true;
 			treesitter.enable = true;
 			binds.whichKey.enable = true;
 		};
