@@ -260,10 +260,10 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1768423127,
-        "narHash": "sha256-1Q26egF4KtEwvLf5sgX3k7sAg5CIjIWZz5DXREzekyk=",
+        "lastModified": 1768423496,
+        "narHash": "sha256-TWkV4iKzJ0rOmDozY7B7/LVdq3Mign3nEqTpFIGTmQc=",
         "ref": "main",
-        "rev": "1ecbbceedc980fc6bed98b23e54f45a4c96e45b0",
+        "rev": "c0192da73ce480de07e00a45b14f76eef1001d85",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/misterkartoffel/nix-secrets.git"
