@@ -18,8 +18,11 @@ in {
 				shell = pkgs.zsh;
 				extraGroups = [ "wheel" "video" ];
 				extraModules = [ ../../home/mimikyu ];
-				authorizedKeyFiles = builtins.attrValues
-					(builtins.readDir ../../home/mimikyu/keys);
+				authorizedKeyFiles = let
+					keyDir = builtins.path { path = ../../home/mimikyu/keys; };
+				in 
+					map (file: "${keyDir}/${file}")
+						(builtins.attrNames (builtins.readDir keyDir));
 			}
 		];
 	};
