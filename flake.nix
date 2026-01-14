@@ -17,7 +17,10 @@
 					pkgs = pkgsFor system;
 
 					customLib = nixpkgs.lib.extend (_: _: {
-						custom = import ./lib { inherit (nixpkgs) lib; };
+						custom = import ./lib {
+							inherit (nixpkgs) lib;
+							inherit inputs;
+						};
 					});
 
 					metadataModule = { 
@@ -63,7 +66,7 @@
 
 		nix-secrets = {
 			url = "git+ssh://git@github.com/misterkartoffel/nix-secrets.git?ref=main&shallow=1";
-			flake = false;
+			inputs = {};
 		};
 
 		stylix = {

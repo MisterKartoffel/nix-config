@@ -1,8 +1,9 @@
-{ ... }: {
+{ inputs, ... }: {
 	makeSystemUser = { user, config }: {
 		inherit (user) name;
 		value = {
-			inherit (user) description shell extraGroups;
+			inherit (user) shell extraGroups;
+			description = inputs.nix-secrets.name;
 			hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
 			openssh.authorizedKeys.keyFiles = user.authorizedKeyFiles;
 			isNormalUser = true;

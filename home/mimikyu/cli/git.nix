@@ -1,5 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 let
+	inherit (inputs.nix-secrets) name email;
 	sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in {
 	home.packages = with pkgs; [ diff-so-fancy ];
@@ -9,8 +10,8 @@ in {
 
 		settings = {
 			user = {
-				name = "Felipe Duarte";
-				email = "felipesdrs@hotmail.com";
+				inherit name;
+				email = email.hotmail;
 				signingKey = "${sshKey}.pub";
 			};
 

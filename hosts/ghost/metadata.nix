@@ -13,8 +13,6 @@ in {
 		userList = [
 			{
 				name = "mimikyu";
-				description = "Felipe Duarte";
-				email = "felipesdrs@hotmail.com";
 				shell = pkgs.zsh;
 				extraGroups = [ "wheel" "video" ];
 				extraModules = [ ../../home/mimikyu ];

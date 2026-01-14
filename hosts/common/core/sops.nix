@@ -1,6 +1,6 @@
 { config, lib, inputs, pkgs, ... }:
 let
-	secretsPath = builtins.toString inputs.nix-secrets;
+	secretsPath = (toString inputs.nix-secrets) + "/sops/hosts";
 	userSecrets = user: {
 		"${user.name}/password".neededForUsers = true;
 		"${user.name}/age_key" = {
@@ -17,7 +17,7 @@ in {
 	];
 
 	sops = {
-		defaultSopsFile = "${secretsPath}/secrets.yaml";
+		defaultSopsFile = "${secretsPath}/${config.hostSpec.hostname}.yaml";
 		validateSopsFiles = false;
 
 		age = {
