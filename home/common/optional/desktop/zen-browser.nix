@@ -119,17 +119,31 @@
 			search = {
 				force = true;
 				default = "google";
-				engines.mynixos = {
-					name = "My NixOS";
-					definedAliases = ["@nx"];
-					urls = [
-						{
-							template = "https://mynixos.com/search?q={searchTerms}";
-							params = [
-								{ name = "query"; value = "searchTerms"; }
-							];
-						}
-					];
+				engines = { 
+					nixosWiki = {
+						name = "NixOS Wiki";
+						definedAliases = ["@nw"];
+						urls = [
+							{
+								template = "https://wiki.nixos.org/w/index.php?search={searchTerms}";
+								params = [
+									{ name = "query"; value = "searchTerms"; }
+								];
+							}
+						];
+					};
+					myNixos = {
+						name = "My NixOS";
+						definedAliases = ["@nx"];
+						urls = [
+							{
+								template = "https://mynixos.com/search?q={searchTerms}";
+								params = [
+									{ name = "query"; value = "searchTerms"; }
+								];
+							}
+						];
+					};
 				};
 			};
 		};
