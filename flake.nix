@@ -20,13 +20,9 @@
 						custom = import ./lib { inherit (nixpkgs) lib; };
 					});
 
-					hostSpecModule = { 
-						config.hostSpec = hostSpec;
-					};
-
 					modules = [
 						./modules/host-spec.nix
-						hostSpecModule
+						{ inherit hostSpec; }
 						home-manager.nixosModules.home-manager
 						./hosts/${hostname}
 					];
