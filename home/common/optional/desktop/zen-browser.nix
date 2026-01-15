@@ -17,13 +17,15 @@
 			OfferToSaveLogins = false;
 			SanitizeOnShutdown = true;
 
-			Cookies = {
-				Allow = [
-					"https://web.whatsapp.com"
-					"https://youtube.com"
-					"https://github.com"
-				];
-			};
+			Cookies.Allow = [
+				"https://web.whatsapp.com"
+				"https://youtube.com"
+				"https://github.com"
+			];
+
+			Notifications.Allow = [
+				"https://web.whatsapp.com"
+			];
 
 			EnableTrackingProtection = {
 				Value = true;
