@@ -69,11 +69,6 @@
 			inputs.home-manager.follows = "home-manager";
 		};
 
-		firefox-addons = {
-			url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
-
 		nvf = {
 			url = "github:notashelf/nvf";
 			inputs.nixpkgs.follows = "nixpkgs";

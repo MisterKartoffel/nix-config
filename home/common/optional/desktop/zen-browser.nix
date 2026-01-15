@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{ inputs, lib, ... }: {
 	imports = [ inputs.zen-browser.homeModules.beta ];
 
 	programs.zen-browser = {
@@ -11,11 +11,17 @@
 			DisableAppUpdate = true;
 			DisableFeedbackCommands = true;
 			DisableFirefoxStudies = true;
+			DisableFormHistory = true;
+			DisableMasterPasswordCreation = true;
 			DisablePocket = true;
+			DisableSetDesktopBackground = true;
 			DisableTelemetry = true;
 			DontCheckDefaultBrowser = true;
+			HTTPSOnlyMode = "force_enabled";
+			InstallAddonsPermission.Default = false;
 			NoDefaultBookmarks = true;
 			OfferToSaveLogins = false;
+			PasswordManagerEnabled = false;
 			SanitizeOnShutdown = true;
 
 			Cookies.Allow = [
@@ -24,15 +30,81 @@
 				"https://github.com"
 			];
 
+			DNSOverHTTPS = {
+				Enabled = false;
+				Locked = true;
+			};
+
+			ExtensionSettings = let
+				url = extension: "https://addons.mozilla.org/firefox/downloads/latest/${extension}/latest.xpi";
+
+				extensions = [
+					{ name = "bitwarden-password-manager"; id = "{446900e4-71c2-419f-a6a7-df9c091e268b}"; }
+					{ name = "ublock-origin"; id = "uBlock0@raymondhill.net"; }
+					{ name = "multi-account-containers"; id = "@testpilot-containers"; }
+				];
+
+				installed = builtins.foldl' (acc: extension:
+					acc // {
+						"${extension.id}" = {
+							install_url = url extension.name;
+							installation_mode = "force_installed";
+						};
+					}
+				) {} extensions;
+			in {
+				"*".installation_mode = "blocked";
+
+				"3rdparty".Extensions = {
+					"uBlock0@raymondhill.net".adminSettings = {
+						userSettings = rec {
+							autoUpdate = true;
+							cloudStorageEnabled = false;
+
+							importedLists = [
+								"https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
+							];
+
+							externalLists = lib.concatStringsSep "\n" importedLists;
+
+							selectedFilterLists = [
+								"adguard-generic"
+								"adguard-annoyance"
+								"adguard-social"
+								"adguard-spyware-url"
+								"easylist"
+								"easyprivacy"
+								"https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
+								"plowe-0"
+								"ublock-badware"
+								"ublock-filters"
+								"ublock-privacy"
+								"ublock-quick-fixes"
+								"ublock-unbreak"
+								"spa-1"
+							];
+						};
+					};
+				};
+			} // installed;
+
 			Permissions.Notifications.Allow = [
 				"https://web.whatsapp.com"
 			];
+
+			PopupBlocking = {
+				Default = false;
+				Locked = true;
+			};
 
 			EnableTrackingProtection = {
 				Value = true;
 				Locked = true;
 				Cryptomining = true;
 				Fingerprinting = true;
+				SuspectedFingerprinting = true;
+				EmailTracking = true;
+				Category = "strict";
 			};
 		};
 
@@ -103,13 +175,6 @@
 			containersForce = true;
 			spacesForce = true;
 			inherit containers pins spaces;
-
-			extensions.packages =
-				with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-					ublock-origin
-					bitwarden
-					multi-account-containers
-				];
 
 			settings = {
 				zen.view.experimental-no-window-controls = true;
