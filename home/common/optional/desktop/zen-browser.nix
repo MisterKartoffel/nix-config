@@ -15,6 +15,16 @@
 			DontCheckDefaultBrowser = true;
 			NoDefaultBookmarks = true;
 			OfferToSaveLogins = false;
+			SanitizeOnShutdown = true;
+
+			Cookies = {
+				Allow = [
+					"https://web.whatsapp.com"
+					"https://youtube.com"
+					"https://github.com"
+				];
+			};
+
 			EnableTrackingProtection = {
 				Value = true;
 				Locked = true;
