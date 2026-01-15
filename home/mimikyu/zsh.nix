@@ -31,19 +31,6 @@
 			"NO_CLOBBER"
 		];
 
-		loginExtra = ''
-			{
-				setopt LOCAL_OPTIONS EXTENDED_GLOB
-				autoload -U zrecompile
-
-				zrecompile -pq "$ZDOTDIR/.zshenv" -- \
-											 "$ZDOTDIR/.zprofile" -- \
-											 "$ZDOTDIR/.zshrc" -- \
-											 "$ZDOTDIR/.zlogin" -- \
-											 "$ZDOTDIR/.zlogout"
-			} &!
-		'';
-
 		initContent =
 			let
 				zshExtraConfigEarlyInit = lib.mkBefore ''
