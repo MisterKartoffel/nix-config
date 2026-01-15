@@ -4,6 +4,7 @@
 	programs.zen-browser = {
 		enable = true;
 
+		# See https://mozilla.github.io/policy-templates/
 		policies = {
 			AutofillAddressEnabled = false;
 			AutofillCreditCardEnabled = false;
@@ -23,7 +24,7 @@
 				"https://github.com"
 			];
 
-			Notifications.Allow = [
+			Permissions.Notifications.Allow = [
 				"https://web.whatsapp.com"
 			];
 
