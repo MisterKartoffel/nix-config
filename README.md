@@ -3,16 +3,19 @@
 
 ## Directory Structure Reference
 - `flake.nix`: entrypoint for all host configurations. Ultimately redefines `nixosConfigurations` to a custom structure adapted to this repository's own.
-- `home`: defines home-manager modules on a per-user basis. Will be further divided into `common/core` and `common/optional` if the time ever comes:
-  - `<username>`: stores home-manager modules on a per-user basis:
-    - `default.nix`: entrypoint for this user's home-manager modules and configurations;
-- `hosts`: defines NixOS modules on a per-host basis:
-  - `<hostname>`: contains modules exclusive to that host;
-    - `default.nix`: entrypoint for this host's NixOS modules and configurations;
-    - `metadata.nix`: stores <hostname>'s definitions for `config.hostSpec`, as well as the list of users to be created under `config.hostSpec.userList`. Is sourced by `flake.nix` directly, not by `default.nix`;
-  - `common`: stores modules shared among hosts:
-    - `core`: configurations common to all hosts:
-      - `users.nix`: entrypoint for user creation on a given host using `config.hostSpec.userList` derived from `<hostname>/metadata.nix`;
-    - `optional`: configurations to be present among more than one, but not all, hosts;
-- `lib`: defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`;
-- `modules`: defines the options and defaults for `config.homeSpec`;
+- `home`: defines home-manager modules on a per-user basis.
+  - `<username>`: stores home-manager modules on a per-user basis.
+    - `default.nix`: entrypoint for this user's home-manager modules and configurations.
+  - `common`: stores modules shared among hosts.
+    - `core`: configurations common to all users.
+    - `optional`: configurations common to more than one, but not all, users.
+- `hosts`: defines NixOS modules on a per-host basis.
+  - `<hostname>`: contains modules exclusive to that host.
+    - `default.nix`: entrypoint for this host's NixOS modules and configurations.
+    - `metadata.nix`: stores <hostname>'s definitions for `config.hostSpec`, as well as the list of users to be created under `config.hostSpec.userList`. Is sourced by `flake.nix` directly, not by `default.nix`.
+  - `common`: stores modules shared among hosts.
+    - `core`: configurations common to all hosts.
+      - `users.nix`: entrypoint for user creation on a given host using `config.hostSpec.userList` derived from `<hostname>/metadata.nix`.
+    - `optional`: configurations to be present among more than one, but not all, hosts.
+- `lib`: defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`.
+- `modules`: defines the options and defaults for `config.homeSpec`.

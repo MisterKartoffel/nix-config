@@ -1,7 +1,5 @@
 { pkgs, ... }: {
-	home.packages = with pkgs; [
-		ripgrep
-	];
+	home.packages = with pkgs; [ ripgrep ];
 
 	programs.nvf.settings.vim.utility.snacks-nvim = {
 		enable = true;

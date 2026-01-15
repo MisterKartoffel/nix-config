@@ -1,15 +1,8 @@
-{ pkgs, ... }: {
+{
 	imports = [
-		./graphical
-		./shell
-		./neovim
-		./cli
+		../common/core
 
 		./environment.nix
-		./sops.nix
-		./stylix.nix
-		./xdg.nix
+		./zsh.nix
 	];
-
-	home.packages = with pkgs; [ git ];
 }

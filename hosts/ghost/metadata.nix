@@ -10,7 +10,12 @@
 				name = "mimikyu";
 				shell = "zsh";
 				extraGroups = [ "wheel" "video" ];
-				extraModules = [ ../../home/mimikyu ];
+				extraModules = [
+					../../home/mimikyu
+					../../home/common/optional/desktop
+					../../home/common/optional/theming
+					../../home/common/optional/neovim
+				];
 			}
 		];
 	};
