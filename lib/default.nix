@@ -1,10 +1,10 @@
 { ... }: {
-	makeSystemUser = { config, pkgs, user, nix-secrets }: {
+	makeSystemUser = { inputs, config, pkgs, user }: {
 		inherit (user) name;
 		value = {
 			inherit (user) extraGroups;
 			shell = pkgs.${user.shell};
-			description = nix-secrets.name;
+			description = inputs.nix-secrets.name;
 			hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
 
 			openssh.authorizedKeys.keyFiles =

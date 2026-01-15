@@ -2,11 +2,10 @@
 let
 	inherit (lib.custom) makeSystemUser makeHomeUser;
 	inherit (config.hostSpec) userList;
-	inherit (inputs) nix-secrets;
 in {
 	users = {
 		users = lib.listToAttrs (map (user:
-			makeSystemUser { inherit config pkgs user nix-secrets; }) userList);
+			makeSystemUser { inherit inputs config pkgs user; }) userList);
 		mutableUsers = false;
 	};
 

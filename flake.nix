@@ -12,21 +12,21 @@
 
 			hostAttrs = map (hostname:
 				let
-					metadata = import ./hosts/${hostname}/metadata.nix;
-					system = metadata.hostSpec.systemArch;
+					inherit (import ./hosts/${hostname}/metadata.nix) hostSpec;
+					system = hostSpec.systemArch;
 					pkgs = pkgsFor system;
 
 					customLib = nixpkgs.lib.extend (_: _: {
 						custom = import ./lib { inherit (nixpkgs) lib; };
 					});
 
-					metadataModule = { 
-						config.hostSpec = metadata.hostSpec;
+					hostSpecModule = { 
+						config.hostSpec = hostSpec;
 					};
 
 					modules = [
 						./modules/host-spec.nix
-						metadataModule
+						hostSpecModule
 						home-manager.nixosModules.home-manager
 						./hosts/${hostname}
 					];
