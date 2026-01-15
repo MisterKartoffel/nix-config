@@ -52,7 +52,7 @@
 			secretsFile = "/run/secrets/wireless";
 
 			networks.home = {
-				SSID = "JOSÉ LUIS OI FIBRA";
+				ssid = "JOSÉ LUIS OI FIBRA";
 				pskRaw = "ext:home";
 			};
 		};
