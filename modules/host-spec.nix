@@ -10,16 +10,16 @@ in {
 			default = "nixos";
 		};
 
+		system = mkOption {
+			type = str;
+			description = "System architecture for this host";
+			default = "x86_64-linux";
+		};
+
 		stateVersion = mkOption {
 			type = nullOr str;
 			description = "NixOS version that was first installed in this host";
 			default = null;
-		};
-
-		systemArch = mkOption {
-			type = str;
-			description = "System architecture for this host";
-			default = "x86_64-linux";
 		};
 
 		flakeRoot = mkOption {

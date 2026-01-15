@@ -3,17 +3,17 @@
 
 	outputs = { nixpkgs, home-manager, ... }@inputs:
 		let
-			pkgsFor = systemArch: import nixpkgs { system = systemArch; };
+			pkgsFor = system: import nixpkgs { inherit system; };
 			hostList = builtins.filter (name: name != "common")
 					(builtins.attrNames (builtins.readDir ./hosts));
 
 			hostAttrs = map (hostname:
 				let
 					inherit (import ./hosts/${hostname}/metadata.nix) hostSpec;
-					system = hostSpec.systemArch;
+					inherit (hostSpec) system;
 					pkgs = pkgsFor system;
 
-					customLib = nixpkgs.lib.extend (_: _: {
+					lib = nixpkgs.lib.extend (_: _: {
 						custom = import ./lib { inherit (nixpkgs) lib; };
 					});
 
@@ -25,8 +25,7 @@
 					];
 
 					drv = nixpkgs.lib.nixosSystem {
-						inherit system modules pkgs;
-						lib = customLib;
+						inherit system modules pkgs lib;
 						specialArgs = { inherit inputs; };
 					};
 				in {
