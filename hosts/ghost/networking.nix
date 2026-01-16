@@ -47,6 +47,8 @@
 	};
 
 	networking = {
+		hostName = config.hostSpec.hostname;
+
 		wireless = {
 			enable = true;
 			secretsFile = "/run/secrets/wireless";
@@ -57,14 +59,20 @@
 			};
 		};
 
-
-		hostName = config.hostSpec.hostname;
 		nameservers = [
 			"1.1.1.2#security.cloudflare-dns.com"
 			"2606:4700:4700::1112#security.cloudflare-dns.com"
 			"9.9.9.9#tls://dns.quad9.net"
 			"2620:fe::fe#tls://dns.quad9.net"
 		];
+
+		firewall = let
+			ssh = 22;
+		in {
+			enable = true;
+			allowedTCPPorts = [ ssh ];
+			allowedUDPPorts = [];
+		};
 
 		useNetworkd = true;
 		useDHCP = false;
