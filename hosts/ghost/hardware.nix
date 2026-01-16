@@ -2,6 +2,8 @@
 	imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
 	nixpkgs.hostPlatform = config.hostSpec.system;
+	system.stateVersion = config.hostSpec.stateVersion;
+
 	hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 	environment.systemPackages = with pkgs; [ mesa ];
 
@@ -23,4 +25,6 @@
 	environment.sessionVariables = {
 		LIBVA_DRIVER_NAME = "i915";
 	};
+
+	boot.kernelModules = [ "kvm-intel" "i915" ];
 }
