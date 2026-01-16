@@ -1,9 +1,3 @@
-{
-	imports = [
-		./dunst.nix
-		./ghostty.nix
-		./niri.nix
-		./tofi.nix
-		./zen-browser.nix
-  ];
+{ lib, ... }: {
+	imports = lib.custom.importSelf ./.;
 }

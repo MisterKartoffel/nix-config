@@ -1,6 +1,3 @@
-{
-	imports = [
-		./starship.nix
-		./stylix.nix
-	];
+{ lib, ... }: {
+	imports = lib.custom.importSelf ./.;
 }

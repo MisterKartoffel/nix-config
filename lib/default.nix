@@ -1,4 +1,4 @@
-{ ... }: {
+{ lib, ... }: {
 	makeSystemUser = { inputs, config, pkgs, user }: {
 		inherit (user) name;
 		value = {
@@ -29,4 +29,13 @@
 			};
 		};
 	};
+
+	relativeToRoot = lib.path.append ../.;
+
+	importSelf = dir:
+		let
+			entries = builtins.readDir dir;
+			contents = lib.filter (name: lib.hasSuffix ".nix" name && name != "default.nix") (lib.attrNames entries);
+		in
+			map (name: dir + "/${name}") contents;
 }

@@ -1,7 +1,3 @@
-{
-	imports = [
-		./lualine.nix
-		./oil.nix
-		./snacks.nix
-	];
+{ lib, ... }: {
+	imports = lib.custom.importSelf ./.;
 }

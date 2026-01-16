@@ -1,11 +1,9 @@
-{ inputs, ... }: {
+{ inputs, lib, ... }: {
 	imports = [
 		inputs.nvf.homeManagerModules.default
-		./keymaps.nix
-		./languages.nix
-		./options.nix
+	] ++ [
 		./plugins
-	];
+	] ++ lib.custom.importSelf ./.;
 
 	programs.nvf = {
 		enable = true;

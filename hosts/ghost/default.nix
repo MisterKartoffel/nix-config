@@ -1,14 +1,7 @@
-{ config, ... }: {
-	imports = [
-		../common/core
-		../common/optional/audio.nix
-
-		./boot.nix
-		./filesystems.nix
-		./hardware.nix
-		./networking.nix
-		./packages.nix
-	];
-
-	system.stateVersion = config.hostSpec.stateVersion;
+{ lib, ... }: {
+	imports = map lib.custom.relativeToRoot ([
+		"hosts/common/core"
+	] ++ (map (file: "hosts/common/optional/${file}") [
+		"audio.nix"
+	])) ++ lib.custom.importSelf ./.;
 }
