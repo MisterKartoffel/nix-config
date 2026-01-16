@@ -20,6 +20,13 @@
 - `lib` - defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`.
 - `modules` - defines the options and defaults for `config.homeSpec`.
 
+## TODO
+- Install and configure:
+  - [just](https://github.com/casey/just).
+  - [NeoMutt](https://github.com/neomutt/neomutt) (lord help me).
+- Configure dunst to not be an ugly mess.
+- Look into moving sops and age out of environment.systemPackages and into nix-secrets devShell.
+
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
 - [EmergentMind](https://github.com/EmergentMind), for being a great reference both on YouTube and on GitHub when it comes to learning Nix and for showing the configuration structure from which I ultimately stole.
