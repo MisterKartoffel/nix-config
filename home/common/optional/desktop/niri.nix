@@ -3,7 +3,7 @@
 
 	xdg.portal = {
 		enable = true;
-		config.niri.default = "gnome;gtk";
+		config.niri.default = [ "gtk" "gnome" ];
 		extraPortals = [
 			pkgs.xdg-desktop-portal-gnome
 			pkgs.xdg-desktop-portal-gtk
