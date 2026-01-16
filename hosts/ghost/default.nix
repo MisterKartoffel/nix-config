@@ -1,7 +1,7 @@
 { lib, ... }: {
 	imports = map lib.custom.relativeToRoot ([
-		"hosts/common/core"
-	] ++ (map (file: "hosts/common/optional/${file}") [
+		"modules/hosts/core"
+	] ++ (map (file: "modules/hosts/optional/${file}") [
 		"audio.nix"
 	])) ++ lib.custom.importSelf ./.;
 }

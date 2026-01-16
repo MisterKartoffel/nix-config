@@ -43,15 +43,15 @@ in {
 						default = null;
 					};
 
+					homeModule = mkOption {
+						type = nullOr path;
+						description = "Entrypoint module for home-manager configuration";
+						default = null;
+					};
+
 					extraGroups = mkOption {
 						type = listOf str;
 						description = "Extra groups for this user";
-						default = [];
-					};
-
-					extraModules = mkOption {
-						type = listOf path;
-						description = "List of home-manager modules to import for this user";
 						default = [];
 					};
 				};

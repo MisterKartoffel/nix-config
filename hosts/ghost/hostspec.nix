@@ -9,8 +9,8 @@
 			{
 				name = "mimikyu";
 				shell = "zsh";
+				homeModule = ../../home/mimikyu;
 				extraGroups = [ "wheel" "video" ];
-				extraModules = [ ../../home/mimikyu ];
 			}
 		];
 	};

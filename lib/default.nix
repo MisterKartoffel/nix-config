@@ -21,7 +21,7 @@
 	makeHomeUser = { config, user }: {
 		inherit (user) name;
 		value = {
-			imports = user.extraModules;
+			imports = [ user.homeModule ];
 			home = {
 				username = user.name;
 				homeDirectory = "/home/${user.name}";

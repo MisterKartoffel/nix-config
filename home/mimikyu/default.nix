@@ -1,9 +1,11 @@
 { lib, ... }: {
-	imports = map lib.custom.relativeToRoot ([
-		"home/common/core"
-	] ++ (map (file: "home/common/optional/${file}") [
-		"desktop"
-		"neovim"
-		"theming"
-	])) ++ lib.custom.importSelf ./.;
+	imports = map lib.custom.relativeToRoot [
+		"modules/home/core"
+		"modules/home/optional"
+	] ++ lib.custom.importSelf ./.;
+
+	custom = {
+		graphical.enable = true;
+		neovim.enable = true;
+	};
 }
