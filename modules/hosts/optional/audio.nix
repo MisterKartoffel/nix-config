@@ -1,13 +1,14 @@
-{ lib, ... }: {
-	services = {
-		pulseaudio.enable = lib.mkForce false;
+{ lib, ... }:
+{
+  services = {
+    pulseaudio.enable = lib.mkForce false;
 
-		pipewire = {
-			enable = true;
-			pulse.enable = true;
-			jack.enable = true;
-			alsa.enable = true;
-			wireplumber.enable = true;
-		};
-	};
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+      jack.enable = true;
+      alsa.enable = true;
+      wireplumber.enable = true;
+    };
+  };
 }

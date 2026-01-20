@@ -1,31 +1,31 @@
 {
-	time.timeZone = "America/Sao_Paulo";
+  time.timeZone = "America/Sao_Paulo";
 
-	console.keyMap = "br-abnt2";
+  console.keyMap = "br-abnt2";
 
-	i18n = {
-		inputMethod = {
-			enable = true;
-			type = "fcitx5";
-			fcitx5.waylandFrontend = true;
-		};
+  i18n = {
+    inputMethod = {
+      enable = true;
+      type = "fcitx5";
+      fcitx5.waylandFrontend = true;
+    };
 
-		defaultLocale = "en_US.UTF-8";
-		extraLocaleSettings = {
-			LC_ADDRESS = "pt_BR.UTF-8";
-			LC_IDENTIFICATION = "pt_BR.UTF-8";
-			LC_MEASUREMENT = "pt_BR.UTF-8";
-			LC_MONETARY = "pt_BR.UTF-8";
-			LC_NAME = "pt_BR.UTF-8";
-			LC_NUMERIC = "pt_BR.UTF-8";
-			LC_PAPER = "pt_BR.UTF-8";
-			LC_TELEPHONE = "pt_BR.UTF-8";
-			LC_TIME = "pt_BR.UTF-8";
-		};
-	};
+    defaultLocale = "en_US.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "pt_BR.UTF-8";
+      LC_IDENTIFICATION = "pt_BR.UTF-8";
+      LC_MEASUREMENT = "pt_BR.UTF-8";
+      LC_MONETARY = "pt_BR.UTF-8";
+      LC_NAME = "pt_BR.UTF-8";
+      LC_NUMERIC = "pt_BR.UTF-8";
+      LC_PAPER = "pt_BR.UTF-8";
+      LC_TELEPHONE = "pt_BR.UTF-8";
+      LC_TIME = "pt_BR.UTF-8";
+    };
+  };
 
-	environment.sessionVariables = {
-		QT_IM_MODULE = "fcitx";
-		SDL_IM_MODULE = "fcitx";
-	};
+  environment.sessionVariables = {
+    QT_IM_MODULE = "fcitx";
+    SDL_IM_MODULE = "fcitx";
+  };
 }

@@ -1,30 +1,40 @@
-{ config, lib, pkgs, modulesPath, ... }: {
-	imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
+}:
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-	nixpkgs.hostPlatform = config.hostSpec.system;
-	system.stateVersion = config.hostSpec.stateVersion;
+  nixpkgs.hostPlatform = config.hostSpec.system;
+  system.stateVersion = config.hostSpec.stateVersion;
 
-	hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-	environment.systemPackages = with pkgs; [ mesa ];
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  environment.systemPackages = with pkgs; [ mesa ];
 
-	hardware = {
-		graphics = {
-			enable = true;
-			extraPackages = with pkgs; [
-				# intel-media-sdk
-				intel-vaapi-driver
-				vpl-gpu-rt
-			];
-		};
-		amdgpu.legacySupport.enable = true;
-		enableRedistributableFirmware = true;
-	};
+  hardware = {
+    graphics = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-vaapi-driver
+        vpl-gpu-rt
+      ];
+    };
 
-	services.xserver.videoDrivers = [ "modesetting" ];
+    amdgpu.legacySupport.enable = true;
+    enableRedistributableFirmware = true;
+  };
 
-	environment.sessionVariables = {
-		LIBVA_DRIVER_NAME = "i915";
-	};
+  services.xserver.videoDrivers = [ "modesetting" ];
 
-	boot.kernelModules = [ "kvm-intel" "i915" ];
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "i915";
+  };
+
+  boot.kernelModules = [
+    "kvm-intel"
+    "i915"
+  ];
 }

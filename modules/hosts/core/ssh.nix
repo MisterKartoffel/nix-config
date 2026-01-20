@@ -1,13 +1,15 @@
+{ config, ... }:
 {
-	services.openssh = {
-		enable = true;
+  services.openssh = {
+    enable = true;
 
-		settings = {
-			PermitRootLogin = "no";
-			PasswordAuthentication = false;
-			KbdInteractiveAuthentication = false;
-		};
-	};
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+  };
 
-	programs.ssh.startAgent = true;
+  networking.firewall.allowedTCPPorts = config.services.openssh.ports;
+  programs.ssh.startAgent = config.services.openssh.enable;
 }

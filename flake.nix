@@ -1,75 +1,109 @@
 {
-	description = "Kartoffel tries NixOS 2 - Declarative Boogaloo";
+  description = "Kartoffel tries NixOS 2 - Declarative Boogaloo";
 
-	outputs = { nixpkgs, home-manager, ... }@inputs:
-		let
-			pkgsFor = system: import nixpkgs { inherit system; };
-			hostList = builtins.attrNames (builtins.readDir ./hosts);
+  outputs =
+    {
+      nixpkgs,
+			home-manager,
+      ...
+    }@inputs:
+    let
+      hostList = builtins.attrNames (builtins.readDir ./hosts);
 
-			hostAttrs = map (hostname:
-				let
-					inherit ((import ./hosts/${hostname}/hostspec.nix).hostSpec) system;
-					pkgs = pkgsFor system;
+      pkgsFor =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [ ];
+        };
 
-					drv = nixpkgs.lib.nixosSystem {
-						inherit system pkgs;
+      formatterFor = system: (pkgsFor system).nixfmt-tree;
 
-						lib = nixpkgs.lib.extend (_: _: {
-							custom = import ./lib { inherit (nixpkgs) lib; };
-						});
+      makeHost =
+        hostname:
+        let
+          inherit (import ./hosts/${hostname}/hostspec.nix) hostSpec;
+          pkgs = pkgsFor hostSpec.system;
 
-						modules = [
-							home-manager.nixosModules.home-manager
-							./modules/flake
-							./hosts/${hostname}
-						];
+          lib = pkgs.lib.extend (
+            _: _: {
+              custom = import ./lib { inherit (pkgs) lib; };
+            }
+          );
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit (hostSpec) system;
+          inherit pkgs lib;
 
-						specialArgs = { inherit inputs; };
-					};
-				in {
-					name = "${hostname}";
-					value = drv;
-				}
-			) hostList;
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./modules/flake
+            ./hosts/${hostname}
+          ];
 
-			nixosConfigurations = builtins.listToAttrs hostAttrs;
-		in {
-			inherit nixosConfigurations;
-	};
+          specialArgs = { inherit inputs; };
+        };
 
-	inputs = {
-		nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-		nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+      makeDevShell =
+        hostname:
+        let
+          inherit (import ./hosts/${hostname}/hostspec.nix) hostSpec;
+          pkgs = pkgsFor hostSpec.system;
+        in
+        {
+          ${hostSpec.system}.${hostname} = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              just
+              nh
+            ];
+          };
+        };
 
-		home-manager = {
-			url = "github:nix-community/home-manager";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+      systems = builtins.map (
+        hostname: (import ./hosts/${hostname}/hostspec.nix).hostSpec.system
+      ) hostList;
 
-		sops-nix = {
-			url = "github:mic92/sops-nix";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+      nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
+      devShells = nixpkgs.lib.foldl' nixpkgs.lib.recursiveUpdate { } (map makeDevShell hostList);
+      formatter = nixpkgs.lib.genAttrs systems formatterFor;
+    in
+    {
+      inherit nixosConfigurations devShells formatter;
+    };
 
-		nix-secrets = {
-			url = "git+ssh://git@github.com/misterkartoffel/nix-secrets.git?ref=main&shallow=1";
-			inputs = {};
-		};
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
 
-		stylix = {
-			url = "github:nix-community/stylix";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-		zen-browser = {
-			url = "github:0xc000022070/zen-browser-flake/beta";
-			inputs.nixpkgs.follows = "nixpkgs";
-			inputs.home-manager.follows = "home-manager";
-		};
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-		nvf = {
-			url = "github:notashelf/nvf";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};
-	};
+    nix-secrets = {
+      url = "git+ssh://git@github.com/misterkartoffel/nix-secrets.git?ref=main&shallow=1";
+      inputs = { };
+    };
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake/beta";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+  };
 }

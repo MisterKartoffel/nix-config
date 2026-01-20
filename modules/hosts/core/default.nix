@@ -1,3 +1,4 @@
-{ lib, ... }: {
-	imports = lib.custom.importSelf ./.;
+{ lib, ... }:
+{
+  imports = lib.custom.importSelf ./.;
 }
