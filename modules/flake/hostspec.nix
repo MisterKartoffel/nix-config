@@ -29,12 +29,6 @@ in
       default = null;
     };
 
-    flakeRoot = mkOption {
-      type = nullOr str;
-      description = "Absolute path to this flake on this host";
-      default = null;
-    };
-
     userList = mkOption {
       type = listOf (submodule {
         options = {

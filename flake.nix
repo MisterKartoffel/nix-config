@@ -4,7 +4,7 @@
   outputs =
     {
       nixpkgs,
-			home-manager,
+      home-manager,
       ...
     }@inputs:
     let
@@ -36,8 +36,8 @@
           inherit pkgs lib;
 
           modules = [
-            home-manager.nixosModules.home-manager
             ./modules/flake
+            home-manager.nixosModules.home-manager
             ./hosts/${hostname}
           ];
 

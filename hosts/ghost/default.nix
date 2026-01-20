@@ -5,20 +5,23 @@
       [
         "modules/hosts/core"
       ]
-      ++ (map (file: "modules/hosts/optional/${file}") [
+      ++ map (file: "modules/hosts/optional/${file}") [
         "audio.nix"
         "networking.nix"
-      ])
+      ]
     )
     ++ lib.custom.importSelf ./.;
 
   networking = {
     useNetworkd = true;
+    wireless = {
+      enable = true;
 
-    wireless.networks = {
-      "home" = {
-        ssid = "JOSÉ LUIS OI FIBRA";
-        pskRaw = "ext:home";
+      networks = {
+        "home" = {
+          ssid = "JOSÉ LUIS OI FIBRA";
+          pskRaw = "ext:home";
+        };
       };
     };
 

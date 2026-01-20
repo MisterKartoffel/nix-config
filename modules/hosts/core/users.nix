@@ -16,7 +16,6 @@ in
         user:
         makeSystemUser {
           inherit
-            inputs
             config
             pkgs
             user
@@ -28,7 +27,17 @@ in
   };
 
   home-manager = {
-    users = lib.listToAttrs (map (user: makeHomeUser { inherit config user; }) userList);
+    users = lib.listToAttrs (
+      map (
+        user:
+        makeHomeUser {
+          inherit
+            config
+            user
+            ;
+        }
+      ) userList
+    );
     extraSpecialArgs = { inherit inputs pkgs; };
   };
 }

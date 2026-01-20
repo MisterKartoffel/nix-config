@@ -1,11 +1,10 @@
 {
-  inputs,
   config,
   pkgs,
   ...
 }:
 let
-  inherit (inputs.nix-secrets) name email;
+  inherit (config.secrets) name email;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {

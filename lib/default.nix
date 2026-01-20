@@ -2,7 +2,6 @@
 {
   makeSystemUser =
     {
-      inputs,
       config,
       pkgs,
       user,
@@ -12,8 +11,8 @@
       value = {
         inherit (user) extraGroups;
         shell = pkgs.${user.shell};
-        description = inputs.nix-secrets.name;
-        hashedPasswordFile = config.sops.secrets."${user.name}/password".path;
+        description = config.secrets.name;
+        hashedPasswordFile = config.secrets.${user.name}.password.path;
 
         openssh.authorizedKeys.keyFiles =
           let

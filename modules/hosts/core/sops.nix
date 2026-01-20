@@ -7,25 +7,6 @@
 }:
 let
   inherit (config.hostSpec) hostname userList;
-  defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
-
-  userSecrets = lib.genAttrs (map (user: user.name) userList) (name: {
-    "${name}/password".neededForUsers = true;
-    "${name}/age_key" = {
-      owner = name;
-      group = "users";
-      path = "/home/${name}/.config/sops/age/keys.txt";
-    };
-  });
-
-  hostSecrets = lib.optionalAttrs config.networking.useNetworkd {
-    "wireless" = {
-      owner = "wpa_supplicant";
-      group = "wpa_supplicant";
-    };
-  };
-
-  secrets = userSecrets // hostSecrets;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -38,7 +19,34 @@ in
       generateKey = true;
     };
 
+    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
     validateSopsFiles = false;
-    inherit defaultSopsFile secrets;
+
+    secrets =
+      let
+        userSecrets = lib.mkMerge (
+          map (user: {
+            "${user.name}/password".neededForUsers = true;
+            "${user.name}/age_key" = {
+              owner = user.name;
+              group = "users";
+              path = "/home/${user.name}/.config/sops/age/keys.txt";
+            };
+          }) userList
+        );
+
+        hostSecrets = {
+        }
+        // lib.optionalAttrs config.networking.useNetworkd {
+          "wireless" = {
+            owner = "wpa_supplicant";
+            group = "wpa_supplicant";
+          };
+        };
+      in
+      lib.mkMerge [
+        userSecrets
+        hostSecrets
+      ];
   };
 }

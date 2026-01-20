@@ -24,7 +24,7 @@ let
       if interfaceName == bondName then
         {
           BindCarrier = lib.concatStringsSep " " (
-            config.networking.interfaceBond.boundEthernet ++ config.networking.interfaceBond.boundWireless
+            config.networking.ifaceBond.boundEthernet ++ config.networking.ifaceBond.boundWireless
           );
           DHCP = "yes";
         }
@@ -74,14 +74,14 @@ in
         };
 
         networks =
-          (lib.mapAttrs (iface: _: makeNetwork iface bondName) (lib.genAttrs allIfaces (iface: { })))
+          lib.foldl' (acc: iface: acc // { "30-${iface}" = makeNetwork iface bondName; }) { } allIfaces
           // {
             "40-${bondName}" = makeNetwork bondName bondName;
           };
       };
 
       networking = {
-        hostName = config.hostspec.hostname;
+        hostName = config.hostSpec.hostname;
         firewall.enable = true;
 
         nameservers = [
@@ -89,7 +89,6 @@ in
           "9.9.9.9#tls://dns.quad9.net"
         ];
 
-        useNetworkd = lib.mkDefault false;
         networkmanager.enable = !useNetworkd;
         useDHCP = !useNetworkd;
         dhcpcd.enable = !useNetworkd;

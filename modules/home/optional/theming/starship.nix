@@ -12,6 +12,7 @@
         "$git_branch"
         "$git_state"
         "$git_status"
+        "$nix_shell"
         "$line_break"
         "$character"
       ];
