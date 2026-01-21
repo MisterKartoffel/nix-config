@@ -14,11 +14,9 @@
         description = config.secrets.name;
         hashedPasswordFile = config.secrets.${user.name}.password.path;
 
-        openssh.authorizedKeys.keyFiles =
-          let
-            keyDir = builtins.path { path = ../home/${user.name}/keys; };
-          in
-          map (file: "${keyDir}/${file}") (builtins.attrNames (builtins.readDir keyDir));
+        openssh.authorizedKeys.keyFiles = map (name: ../home/${user.name}/keys/${name}) (
+          builtins.attrNames (builtins.readDir ../home/${user.name}/keys)
+        );
 
         isNormalUser = true;
       };

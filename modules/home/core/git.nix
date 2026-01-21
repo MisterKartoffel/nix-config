@@ -16,7 +16,7 @@ in
     settings = {
       user = {
         inherit name;
-        email = email.hotmail;
+        inherit (email.hotmail) email;
         signingKey = "${sshKey}.pub";
       };
 

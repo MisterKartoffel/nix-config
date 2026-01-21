@@ -9,13 +9,9 @@
     }@inputs:
     let
       hostList = builtins.attrNames (builtins.readDir ./hosts);
+      overlays = import ./overlays;
 
-      pkgsFor =
-        system:
-        import nixpkgs {
-          inherit system;
-          overlays = [ ];
-        };
+      pkgsFor = system: import nixpkgs { inherit system overlays; };
 
       formatterFor = system: (pkgsFor system).nixfmt-tree;
 
