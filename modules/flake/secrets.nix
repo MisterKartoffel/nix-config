@@ -1,81 +1,52 @@
-# The purpose of this module
-# is to merge the following attrsets:
-#
-# - config.sops.secrets
-# (NixOS module secrets)
-#
-# - config.home-manager.users.<user>.sops.secrets
-# (Home-Manager module secrets)
-#
-# - inputs.nix-secrets
-# (Unencrypted flake output from nix-secrets)
-#
-# Into a single attrset under config.secrets.
 {
   inputs,
   config,
   lib,
   ...
-}:
-let
-  toPairs =
-    attrs:
-    lib.mapAttrsToList (name: value: {
-      inherit name value;
-    }) attrs;
+}: let
+  nestAttrset = secrets:
+    lib.foldlAttrs (
+      acc: path: value:
+        lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
+    ) {}
+    secrets;
 
-  prefixPairs =
-    prefix: pairs:
-    map (pair: {
-      name = "${prefix}/${pair.name}";
-      inherit (pair) value;
-    }) pairs;
+  nixosSecrets = nestAttrset (config.sops.secrets or {});
 
-  foldToNested =
-    pairs:
-    lib.foldl' (
-      acc: item:
-      lib.attrsets.recursiveUpdate acc (
-        lib.attrsets.setAttrByPath (lib.splitString "/" item.name) item.value
-      )
-    ) { } pairs;
+  homeManagerSecrets = lib.foldlAttrs (
+    acc: _: user:
+      lib.recursiveUpdate acc (nestAttrset (user.sops.secrets or {}))
+  ) {} (config.home-manager.users or {});
 
-  systemPairs = toPairs config.sops.secrets;
+  flakeSecrets = inputs.nix-secrets or {};
 
-  userPairs = lib.concatMap (
-    user: prefixPairs user.name (toPairs config.home-manager.users.${user.name}.sops.secrets)
-  ) config.hostSpec.userList;
-
-  flakePairs = toPairs inputs.nix-secrets;
-
-  allPairs = lib.concatLists [
-    systemPairs
-    userPairs
-    flakePairs
+  allSecrets = [
+    nixosSecrets
+    homeManagerSecrets
+    flakeSecrets
   ];
-in
-{
+in {
   options.secrets = lib.mkOption {
     type = lib.types.attrs;
     description = ''
-      				Nested secrets derived from sops.secrets.
-      				Accessible in NixOS modules as config.secrets.<path>.
-      			'';
-    default = { };
+      Nested secrets derived from sops.secrets.
+      Accessible in NixOS modules as config.secrets.<path>.
+    '';
+    default = {};
   };
 
   config = {
-    secrets = foldToNested allPairs;
+    secrets = lib.foldl' lib.recursiveUpdate {} allSecrets;
 
     home-manager.sharedModules = [
       {
         options.secrets = lib.mkOption {
           type = lib.types.attrs;
           description = ''
-            						Nested secrets derived from sops.secrets.
-            						Accessible in Home-Manager modules as config.secrets.<path>.
-            					'';
-          default = { };
+            Nested secrets derived from sops.secrets.
+            Accessible in Home-Manager modules as config.secrets.<path>.
+          '';
+          default = {};
         };
         config.secrets = config.secrets;
       }

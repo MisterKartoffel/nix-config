@@ -2,24 +2,24 @@
   inputs,
   pkgs,
   ...
-}:
-let
+}: let
   wallpaper = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/paint.jpg";
     hash = "sha256-9/4PtVNTvT+qILYcp+5Dir7VWXox2zbp0DuXkTv/ecU=";
   };
-in
-{
-  imports = [ inputs.stylix.homeModules.stylix ];
-  home.packages = with pkgs; [ swaybg ];
+in {
+  imports = [inputs.stylix.homeModules.stylix];
+  home.packages = with pkgs; [swaybg];
+
+  fonts.fontconfig.enable = true;
 
   systemd.user.services.swaybg = {
     Unit = {
       Description = "Swaybg background image service";
       Documentation = "man:swaybg(1)";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-      Requisite = [ "graphical-session.target" ];
+      PartOf = ["graphical-session.target"];
+      After = ["graphical-session.target"];
+      Requisite = ["graphical-session.target"];
     };
 
     Service = {
@@ -28,7 +28,7 @@ in
       ExecStart = "${pkgs.swaybg}/bin/swaybg -i ${wallpaper}";
     };
 
-    Install.WantedBy = [ "graphical-session.target" ];
+    Install.WantedBy = ["graphical-session.target"];
   };
 
   stylix = {
@@ -36,7 +36,7 @@ in
 
     targets = {
       nvf.enable = false;
-      zen-browser.profileNames = [ "Profile0" ];
+      zen-browser.profileNames = ["Profile0"];
     };
 
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
@@ -49,8 +49,8 @@ in
 
     fonts = {
       monospace = {
-        package = pkgs.commit-mono;
-        name = "Commit Mono";
+        package = pkgs.nerd-fonts.commit-mono;
+        name = "Commit Mono Nerd Font";
       };
     };
   };

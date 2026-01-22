@@ -20,7 +20,8 @@
 ## TODO
 - Install and configure:
   - [just](https://github.com/casey/just).
-  - [NeoMutt](https://github.com/neomutt/neomutt) (lord help me).
+  - [Vesktop](https://github.com/Vencord/Vesktop).
+  - [Newsboat](https://github.com/newsboat/newsboat).
 - Configure dunst to not be an ugly mess.
 - Look into moving sops and age out of environment.systemPackages and into nix-secrets devShell.
 

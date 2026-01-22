@@ -1,12 +1,11 @@
-{ pkgs, ... }:
-let
-  yamlFormat = pkgs.formats.yaml { };
-in
-{
+{pkgs, ...}: let
+  yamlFormat = pkgs.formats.yaml {};
+in {
   home.packages = with pkgs; [
     gnome-keyring
     gcr
   ];
+
   services.gnome-keyring.enable = true;
 
   xdg.configFile."oama/config.yaml".source = yamlFormat.generate "config.yaml" {

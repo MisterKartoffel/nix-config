@@ -1,29 +1,31 @@
-{ config, ... }:
-let
-  inherit (config.secrets) name email;
-in
 {
-  accounts.email.accounts = {
-    ${email.hotmail.email} = {
-      primary = true;
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  inherit (config.secrets) name;
+  inherit (config.secrets.email.hotmail) email;
+in {
+  accounts.email = {
+    maildirBasePath = "${config.home.homeDirectory}/Mail";
 
-      address = email.hotmail.email;
-      userName = email.hotmail.email;
-      realName = name;
+    accounts = {
+      ${email} = {
+        primary = true;
 
-      imap = {
-        authentication = "xoauth2";
-        host = "outlook.office365.com";
-        port = 993;
-        tls.enable = true;
-      };
+        address = email;
+        userName = email;
+        realName = name;
 
-      smtp = {
-        authentication = "xoauth2";
-        host = "smtp-mail.office365.com";
-        port = 587;
-        tls.enable = true;
-        tls.useStartTls = true;
+        maildir.path = "Hotmail";
+        folders.trash = "Deleted";
+
+        flavor = "outlook.office365.com";
+        imap.authentication = "xoauth2";
+        smtp.authentication = "xoauth2";
+        smtp.host = lib.mkForce "smtp-mail.office365.com";
+        passwordCommand = "${pkgs.oama}/bin/oama access ${email}";
       };
     };
   };

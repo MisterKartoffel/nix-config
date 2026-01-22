@@ -1,10 +1,9 @@
-{ lib, ... }:
-{
+{lib, ...}: {
   programs.tofi = {
     enable = true;
 
     settings = {
-      font = "Commit Mono";
+      font = "Commit Mono Nerd Font";
       font-size = lib.mkForce "24";
 
       num-results = 5;

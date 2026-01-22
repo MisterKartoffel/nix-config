@@ -1,17 +1,15 @@
 let
   languageSettings = {
     enable = true;
-    extraDiagnostics.enable = true;
-    format.enable = true;
-    lsp.enable = true;
-    treesitter.enable = true;
   };
 in
 {
   programs.nvf.settings.vim = {
     lsp = {
       enable = true;
+      formatOnSave = true;
       lspconfig.enable = true;
+
       mappings = {
         listImplementations = "gri";
         listReferences = "grr";
@@ -22,12 +20,29 @@ in
         codeAction = "gra";
         hover = "K";
       };
+
+      servers = {
+        "*" = {
+          capabilities = {
+            textDocument = {
+              semanticTokens.multilineTokenSupport = true;
+              completion.completionItem.snippetSupport = true;
+            };
+
+            workspace.didChangeWatchedFiles.dynamicRegistration = true;
+          };
+        };
+      };
     };
 
     languages = {
-      bash = languageSettings;
-      lua = languageSettings;
-      nix = languageSettings;
+      enableExtraDiagnostics = true;
+      enableFormat = true;
+      enableTreesitter = true;
+
+      bash.enable = true;
+      lua.enable = true;
+      nix.enable = true;
     };
   };
 }

@@ -7,6 +7,7 @@
 }:
 let
   inherit (config.hostSpec) hostname userList;
+  defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -19,7 +20,7 @@ in
       generateKey = true;
     };
 
-    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
+    inherit defaultSopsFile;
     validateSopsFiles = false;
 
     secrets =

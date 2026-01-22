@@ -5,7 +5,6 @@
     clearDefaultKeybinds = true;
 
     settings = {
-      font-family = "Commit Mono";
       font-size = 16;
 
       window-decoration = "none";
