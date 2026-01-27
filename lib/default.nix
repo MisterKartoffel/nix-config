@@ -14,8 +14,8 @@
         description = config.secrets.name;
         hashedPasswordFile = config.secrets.${user.name}.password.path;
 
-        openssh.authorizedKeys.keyFiles = map (name: ../home/${user.name}/keys/${name}) (
-          builtins.attrNames (builtins.readDir ../home/${user.name}/keys)
+        openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (key: _: ../home/${user.name}/keys/${key}) (
+          builtins.readDir ../home/${user.name}/keys
         );
 
         isNormalUser = true;
@@ -30,7 +30,7 @@
     {
       inherit (user) name;
       value = {
-        imports = [ user.homeModule ];
+        imports = [ ../home/${user.name} ];
         home = {
           username = user.name;
           homeDirectory = "/home/${user.name}";

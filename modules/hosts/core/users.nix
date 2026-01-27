@@ -11,18 +11,16 @@ let
 in
 {
   users = {
-    users = lib.listToAttrs (
-      map (
-        user:
-        makeSystemUser {
-          inherit
-            config
-            pkgs
-            user
-            ;
-        }
-      ) userList
-    );
+    users = lib.mapAttrs (
+      user:
+      makeSystemUser {
+        inherit
+          config
+          pkgs
+          user
+          ;
+      }
+    ) userList;
     mutableUsers = false;
   };
 

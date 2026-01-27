@@ -1,65 +1,47 @@
 {
   description = "Kartoffel tries NixOS 2 - Declarative Boogaloo";
 
-  outputs = {
-    nixpkgs,
-    home-manager,
-    ...
-  } @ inputs: let
-    hostList = builtins.attrNames (builtins.readDir ./hosts);
-    overlays = import ./overlays;
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      hostList = builtins.attrNames (builtins.readDir ./hosts);
+      overlays = import ./overlays;
 
-    pkgsFor = system: import nixpkgs {inherit system overlays;};
+      makeHost =
+        hostname:
+        let
+          hostSpec = import ./hosts/${hostname};
+          pkgs = import nixpkgs {
+            inherit (hostSpec) system;
+            inherit overlays;
+          };
 
-    formatterFor = system: (pkgsFor system).nixfmt-tree;
+          lib = pkgs.lib.extend (
+            _: _: {
+              custom = import ./lib { inherit (pkgs) lib; };
+            }
+          );
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit (hostSpec) system;
+          inherit pkgs lib;
 
-    makeHost = hostname: let
-      inherit (import ./hosts/${hostname}/hostspec.nix) hostSpec;
-      pkgs = pkgsFor hostSpec.system;
+          modules = [
+            ./modules/flake
+            home-manager.nixosModules.home-manager
+          ]
+          ++ hostSpec.modules;
 
-      lib = pkgs.lib.extend (
-        _: _: {
-          custom = import ./lib {inherit (pkgs) lib;};
-        }
-      );
+          specialArgs = { inherit inputs hostSpec; };
+        };
     in
-      nixpkgs.lib.nixosSystem {
-        inherit (hostSpec) system;
-        inherit pkgs lib;
-
-        modules = [
-          ./modules/flake
-          home-manager.nixosModules.home-manager
-          ./hosts/${hostname}
-        ];
-
-        specialArgs = {inherit inputs;};
-      };
-
-    makeDevShell = hostname: let
-      inherit (import ./hosts/${hostname}/hostspec.nix) hostSpec;
-      pkgs = pkgsFor hostSpec.system;
-    in {
-      ${hostSpec.system}.${hostname} = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          just
-          nh
-        ];
-      };
+    {
+      nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
     };
-
-    systems =
-      builtins.map (
-        hostname: (import ./hosts/${hostname}/hostspec.nix).hostSpec.system
-      )
-      hostList;
-
-    nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
-    devShells = nixpkgs.lib.foldl' nixpkgs.lib.recursiveUpdate {} (map makeDevShell hostList);
-    formatter = nixpkgs.lib.genAttrs systems formatterFor;
-  in {
-    inherit nixosConfigurations devShells formatter;
-  };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -77,7 +59,7 @@
 
     nix-secrets = {
       url = "git+ssh://git@github.com/misterkartoffel/nix-secrets.git?ref=main&shallow=1";
-      inputs = {};
+      inputs = { };
     };
 
     stylix = {

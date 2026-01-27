@@ -8,6 +8,26 @@
 let
   inherit (config.hostSpec) hostname userList;
   defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
+
+  userSecrets = lib.mkMerge (
+    map (user: {
+      "${user.name}/password".neededForUsers = true;
+      "${user.name}/age_key" = {
+        owner = user.name;
+        group = "users";
+        path = "/home/${user.name}/.config/sops/age/keys.txt";
+      };
+    }) userList
+  );
+
+  hostSecrets = {
+  }
+  // lib.optionalAttrs config.networking.useNetworkd {
+    "wireless" = {
+      owner = "wpa_supplicant";
+      group = "wpa_supplicant";
+    };
+  };
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -23,31 +43,9 @@ in
     inherit defaultSopsFile;
     validateSopsFiles = false;
 
-    secrets =
-      let
-        userSecrets = lib.mkMerge (
-          map (user: {
-            "${user.name}/password".neededForUsers = true;
-            "${user.name}/age_key" = {
-              owner = user.name;
-              group = "users";
-              path = "/home/${user.name}/.config/sops/age/keys.txt";
-            };
-          }) userList
-        );
-
-        hostSecrets = {
-        }
-        // lib.optionalAttrs config.networking.useNetworkd {
-          "wireless" = {
-            owner = "wpa_supplicant";
-            group = "wpa_supplicant";
-          };
-        };
-      in
-      lib.mkMerge [
-        userSecrets
-        hostSecrets
-      ];
+    secrets = lib.mkMerge [
+      userSecrets
+      hostSecrets
+    ];
   };
 }

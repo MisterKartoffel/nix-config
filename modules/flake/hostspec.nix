@@ -29,6 +29,12 @@ in
       default = null;
     };
 
+    modules = mkOption {
+      type = listOf path;
+      description = "List of NixOS module files for this host";
+      default = [ ];
+    };
+
     userList = mkOption {
       type = listOf (submodule {
         options = {
@@ -41,12 +47,6 @@ in
           shell = mkOption {
             type = nullOr str;
             description = "Login shell";
-            default = null;
-          };
-
-          homeModule = mkOption {
-            type = nullOr path;
-            description = "Entrypoint module for home-manager configuration";
             default = null;
           };
 

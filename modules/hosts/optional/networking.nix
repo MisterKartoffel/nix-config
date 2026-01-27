@@ -24,7 +24,7 @@ let
       if interfaceName == bondName then
         {
           BindCarrier = lib.concatStringsSep " " (
-            config.networking.ifaceBond.boundEthernet ++ config.networking.ifaceBond.boundWireless
+            config.networking.bond.boundEthernet ++ config.networking.bond.boundWireless
           );
           DHCP = "yes";
         }
@@ -36,7 +36,7 @@ let
 in
 {
   options = {
-    networking.ifaceBond = {
+    networking.bond = {
       enable = lib.mkEnableOption "Enable interface bonding";
 
       bondName = lib.mkOption {
@@ -61,8 +61,8 @@ in
 
   config =
     let
-      inherit (config.networking) ifaceBond useNetworkd;
-      inherit (ifaceBond) bondName boundEthernet boundWireless;
+      inherit (config.networking) bond useNetworkd;
+      inherit (bond) bondName boundEthernet boundWireless;
       allIfaces = boundEthernet ++ boundWireless;
     in
     {

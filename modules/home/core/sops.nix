@@ -22,7 +22,7 @@ in
     validateSopsFiles = false;
 
     secrets = {
-      "mimikyu/ssh_key" = {
+      "${username}/ssh_key" = {
         path = "${homeDirectory}/.ssh/id_ed25519";
         key = "ssh_key";
       };

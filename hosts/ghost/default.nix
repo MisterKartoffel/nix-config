@@ -1,36 +1,23 @@
-{ lib, ... }:
 {
-  imports =
-    map lib.custom.relativeToRoot (
-      [
-        "modules/hosts/core"
-      ]
-      ++ map (file: "modules/hosts/optional/${file}") [
-        "audio.nix"
-        "networking.nix"
-      ]
-    )
-    ++ lib.custom.importSelf ./.;
+  hostname = "ghost";
+  system = "x86_64-linux";
+  stateVersion = "25.11";
 
-  networking = {
-    useNetworkd = true;
-    wireless = {
-      enable = true;
+  userList = [
+    {
+      name = "mimikyu";
+      shell = "zsh";
+      extraGroups = [
+        "wheel"
+        "video"
+      ];
+    }
+  ];
 
-      networks = {
-        "home" = {
-          ssid = "JOSÉ LUIS OI FIBRA";
-          pskRaw = "ext:home";
-        };
-      };
-    };
-
-    ifaceBond = {
-      enable = true;
-
-      bondName = "bond0";
-      boundEthernet = [ "enp7s0" ];
-      boundWireless = [ "wlp9s0" ];
-    };
-  };
+  modules = [
+    ./configuration.nix
+    ./filesystems.nix
+    ./hardware.nix
+    ./packages.nix
+  ];
 }
