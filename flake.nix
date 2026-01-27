@@ -11,36 +11,59 @@
       hostList = builtins.attrNames (builtins.readDir ./hosts);
       overlays = import ./overlays;
 
-      makeHost =
-        hostname:
+      makeEnv =
+        hostSpec:
         let
-          hostSpec = import ./hosts/${hostname};
           pkgs = import nixpkgs {
             inherit (hostSpec) system;
             inherit overlays;
           };
-
           lib = pkgs.lib.extend (
             _: _: {
               custom = import ./lib { inherit (pkgs) lib; };
             }
           );
         in
+        {
+          inherit pkgs lib;
+        };
+
+      makeHost =
+        hostname:
+        let
+          hostSpec = import ./hosts/${hostname};
+          env = makeEnv hostSpec;
+        in
         nixpkgs.lib.nixosSystem {
           inherit (hostSpec) system;
-          inherit pkgs lib;
-
-          modules = [
-            ./modules/flake
-            home-manager.nixosModules.home-manager
-          ]
-          ++ hostSpec.modules;
-
+          inherit (env) pkgs lib;
+          modules = [ ./modules/flake ] ++ hostSpec.modules;
           specialArgs = { inherit inputs hostSpec; };
         };
+
+      makeHome =
+        hostname:
+        let
+          hostSpec = import ./hosts/${hostname};
+          env = makeEnv hostSpec;
+        in
+        nixpkgs.lib.listToAttrs (
+          map (user: {
+            name = "${user.name}@${hostname}";
+            value = home-manager.lib.homeManagerConfiguration {
+              inherit (env) pkgs lib;
+              modules = [
+                ./modules/flake/secrets.nix
+                ./home/${user.name}
+              ];
+              extraSpecialArgs = { inherit inputs hostSpec; };
+            };
+          }) hostSpec.userList
+        );
     in
     {
       nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
+      homeConfigurations = nixpkgs.lib.mergeAttrsList (map makeHome hostList);
     };
 
   inputs = {

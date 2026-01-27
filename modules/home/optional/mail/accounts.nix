@@ -3,10 +3,12 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (config.secrets) name;
   inherit (config.secrets.email.hotmail) email;
-in {
+in
+{
   accounts.email = {
     maildirBasePath = "${config.home.homeDirectory}/Mail";
 

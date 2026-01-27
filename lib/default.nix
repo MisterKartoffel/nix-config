@@ -22,23 +22,6 @@
       };
     };
 
-  makeHomeUser =
-    {
-      config,
-      user,
-    }:
-    {
-      inherit (user) name;
-      value = {
-        imports = [ ../home/${user.name} ];
-        home = {
-          username = user.name;
-          homeDirectory = "/home/${user.name}";
-          inherit (config.hostSpec) stateVersion;
-        };
-      };
-    };
-
   relativeToRoot = lib.path.append ../.;
 
   importSelf =

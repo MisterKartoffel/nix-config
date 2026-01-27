@@ -63,7 +63,7 @@ in
     let
       inherit (config.networking) bond useNetworkd;
       inherit (bond) bondName boundEthernet boundWireless;
-      allIfaces = boundEthernet ++ boundWireless;
+      boundIfaces = boundEthernet ++ boundWireless;
     in
     {
       systemd.network = lib.mkIf useNetworkd {
@@ -74,7 +74,7 @@ in
         };
 
         networks =
-          lib.foldl' (acc: iface: acc // { "30-${iface}" = makeNetwork iface bondName; }) { } allIfaces
+          lib.foldl' (acc: iface: acc // { "30-${iface}" = makeNetwork iface bondName; }) { } boundIfaces
           // {
             "40-${bondName}" = makeNetwork bondName bondName;
           };
