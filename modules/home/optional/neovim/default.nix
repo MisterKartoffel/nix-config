@@ -6,7 +6,6 @@
 {
   imports = [
     inputs.nvf.homeManagerModules.default
-    ./plugins
   ]
   ++ lib.custom.importSelf ./.;
 

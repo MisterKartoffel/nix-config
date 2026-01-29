@@ -5,8 +5,8 @@
   ...
 }:
 let
-  inherit (config.secrets) name;
-  inherit (config.secrets.email.hotmail) email;
+  inherit (config.modules.secrets) name;
+  inherit (config.modules.secrets.email.hotmail) email;
 in
 {
   accounts.email = {

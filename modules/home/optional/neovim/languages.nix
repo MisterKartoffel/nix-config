@@ -39,6 +39,7 @@
       lua.enable = true;
       nix = {
         enable = true;
+        # lsp.servers = [ "nixd" ];
         format.type = [ "nixfmt" ];
       };
     };

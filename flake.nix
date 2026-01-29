@@ -12,11 +12,10 @@
       overlays = import ./overlays;
 
       makeEnv =
-        hostSpec:
+        system:
         let
           pkgs = import nixpkgs {
-            inherit (hostSpec) system;
-            inherit overlays;
+            inherit system overlays;
           };
           lib = pkgs.lib.extend (
             _: _: {
@@ -31,21 +30,25 @@
       makeHost =
         hostname:
         let
-          hostSpec = import ./hosts/${hostname};
-          env = makeEnv hostSpec;
+          host = import ./hosts/${hostname};
+          env = makeEnv host.modules.system.architecture;
         in
         nixpkgs.lib.nixosSystem {
-          inherit (hostSpec) system;
           inherit (env) pkgs lib;
-          modules = [ ./modules/flake ] ++ hostSpec.modules;
-          specialArgs = { inherit inputs hostSpec; };
+          system = host.modules.system.architecture;
+          modules = [
+            ./modules/flake
+            ./hosts/${hostname}
+          ]
+          ++ host.modules.system.submodules;
+          specialArgs = { inherit inputs; };
         };
 
       makeHome =
         hostname:
         let
-          hostSpec = import ./hosts/${hostname};
-          env = makeEnv hostSpec;
+          host = import ./hosts/${hostname};
+          env = makeEnv host.modules.system.architecture;
         in
         nixpkgs.lib.listToAttrs (
           map (user: {
@@ -53,12 +56,13 @@
             value = home-manager.lib.homeManagerConfiguration {
               inherit (env) pkgs lib;
               modules = [
-                ./modules/flake/secrets.nix
+                ./modules/flake
+                ./hosts/${hostname}
                 ./home/${user.name}
               ];
-              extraSpecialArgs = { inherit inputs hostSpec; };
+              extraSpecialArgs = { inherit inputs; };
             };
-          }) hostSpec.userList
+          }) host.modules.system.users
         );
     in
     {

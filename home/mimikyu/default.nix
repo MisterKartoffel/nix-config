@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  hostSpec,
   ...
 }:
 let
@@ -23,7 +22,7 @@ in
   home = {
     username = "mimikyu";
     homeDirectory = "/home/mimikyu";
-    inherit (hostSpec) stateVersion;
+    inherit (config.modules.system) stateVersion;
 
     sessionVariables = {
       EDITOR = if nvf.enable then "nvim" else "nano";

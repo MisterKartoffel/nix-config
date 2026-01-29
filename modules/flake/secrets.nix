@@ -18,14 +18,5 @@ let
   secrets = lib.recursiveUpdate nixosSecrets flakeSecrets;
 in
 {
-  options.secrets = lib.mkOption {
-    type = lib.types.attrs;
-    description = ''
-      Nested secrets derived from sops.secrets.
-      Accessible in modules as config.secrets.<path>.
-    '';
-    default = { };
-  };
-
-  config = { inherit secrets; };
+  config.modules = { inherit secrets; };
 }

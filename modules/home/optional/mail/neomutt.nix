@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  inherit (config.secrets.email.hotmail) email;
+  inherit (config.modules.secrets.email.hotmail) email;
 in
 {
   accounts.email.accounts.${email}.neomutt = {

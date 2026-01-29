@@ -11,7 +11,7 @@
   };
 
   services.getty = {
-    autologinUser = (builtins.head config.hostSpec.userList).name;
+    autologinUser = (builtins.head config.modules.system.users).name;
     autologinOnce = true;
   };
 }

@@ -49,7 +49,7 @@
     # Snacks pickers
     {
       mode = "n";
-      key = "<leader>fs";
+      key = "<leader>ff";
       action = "function() Snacks.picker.smart() end";
       desc = "Find files among open buffers, recent files and files in cwd";
       lua = true;

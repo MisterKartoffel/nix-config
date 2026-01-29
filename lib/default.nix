@@ -1,36 +1,6 @@
-{ lib, ... }:
-{
-  makeSystemUser =
-    {
-      config,
-      pkgs,
-      user,
-    }:
-    {
-      inherit (user) name;
-      value = {
-        inherit (user) extraGroups;
-        shell = pkgs.${user.shell};
-        description = config.secrets.name;
-        hashedPasswordFile = config.secrets.${user.name}.password.path;
-
-        openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (key: _: ../home/${user.name}/keys/${key}) (
-          builtins.readDir ../home/${user.name}/keys
-        );
-
-        isNormalUser = true;
-      };
-    };
-
-  relativeToRoot = lib.path.append ../.;
-
-  importSelf =
-    dir:
-    let
-      entries = builtins.readDir dir;
-      contents = lib.filter (name: lib.hasSuffix ".nix" name && name != "default.nix") (
-        lib.attrNames entries
-      );
-    in
-    map (name: dir + "/${name}") contents;
-}
+{ lib }:
+let
+  files = builtins.attrNames (builtins.removeAttrs (builtins.readDir ./.) [ "default.nix" ]);
+  imported = map (name: import (./. + "/${name}") { inherit lib; }) files;
+in
+lib.foldl' lib.mergeAttrs { } imported

@@ -6,7 +6,7 @@
 }:
 let
   inherit (lib.custom) makeSystemUser;
-  inherit (config.hostSpec) userList;
+  inherit (config.modules.system) users;
 in
 {
   users = {
@@ -20,7 +20,7 @@ in
             user
             ;
         }
-      ) userList
+      ) users
     );
     mutableUsers = false;
   };
