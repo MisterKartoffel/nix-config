@@ -1,24 +1,25 @@
 {
   inputs,
   config,
+  lib,
   ...
 }:
 let
   inherit (config.home) username homeDirectory;
-  defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
-  sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+  inherit (lib) mkIf;
+  cfg = config.modules.services.sops;
 in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-  sops = {
+  sops = mkIf cfg.enable {
     age = {
       sshKeyPaths = [ "${homeDirectory}/.ssh/id_ed25519" ];
       keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
       generateKey = true;
     };
 
-    inherit defaultSopsFile;
+    defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
     validateSopsFiles = false;
 
     secrets = {
@@ -26,8 +27,12 @@ in
         path = "${homeDirectory}/.ssh/id_ed25519";
         key = "ssh_key";
       };
-      "email/hotmail/client_id" = { inherit sopsFile; };
-      "email/hotmail/refresh_token" = { inherit sopsFile; };
+      "email/hotmail/client_id" = {
+        sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+      };
+      "email/hotmail/refresh_token" = {
+        sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+      };
     };
   };
 }

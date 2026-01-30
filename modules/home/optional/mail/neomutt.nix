@@ -1,6 +1,8 @@
-{config, ...}: let
-  inherit (config.secrets.email.hotmail) email;
-in {
+{ config, ... }:
+let
+  inherit (config.modules.secrets.email.hotmail) email;
+in
+{
   accounts.email.accounts.${email}.neomutt = {
     enable = true;
 
@@ -41,57 +43,80 @@ in {
 
     binds = [
       {
-        map = ["attach" "browser" "index" "pager"];
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
+        ];
         key = "g";
         action = "noop";
       }
       {
-        map = ["attach" "browser" "index"];
+        map = [
+          "attach"
+          "browser"
+          "index"
+        ];
         key = "gg";
         action = "first-entry";
       }
       {
-        map = ["attach" "browser" "index"];
+        map = [
+          "attach"
+          "browser"
+          "index"
+        ];
         key = "G";
         action = "last-entry";
       }
       {
-        map = ["attach" "browser" "index" "pager"];
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
+        ];
         key = "\\Cu";
         action = "half-up";
       }
       {
-        map = ["attach" "browser" "index" "pager"];
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
+        ];
         key = "\\Cd";
         action = "half-down";
       }
       {
-        map = ["pager"];
+        map = [ "pager" ];
         key = "h";
         action = "exit";
       }
       {
-        map = ["index"];
+        map = [ "index" ];
         key = "l";
         action = "display-message";
       }
       {
-        map = ["pager"];
+        map = [ "pager" ];
         key = "gg";
         action = "top";
       }
       {
-        map = ["pager"];
+        map = [ "pager" ];
         key = "G";
         action = "bottom";
       }
       {
-        map = ["pager"];
+        map = [ "pager" ];
         key = "k";
         action = "previous-line";
       }
       {
-        map = ["pager"];
+        map = [ "pager" ];
         key = "j";
         action = "next-line";
       }
@@ -99,7 +124,7 @@ in {
 
     macros = [
       {
-        map = ["index"];
+        map = [ "index" ];
         key = "c";
         action = "<change-folder>?";
       }

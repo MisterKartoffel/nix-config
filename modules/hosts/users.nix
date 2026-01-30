@@ -7,20 +7,22 @@
 }:
 let
   inherit (lib.custom) makeSystemUser makeHomeUser;
-  inherit (config.hostSpec) userList;
+  inherit (config.modules.system) users;
 in
 {
   users = {
-    users = lib.mapAttrs (
-      user:
-      makeSystemUser {
-        inherit
-          config
-          pkgs
-          user
-          ;
-      }
-    ) userList;
+    users = lib.listToAttrs (
+      map (
+        user:
+        makeSystemUser {
+          inherit
+            config
+            pkgs
+            user
+            ;
+        }
+      ) users
+    );
     mutableUsers = false;
   };
 
@@ -34,8 +36,8 @@ in
             user
             ;
         }
-      ) userList
+      ) users
     );
-    extraSpecialArgs = { inherit inputs pkgs; };
+    extraSpecialArgs = { inherit inputs; };
   };
 }

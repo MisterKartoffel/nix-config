@@ -11,32 +11,38 @@
       hostList = builtins.attrNames (builtins.readDir ./hosts);
       overlays = import ./overlays;
 
-      makeHost =
-        hostname:
+      makeEnv =
+        system:
         let
-          hostSpec = import ./hosts/${hostname};
           pkgs = import nixpkgs {
-            inherit (hostSpec) system;
-            inherit overlays;
+            inherit system overlays;
           };
-
           lib = pkgs.lib.extend (
             _: _: {
               custom = import ./lib { inherit (pkgs) lib; };
             }
           );
         in
-        nixpkgs.lib.nixosSystem {
-          inherit (hostSpec) system;
+        {
           inherit pkgs lib;
+        };
 
+      makeHost =
+        hostname:
+        let
+          host = import ./hosts/${hostname};
+          env = makeEnv host.modules.system.architecture;
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit (env) pkgs lib;
+          system = host.modules.system.architecture;
           modules = [
             ./modules/flake
             home-manager.nixosModules.home-manager
+            ./hosts/${hostname}
           ]
-          ++ hostSpec.modules;
-
-          specialArgs = { inherit inputs hostSpec; };
+          ++ host.modules.system.submodules;
+          specialArgs = { inherit inputs; };
         };
     in
     {

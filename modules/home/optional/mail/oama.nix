@@ -1,6 +1,8 @@
-{pkgs, ...}: let
-  yamlFormat = pkgs.formats.yaml {};
-in {
+{ pkgs, ... }:
+let
+  yamlFormat = pkgs.formats.yaml { };
+in
+{
   home.packages = with pkgs; [
     gnome-keyring
     gcr

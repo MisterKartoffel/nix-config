@@ -7,12 +7,30 @@
 }:
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  environment.systemPackages = with pkgs; [
+    exfatprogs
+    mesa
+  ];
 
-  nixpkgs.hostPlatform = config.hostSpec.system;
-  system.stateVersion = config.hostSpec.stateVersion;
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/4c5031cd-4a94-4f3c-926d-035a96d1e55a";
+    fsType = "ext4";
+  };
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/935C-0287";
+    fsType = "vfat";
+    options = [
+      "fmask=0077"
+      "dmask=0077"
+    ];
+  };
+
+  swapDevices = [ ];
+
+  nixpkgs.hostPlatform = config.modules.system.architecture;
+  system.stateVersion = config.modules.system.stateVersion;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  environment.systemPackages = with pkgs; [ mesa ];
 
   hardware = {
     graphics = {

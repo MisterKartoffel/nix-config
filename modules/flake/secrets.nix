@@ -14,10 +14,11 @@ let
 
   nixosSecrets = nestAttrset (config.sops.secrets or { });
 
-  homeManagerSecrets = lib.foldlAttrs (
-    acc: _: user:
-    lib.recursiveUpdate acc (nestAttrset (user.sops.secrets or { }))
-  ) { } (config.home-manager.users or { });
+  homeManagerSecrets = lib.mkMerge (
+    map (user: nestAttrset (user.sops.secrets or { })) (
+      lib.attrValues (config.home-manager.users or { })
+    )
+  );
 
   flakeSecrets = inputs.nix-secrets or { };
 
@@ -28,29 +29,12 @@ let
   ];
 in
 {
-  options.secrets = lib.mkOption {
-    type = lib.types.attrs;
-    description = ''
-      Nested secrets derived from sops.secrets.
-      Accessible in NixOS modules as config.secrets.<path>.
-    '';
-    default = { };
-  };
-
   config = {
-    secrets = lib.foldl' lib.recursiveUpdate { } allSecrets;
+    modules.secrets = lib.foldl' lib.recursiveUpdate { } allSecrets;
 
     home-manager.sharedModules = [
       {
-        options.secrets = lib.mkOption {
-          type = lib.types.attrs;
-          description = ''
-            Nested secrets derived from sops.secrets.
-            Accessible in Home-Manager modules as config.secrets.<path>.
-          '';
-          default = { };
-        };
-        config.secrets = config.secrets;
+        config.modules.secrets = config.modules.secrets;
       }
     ];
   };
