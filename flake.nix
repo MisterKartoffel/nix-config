@@ -37,8 +37,8 @@
           inherit (env) pkgs lib;
           system = host.modules.system.architecture;
           modules = [
-            ./modules/flake
             home-manager.nixosModules.home-manager
+            ./modules
             ./hosts/${hostname}
           ]
           ++ host.modules.system.submodules;

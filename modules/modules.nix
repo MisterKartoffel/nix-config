@@ -1,4 +1,8 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   localeVariables = [
     "LC_ADDRESS"
@@ -45,11 +49,15 @@ let
 
   networkdModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable networking configuration through systemd-networkd";
+      enable = lib.mkOption {
+        description = "Enable networking configuration through systemd-networkd";
+        type = lib.types.bool;
+        default = false;
+      };
 
       interfaces = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
         description = "Interfaces to be managed by systemd-networkd";
+        type = lib.types.listOf lib.types.str;
         default = [ ];
       };
     };
@@ -57,11 +65,15 @@ let
 
   wirelessModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable wireless support";
+      enable = lib.mkOption {
+        description = "Enable wireless support";
+        type = lib.types.bool;
+        default = false;
+      };
 
       networks = lib.mkOption {
-        type = lib.types.attrs;
         description = "Wireless network configurations";
+        type = lib.types.attrs;
         default = { };
       };
     };
@@ -69,17 +81,21 @@ let
 
   bondingModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable interface bonding";
+      enable = lib.mkOption {
+        description = "Enable interface bonding";
+        type = lib.types.bool;
+        default = false;
+      };
 
       bondName = lib.mkOption {
-        type = lib.types.str;
         description = "Name of the bond interface";
+        type = lib.types.str;
         default = "bond0";
       };
 
       boundInterfaces = lib.mkOption {
-        type = lib.types.listOf lib.types.str;
         description = "Interfaces to add to the bond";
+        type = lib.types.listOf lib.types.str;
         default = config.modules.system.networking.networkd.interfaces;
       };
     };
@@ -108,20 +124,20 @@ let
     lib.types.submodule {
       options = {
         name = lib.mkOption {
-          type = lib.types.nullOr lib.types.str;
           description = "Username";
+          type = lib.types.nullOr lib.types.str;
           default = null;
         };
 
         shell = lib.mkOption {
-          type = lib.types.nullOr lib.types.str;
           description = "Default shell";
+          type = lib.types.nullOr lib.types.str;
           default = null;
         };
 
         extraGroups = lib.mkOption {
-          type = lib.types.listOf lib.types.str;
           description = "Groups to add to";
+          type = lib.types.listOf lib.types.str;
           default = [ ];
         };
       };
@@ -131,26 +147,26 @@ let
   systemModule = lib.types.submodule {
     options = {
       hostname = lib.mkOption {
-        type = lib.types.str;
         description = "System hostname";
+        type = lib.types.str;
         default = "localhost";
       };
 
       architecture = lib.mkOption {
-        type = lib.types.str;
         description = "System architecture";
+        type = lib.types.str;
         default = "x86_64-linux";
       };
 
       stateVersion = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
         description = "Originally installed Nixpkgs version";
+        type = lib.types.nullOr lib.types.str;
         default = null;
       };
 
       submodules = lib.mkOption {
-        type = lib.types.listOf lib.types.path;
         description = "List of NixOS modules";
+        type = lib.types.listOf lib.types.path;
         default = [ ];
       };
 
@@ -174,20 +190,32 @@ let
 
   sopsModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable SOPS-Nix integration";
+      enable = lib.mkOption {
+        description = "Enable SOPS-Nix integration";
+        type = lib.types.bool;
+        default = false;
+      };
     };
   };
 
   sshModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable SSH services";
+      enable = lib.mkOption {
+        description = "Enable SSH services";
+        type = lib.types.bool;
+        default = config.modules.sops.enable;
+      };
     };
   };
 
   servicesModule = lib.types.submodule {
     options = {
       audio = {
-        enable = lib.mkEnableOption "Enable PipeWire audio server";
+        enable = lib.mkOption {
+          description = "Enable PipeWire audio server";
+          type = lib.types.bool;
+          default = false;
+        };
       };
 
       sops = lib.mkOption {

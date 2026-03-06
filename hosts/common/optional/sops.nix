@@ -14,7 +14,10 @@ in
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ age ];
+    environment.systemPackages = with pkgs; [
+      age
+      sops
+    ];
 
     sops = {
       age = {

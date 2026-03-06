@@ -6,7 +6,7 @@
       stateVersion = "25.11";
 
       submodules = [
-        ../../modules/hosts
+        ./modules.nix
         ./hardware.nix
         ./packages.nix
       ];

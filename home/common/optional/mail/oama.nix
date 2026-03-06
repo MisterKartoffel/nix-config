@@ -6,6 +6,7 @@ in
   home.packages = with pkgs; [
     gnome-keyring
     gcr
+    libsecret
   ];
 
   services.gnome-keyring.enable = true;

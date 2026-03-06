@@ -1,13 +1,17 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   inherit (config.programs) nvf ghostty zen-browser;
 in
 {
   imports = map lib.custom.relativeToRoot (
     [
-      "modules/home/core"
+      "home/common/core"
     ]
-    ++ (map (file: "modules/home/optional/${file}") [
+    ++ (map (file: "home/common/optional/${file}") [
       "desktop"
       "mail"
       "neovim"

@@ -1,8 +1,3 @@
-let
-  languageSettings = {
-    enable = true;
-  };
-in
 {
   programs.nvf.settings.vim = {
     lsp = {
@@ -42,7 +37,10 @@ in
 
       bash.enable = true;
       lua.enable = true;
-      nix.enable = true;
+      nix = {
+        enable = true;
+        format.type = [ "nixfmt" ];
+      };
     };
   };
 }
