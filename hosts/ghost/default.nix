@@ -3,11 +3,11 @@
     system = {
       hostname = "ghost";
       architecture = "x86_64-linux";
-      stateVersion = "25.11";
 
       submodules = [
+        ./disko.nix
         ./modules.nix
-        ./hardware.nix
+        ./hardware-configuration.nix
         ./packages.nix
       ];
 
@@ -67,4 +67,6 @@
       ssh.enable = true;
     };
   };
+
+  hardware.facter.reportPath = ./facter.json;
 }
