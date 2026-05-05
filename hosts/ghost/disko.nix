@@ -21,18 +21,26 @@
                     content = {
                         type = "btrfs";
                         extraArgs = [ "-f" ];
-                        mountpoint = "/";
-                        mountOptions = [ "noatime" "compress=zstd" "defaults" ];
                         subvolumes = {
-                            "/rootfs".mountpoint = "/rootfs";
-                            "/rootfs/home" = { };
-                            "/nix".mountpoint = "/nix";
+                            "/root" = {
+                              mountpoint = "/";
+                              mountOptions = [ "subvol=root" "noatime" "compress=zstd" "defaults" ];
+                            };
+                            "/home" = {
+                              mountpoint = "/home";
+                              mountOptions = [ "subvol=home" "noatime" "compress=zstd" "defaults" ];
+                            };
+                            "/nix" = {
+                              mountpoint = "/nix";
+                              mountOptions = [ "subvol=nix" "noatime" "compress=zstd" "defaults" ];
+                            };
+                            "/log" = {
+                              mountpoint = "/var/log";
+                              mountOptions = [ "subvol=log" "noatime" "compress=zstd" "defaults" ];
+                            };
                             "/swap" = {
                                 mountpoint = "/.swap";
-                                swap.swapfile = {
-                                    size = "8G";
-                                    path = "swapfile";
-                                };
+                                swap.swapfile.size = "8G";
                             };
                         };
                     };

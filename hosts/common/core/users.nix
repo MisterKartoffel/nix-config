@@ -11,7 +11,7 @@ let
   makeAttrs = f: lib.listToAttrs (map f system.users);
 in
 {
-  users.mutableUsers = false;
+  users.mutableUsers = true;
   users.users = makeAttrs (user: {
     inherit (user) name;
     value = {
@@ -39,7 +39,7 @@ in
       home = {
         username = user.name;
         homeDirectory = "/home/${user.name}";
-        inherit (system) stateVersion;
+        inherit (config.system) stateVersion;
       };
     };
   });

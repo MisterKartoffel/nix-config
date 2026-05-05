@@ -10,4 +10,6 @@
       "sops.nix"
     ]
   );
+
+  hardware.facter.reportPath = ./facter.json;
 }

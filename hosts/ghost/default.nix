@@ -7,7 +7,6 @@
       submodules = [
         ./disko.nix
         ./modules.nix
-        ./hardware-configuration.nix
         ./packages.nix
       ];
 
@@ -67,6 +66,4 @@
       ssh.enable = true;
     };
   };
-
-  hardware.facter.reportPath = ./facter.json;
 }
