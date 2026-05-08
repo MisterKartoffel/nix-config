@@ -9,6 +9,7 @@
 
   programs.zen-browser = {
     enable = true;
+    setAsDefaultBrowser = true;
 
     # See https://mozilla.github.io/policy-templates/
     policies =

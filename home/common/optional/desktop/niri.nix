@@ -107,7 +107,7 @@
     	// General use binds
     		Mod+Shift+Slash  repeat=false { show-hotkey-overlay; }
     		Mod+T            repeat=false { spawn "ghostty" "+new-window"; }
-    		Mod+F            repeat=false { spawn "zen"; }
+    		Mod+F            repeat=false { spawn "zen-beta"; }
     		Mod+Space        repeat=false { spawn "tofi-drun"; }
     		Mod+Shift+Delete repeat=false { quit; }
     		Mod+Q            repeat=false { close-window; }
