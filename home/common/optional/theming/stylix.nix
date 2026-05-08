@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  lib,
   ...
 }:
 let
@@ -27,7 +28,7 @@ in
     Service = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -i ${wallpaper}";
+      ExecStart = "${lib.getExe pkgs.swaybg} -i ${wallpaper}";
     };
 
     Install.WantedBy = [ "graphical-session.target" ];
