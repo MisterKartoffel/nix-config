@@ -1,4 +1,4 @@
 { lib, ... }:
 {
-  imports = lib.custom.importSelf ./.;
+  imports = lib.custom.importPaths [ ./. ];
 }

@@ -12,6 +12,9 @@
 
   imports = [
     inputs.nvf.homeManagerModules.default
+  ]
+  ++ lib.custom.importPaths [
+    ./.
     ./plugins
   ];
 

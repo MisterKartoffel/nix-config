@@ -2,16 +2,14 @@
 {
   relativeToRoot = lib.path.append ../.;
 
-  importSelf =
-    dir:
-    let
-      entries = builtins.readDir dir;
-
-      files = lib.filter (name: lib.hasSuffix ".nix" name && name != "default.nix") (
-        lib.attrNames entries
-      );
-
-      directories = lib.filter (name: entries.${name} == "directory") (lib.attrNames entries);
-    in
-    map (name: dir + "/${name}") (files ++ directories);
+  importPaths =
+    dirs:
+    lib.concatMap (
+      dir:
+      map (name: dir + "/${name}") (
+        lib.filter (name: lib.hasSuffix ".nix" name && name != "default.nix") (
+          lib.attrNames (builtins.readDir dir)
+        )
+      )
+    ) dirs;
 }
