@@ -5,7 +5,7 @@
       setupOpts = {
         watch_for_changes = true;
         win_options = {
-          winbar = "%!v:lua.get_oil_winbarbar()";
+          winbar = "%!v:lua.get_oil_winbar()";
           signcolumn = "yes:2";
         };
       };

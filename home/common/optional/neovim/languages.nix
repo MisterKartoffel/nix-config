@@ -1,5 +1,6 @@
 {
-  programs.nvf.settings.vim.lsp = {
+  programs.nvf.settings.vim = {
+  lsp = {
     enable = true;
     formatOnSave = true;
     lspconfig.enable = true;
@@ -41,4 +42,5 @@
       format.type = [ "nixfmt" ];
     };
   };
+};
 }

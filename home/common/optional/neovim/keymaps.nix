@@ -38,7 +38,7 @@
       silent = true;
     }
   ]
-  ++ lib.mkIf config.programs.nvf.settings.vim.utility.snacks-nvim.enable [
+  ++ lib.optionals (config.programs.nvf.settings.vim.utility.snacks-nvim.enable) [
     # Snacks LSP pickers
     {
       mode = "n";
