@@ -1,9 +1,9 @@
 { config, ... }:
 let
-  inherit (config.modules.secrets.email.hotmail) email;
+  inherit (config.modules.secrets) hotmail;
 in
 {
-  accounts.email.accounts.${email}.neomutt = {
+  accounts.email.accounts.${hotmail.email}.neomutt = {
     enable = true;
 
     mailboxName = "Hotmail/Caixa de Entrada";

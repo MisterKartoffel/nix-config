@@ -4,7 +4,7 @@
   ...
 }:
 let
-  inherit (config.modules.secrets) name email;
+  inherit (config.modules.secrets) name hotmail;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {
@@ -16,7 +16,7 @@ in
     settings = {
       user = {
         inherit name;
-        inherit (email.hotmail) email;
+        inherit (hotmail) email;
         signingKey = "${sshKey}.pub";
       };
 

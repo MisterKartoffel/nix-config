@@ -241,11 +241,5 @@ in
       description = "System-wide service configuration";
       type = servicesModule;
     };
-
-    secrets = lib.mkOption {
-      description = "Nested attribute set of secrets";
-      type = lib.types.attrs;
-      default = { };
-    };
   };
 }

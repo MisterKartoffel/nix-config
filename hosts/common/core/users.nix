@@ -19,8 +19,8 @@ in
 
       inherit (user) extraGroups;
       shell = pkgs.${user.shell};
-      description = secrets.name;
-      hashedPasswordFile = secrets.${user.name}.password.path;
+      description = secrets.home.${user.name}.name;
+      hashedPasswordFile = secrets.host.${user.name}.password.path;
 
       openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (
         key: _: relativeToRoot "home/${user.name}/keys/${key}"

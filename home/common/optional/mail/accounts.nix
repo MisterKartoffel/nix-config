@@ -5,19 +5,19 @@
   ...
 }:
 let
-  inherit (config.modules.secrets) name;
-  inherit (config.modules.secrets.email.hotmail) email;
+  inherit (config.home) homeDirectory;
+  inherit (config.modules.secrets) name hotmail;
 in
 {
   accounts.email = {
-    maildirBasePath = "${config.home.homeDirectory}/Mail";
+    maildirBasePath = "${homeDirectory}/Mail";
 
     accounts = {
-      ${email} = {
+      ${hotmail.email} = {
         primary = true;
 
-        address = email;
-        userName = email;
+        address = hotmail.email;
+        userName = hotmail.email;
         realName = name;
 
         maildir.path = "Hotmail";
@@ -27,7 +27,7 @@ in
         imap.authentication = "xoauth2";
         smtp.authentication = "xoauth2";
         smtp.host = lib.mkForce "smtp-mail.office365.com";
-        passwordCommand = "${pkgs.oama}/bin/oama access ${email}";
+        passwordCommand = "${lib.getExe pkgs.oama} access ${hotmail.email}";
       };
     };
   };
