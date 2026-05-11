@@ -30,12 +30,6 @@ let
 
   systemModule = lib.types.submodule {
     options = {
-      hostname = lib.mkOption {
-        description = "System hostname";
-        type = lib.types.str;
-        default = "localhost";
-      };
-
       architecture = lib.mkOption {
         description = "System architecture";
         type = lib.types.str;

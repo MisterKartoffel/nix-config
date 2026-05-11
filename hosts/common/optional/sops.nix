@@ -7,7 +7,8 @@
 }:
 let
   inherit (lib) mkIf;
-  inherit (config.modules.system) hostname users;
+  inherit (config.networking) hostName;
+  inherit (config.modules.system) users;
   cfg = config.modules.services.sops;
 
   nestAttrset =
@@ -33,7 +34,7 @@ in
         generateKey = true;
       };
 
-      defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostname}.yaml";
+      defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
       validateSopsFiles = false;
 
       secrets =
@@ -62,13 +63,13 @@ in
     modules.secrets = {
       home = inputs.nix-secrets.home or { };
       host = lib.recursiveUpdate (nestAttrset (config.sops.secrets or { })) (
-        inputs.nix-secrets.hosts.${hostname} or { }
+        inputs.nix-secrets.hosts.${hostName} or { }
       );
     };
   };
 
   options.modules.secrets = lib.mkOption {
-    description = "Submodule of inputs.nix-secrets.home, inputs.nix-secrets.hosts.${hostname} and sops-nix secrets";
+    description = "Submodule of inputs.nix-secrets.home, inputs.nix-secrets.hosts.${hostName} and sops-nix secrets";
 
     type = lib.types.submodule {
       options = {

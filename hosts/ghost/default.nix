@@ -3,6 +3,7 @@
   systemd.network.enable = true;
 
   networking = {
+    hostName = "ghost";
     wireless = {
       enable = true;
       secretsFile = "/run/secrets/wireless";
@@ -14,7 +15,6 @@
 
   modules = {
     system = {
-      hostname = "ghost";
       architecture = "x86_64-linux";
 
       submodules = [

@@ -43,7 +43,6 @@ in
   };
 
   networking = {
-    hostName = config.modules.system.hostname;
     firewall.enable = true;
 
     nameservers = [
