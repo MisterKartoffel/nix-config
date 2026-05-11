@@ -4,49 +4,6 @@
   ...
 }:
 let
-  localeVariables = [
-    "LC_ADDRESS"
-    "LC_COLLATE"
-    "LC_CTYPE"
-    "LC_IDENTIFICATION"
-    "LC_MEASUREMENT"
-    "LC_MESSAGES"
-    "LC_MONETARY"
-    "LC_NAME"
-    "LC_NUMERIC"
-    "LC_PAPER"
-    "LC_TELEPHONE"
-    "LC_TIME"
-  ];
-
-  localeStrings = [
-    "C"
-    "en_US.UTF-8"
-    "pt_BR.UTF-8"
-  ];
-
-  localeModule = lib.types.submodule {
-    options = {
-      timezone = lib.mkOption {
-        type = lib.types.str;
-        description = "System timezone";
-        default = "America/Sao_Paulo";
-      };
-
-      language = lib.mkOption {
-        type = lib.types.enum localeStrings;
-        description = "System language";
-        default = "en_US.UTF-8";
-      };
-
-      overrides = lib.mkOption {
-        type = lib.types.attrsOf (lib.types.enum localeStrings);
-        description = "LC_* locale overrides";
-        default = { };
-      };
-    };
-  };
-
   usersModule = lib.types.listOf (
     lib.types.submodule {
       options = {
@@ -95,11 +52,6 @@ let
         description = "List of NixOS modules";
         type = lib.types.listOf lib.types.path;
         default = [ ];
-      };
-
-      locale = lib.mkOption {
-        description = "System locale settings";
-        type = localeModule;
       };
 
       users = lib.mkOption {
