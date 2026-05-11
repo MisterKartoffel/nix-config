@@ -31,11 +31,7 @@ in
   home-manager.users = makeAttrs (user: {
     inherit (user) name;
     value = {
-      imports = map relativeToRoot [
-        "modules/modules.nix"
-        "hosts/${system.hostname}"
-        "home/${user.name}"
-      ];
+      imports = map relativeToRoot [ "home/${user.name}" ];
       home = {
         username = user.name;
         homeDirectory = "/home/${user.name}";

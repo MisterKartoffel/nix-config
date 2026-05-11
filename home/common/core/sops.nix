@@ -1,4 +1,5 @@
 {
+  osConfig,
   inputs,
   config,
   lib,
@@ -7,7 +8,7 @@
 let
   inherit (config.home) username homeDirectory;
   inherit (lib) mkIf;
-  cfg = config.modules.services.sops;
+  cfg = osConfig.modules.services.sops;
 
   nestAttrset =
     secrets:

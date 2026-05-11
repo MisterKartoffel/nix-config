@@ -1,7 +1,11 @@
-{ config, lib, ... }:
+{
+  osConfig,
+  lib,
+  ...
+}:
 let
   inherit (lib) mkIf;
-  cfg = config.modules.services.ssh;
+  cfg = osConfig.modules.services.ssh;
 in
 {
   config = mkIf cfg.enable {
