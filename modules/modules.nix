@@ -42,12 +42,6 @@ let
         default = "x86_64-linux";
       };
 
-      stateVersion = lib.mkOption {
-        description = "Originally installed Nixpkgs version";
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-      };
-
       submodules = lib.mkOption {
         description = "List of NixOS modules";
         type = lib.types.listOf lib.types.path;

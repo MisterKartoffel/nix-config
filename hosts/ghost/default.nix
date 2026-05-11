@@ -1,4 +1,5 @@
 {
+  system.stateVersion = "26.05";
   systemd.network.enable = true;
 
   networking = {

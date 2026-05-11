@@ -49,7 +49,7 @@ in
             }) users
           );
 
-          hostSecrets = lib.optionalAttrs config.networking.useNetworkd {
+          hostSecrets = lib.optionalAttrs config.systemd.network.enable {
             "wireless" = {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
