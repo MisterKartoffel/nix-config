@@ -15,7 +15,6 @@ in
       };
     };
 
-    networking.firewall.allowedTCPPorts = config.services.openssh.ports;
     programs.ssh.startAgent = true;
   };
 }

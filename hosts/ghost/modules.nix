@@ -4,10 +4,10 @@
     [
       "hosts/common/core"
     ]
-    ++ map (file: "hosts/common/optional/${file}") [
-      "audio.nix"
-      "networking.nix"
-      "sops.nix"
+    ++ map (file: "hosts/common/optional/${file}.nix") [
+      "audio"
+      "networking"
+      "sops"
     ]
   );
 
