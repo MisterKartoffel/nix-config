@@ -8,6 +8,7 @@
       "audio"
       "networking"
       "sops"
+      "torrenting"
     ]
   );
 

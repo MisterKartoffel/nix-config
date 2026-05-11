@@ -29,6 +29,7 @@
           shell = "zsh";
           extraGroups = [
             "wheel"
+            "qbt"
             "video"
           ];
         }
