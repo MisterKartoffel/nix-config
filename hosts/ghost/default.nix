@@ -7,7 +7,7 @@
       enable = true;
       secretsFile = "/run/secrets/wireless";
       networks = {
-        "JOSÉ LUIS OI FIBRA".pskRaw = "ext:home";
+        "JOSE LUIS".pskRaw = "ext:home";
       };
     };
   };
