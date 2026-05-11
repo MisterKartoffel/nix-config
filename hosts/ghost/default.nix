@@ -1,4 +1,16 @@
 {
+  systemd.network.enable = true;
+
+  networking = {
+    wireless = {
+      enable = true;
+      secretsFile = "/run/secrets/wireless";
+      networks = {
+        "JOSÉ LUIS OI FIBRA".pskRaw = "ext:home";
+      };
+    };
+  };
+
   modules = {
     system = {
       hostname = "ghost";
@@ -24,28 +36,6 @@
           LC_TELEPHONE = "pt_BR.UTF-8";
           LC_TIME = "pt_BR.UTF-8";
         };
-      };
-
-      networking = {
-        networkd = {
-          enable = true;
-          interfaces = [
-            "enp7s0"
-            "wlp9s0"
-          ];
-        };
-
-        wireless = {
-          enable = true;
-          networks = {
-            "home" = {
-              ssid = "JOSÉ LUIS OI FIBRA";
-              pskRaw = "ext:home";
-            };
-          };
-        };
-
-        bonding.enable = true;
       };
 
       users = [

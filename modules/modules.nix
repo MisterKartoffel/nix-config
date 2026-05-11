@@ -47,79 +47,6 @@ let
     };
   };
 
-  networkdModule = lib.types.submodule {
-    options = {
-      enable = lib.mkOption {
-        description = "Enable networking configuration through systemd-networkd";
-        type = lib.types.bool;
-        default = false;
-      };
-
-      interfaces = lib.mkOption {
-        description = "Interfaces to be managed by systemd-networkd";
-        type = lib.types.listOf lib.types.str;
-        default = [ ];
-      };
-    };
-  };
-
-  wirelessModule = lib.types.submodule {
-    options = {
-      enable = lib.mkOption {
-        description = "Enable wireless support";
-        type = lib.types.bool;
-        default = false;
-      };
-
-      networks = lib.mkOption {
-        description = "Wireless network configurations";
-        type = lib.types.attrs;
-        default = { };
-      };
-    };
-  };
-
-  bondingModule = lib.types.submodule {
-    options = {
-      enable = lib.mkOption {
-        description = "Enable interface bonding";
-        type = lib.types.bool;
-        default = false;
-      };
-
-      bondName = lib.mkOption {
-        description = "Name of the bond interface";
-        type = lib.types.str;
-        default = "bond0";
-      };
-
-      boundInterfaces = lib.mkOption {
-        description = "Interfaces to add to the bond";
-        type = lib.types.listOf lib.types.str;
-        default = config.modules.system.networking.networkd.interfaces;
-      };
-    };
-  };
-
-  networkingModule = lib.types.submodule {
-    options = {
-      networkd = lib.mkOption {
-        description = "systemd-networkd specific settings";
-        type = networkdModule;
-      };
-
-      wireless = lib.mkOption {
-        description = "Configuration module for Wi-Fi";
-        type = wirelessModule;
-      };
-
-      bonding = lib.mkOption {
-        description = "Settings for interface bonding via systemd-networkd";
-        type = bondingModule;
-      };
-    };
-  };
-
   usersModule = lib.types.listOf (
     lib.types.submodule {
       options = {
@@ -173,11 +100,6 @@ let
       locale = lib.mkOption {
         description = "System locale settings";
         type = localeModule;
-      };
-
-      networking = lib.mkOption {
-        description = "Networking settings";
-        type = networkingModule;
       };
 
       users = lib.mkOption {

@@ -1,24 +1,49 @@
 { config, lib, ... }:
 let
-  inherit (lib) mkIf;
-  cfg = config.modules.system.networking;
+  cfg = config.systemd.network;
 in
 {
-  systemd.network = mkIf cfg.networkd.enable {
-    enable = true;
+  systemd.network = lib.mkIf config.systemd.network.enable {
+    wait-online.anyInterface = true;
 
-    netdevs = mkIf cfg.bonding.enable (lib.custom.makeBondNetdev cfg.bonding.bondName);
+    netdevs = {
+      "10-bond0" = {
+        netdevConfig = {
+          Kind = "bond";
+          Name = "bond0";
+        };
+        bondConfig = {
+          Mode = "active-backup";
+          PrimaryReselectPolicy = "better";
+          MIIMonitorSec = 100;
+        };
+      };
+    };
 
-    networks = lib.custom.makeNetworks {
-      inherit (cfg.networkd) interfaces;
-      inherit (cfg.bonding) bondName boundInterfaces;
-      isBondEnabled = cfg.bonding.enable;
+    networks = {
+      "20-enp7s0" = {
+        matchConfig.Name = "enp7s0";
+        networkConfig.Bond = "bond0";
+      };
+
+      "30-wlp9s0" = {
+        matchConfig.Name = "wlp9s0";
+        networkConfig.Bond = "bond0";
+      };
+
+      "40-bond0" = {
+        matchConfig.Name = "bond0";
+        linkConfig.RequiredForOnline = "carrier";
+        networkConfig = {
+          BindCarrier = "enp7s0 wlp9s0";
+          DHCP = "yes";
+        };
+      };
     };
   };
 
   networking = {
     hostName = config.modules.system.hostname;
-    wireless = { inherit (cfg.wireless) enable networks; };
     firewall.enable = true;
 
     nameservers = [
@@ -26,8 +51,8 @@ in
       "9.9.9.9#tls://dns.quad9.net"
     ];
 
-    networkmanager.enable = !cfg.networkd.enable;
-    useDHCP = !cfg.networkd.enable;
-    dhcpcd.enable = !cfg.networkd.enable;
+    networkmanager.enable = !cfg.enable;
+    useDHCP = !cfg.enable;
+    dhcpcd.enable = !cfg.enable;
   };
 }
