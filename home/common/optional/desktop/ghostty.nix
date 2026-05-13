@@ -11,20 +11,24 @@
       confirm-close-surface = false;
       quit-after-last-window-closed = false;
 
+      notify-on-command-finish = "always";
+      notify-on-command-finish-action = "bell,notify";
       bell-features = "border";
 
       gtk-single-instance = true;
-      gtk-tabs-location = "bottom";
 
       keybind = [
         # General keybinds
         "alt+comma=reload_config"
-        "ctrl+shift+c=copy_to_clipboard"
-        "ctrl+shift+v=paste_from_clipboard"
+        "performable:ctrl+shift+c=copy_to_clipboard"
+        "performable:ctrl+shift+v=paste_from_clipboard"
 
-        # This is here until 1.3.0 drops
-        # with scrollback search for gtk
-        "alt+f=write_scrollback_file:open"
+        "alt+f=start_search"
+        "performable:escape=end_search"
+        "performable:alt+u=navigate_search:next"
+        "performable:alt+d=navigate_search:previous"
+
+        "global:super+enter=toggle_quick_terminal"
 
         # Font keybinds
         "alt+equal=increase_font_size:1"
