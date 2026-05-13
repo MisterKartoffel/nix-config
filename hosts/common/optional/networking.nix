@@ -50,14 +50,25 @@ in
     ]
   );
 
-  networking = lib.mkMerge [
-    {
-      firewall.enable = true;
+  services.resolved = {
+    enable = true;
 
-      nameservers = [
+    settings.Resolve = {
+      DNS = [
         "1.1.1.2#security.cloudflare-dns.com"
         "9.9.9.9#tls://dns.quad9.net"
       ];
+      FallbackDNS = [
+        "8.8.8.8#dns.google"
+      ];
+      DNSOverTLS = true;
+      DNSSEC = true;
+    };
+  };
+
+  networking = lib.mkMerge [
+    {
+      firewall.enable = true;
     }
     (lib.mkIf (!cfg.useNetworkd || ifaces == [ ]) {
       networkmanager.enable = !cfg.useNetworkd;
