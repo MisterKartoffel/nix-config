@@ -1,15 +1,15 @@
 { lib }:
-{
+let
+  inherit (lib) hasPrefix hasSuffix;
+  inherit (lib.filesystem) listFilesRecursive;
   relativeToRoot = lib.path.append ../.;
+in
+{
+  inherit relativeToRoot;
 
-  importPaths =
-    dirs:
-    lib.concatMap (
-      dir:
-      map (name: dir + "/${name}") (
-        lib.filter (name: lib.hasSuffix ".nix" name && name != "default.nix") (
-          lib.attrNames (builtins.readDir dir)
-        )
-      )
-    ) dirs;
+  makeImport =
+    path:
+    builtins.filter (file: hasSuffix ".nix" file && !(hasPrefix "_" (baseNameOf file))) (
+      listFilesRecursive (relativeToRoot path)
+    );
 }

@@ -10,13 +10,7 @@
     lib.optionals config.programs.nvf.settings.vim.utility.snacks-nvim.enable builtins.attrValues
       { inherit (pkgs) ripgrep; };
 
-  imports = [
-    inputs.nvf.homeManagerModules.default
-  ]
-  ++ lib.custom.importPaths [
-    ./.
-    ./plugins
-  ];
+  imports = [ inputs.nvf.homeManagerModules.default ];
 
   programs.nvf = {
     enable = true;

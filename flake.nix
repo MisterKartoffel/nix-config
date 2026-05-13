@@ -36,10 +36,10 @@
           modules = [
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
-            ./modules
             ./hosts/${hostname}
           ]
-          ++ host.modules.system.submodules;
+          ++ host.modules.system.submodules
+          ++ env.lib.custom.makeImport "modules/flake";
           specialArgs = { inherit inputs; };
         };
     in
