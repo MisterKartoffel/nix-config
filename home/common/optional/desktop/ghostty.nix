@@ -11,7 +11,7 @@
       confirm-close-surface = false;
       quit-after-last-window-closed = false;
 
-      notify-on-command-finish = "always";
+      notify-on-command-finish = "unfocused";
       notify-on-command-finish-action = "bell,notify";
       bell-features = "border";
 
