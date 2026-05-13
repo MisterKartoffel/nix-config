@@ -1,57 +1,68 @@
 { config, lib, ... }:
 let
-  cfg = config.systemd.network;
+  cfg = config.networking;
+  ifaces = config.hardware.facter.detected.dhcp.interfaces;
+  bondName = "bond0";
 in
 {
-  systemd.network = lib.mkIf config.systemd.network.enable {
-    wait-online.anyInterface = true;
-
-    netdevs = {
-      "10-bond0" = {
-        netdevConfig = {
-          Kind = "bond";
-          Name = "bond0";
+  systemd.network = lib.mkIf cfg.useNetworkd (
+    lib.mkMerge [
+      {
+        enable = true;
+        wait-online.anyInterface = true;
+      }
+      (lib.mkIf (ifaces != [ ]) {
+        netdevs = {
+          "10-${bondName}" = {
+            netdevConfig = {
+              Kind = "bond";
+              Name = bondName;
+            };
+            bondConfig = {
+              Mode = "active-backup";
+              PrimaryReselectPolicy = "better";
+              MIIMonitorSec = 100;
+            };
+          };
         };
-        bondConfig = {
-          Mode = "active-backup";
-          PrimaryReselectPolicy = "better";
-          MIIMonitorSec = 100;
-        };
-      };
-    };
 
-    networks = {
-      "20-enp7s0" = {
-        matchConfig.Name = "enp7s0";
-        networkConfig.Bond = "bond0";
-      };
+        networks =
+          lib.listToAttrs (
+            map (iface: {
+              name = "20-${iface}";
+              value = {
+                matchConfig.Name = iface;
+                networkConfig.Bond = bondName;
+              };
+            }) ifaces
+          )
+          // {
+            "40-${bondName}" = {
+              matchConfig.Name = bondName;
+              linkConfig.RequiredForOnline = "carrier";
+              networkConfig = {
+                BindCarrier = lib.concatStringsSep " " ifaces;
+                DHCP = "yes";
+              };
+            };
+          };
+      })
+    ]
+  );
 
-      "30-wlp9s0" = {
-        matchConfig.Name = "wlp9s0";
-        networkConfig.Bond = "bond0";
-      };
+  networking = lib.mkMerge [
+    {
+      firewall.enable = true;
 
-      "40-bond0" = {
-        matchConfig.Name = "bond0";
-        linkConfig.RequiredForOnline = "carrier";
-        networkConfig = {
-          BindCarrier = "enp7s0 wlp9s0";
-          DHCP = "yes";
-        };
-      };
-    };
-  };
-
-  networking = {
-    firewall.enable = true;
-
-    nameservers = [
-      "1.1.1.2#security.cloudflare-dns.com"
-      "9.9.9.9#tls://dns.quad9.net"
-    ];
-
-    networkmanager.enable = !cfg.enable;
-    useDHCP = !cfg.enable;
-    dhcpcd.enable = !cfg.enable;
-  };
+      nameservers = [
+        "1.1.1.2#security.cloudflare-dns.com"
+        "9.9.9.9#tls://dns.quad9.net"
+      ];
+    }
+    (lib.mkIf (!cfg.useNetworkd || ifaces == [ ]) {
+      networkmanager.enable = !cfg.useNetworkd;
+      useDHCP = !cfg.useNetworkd;
+      dhcpcd.enable = !cfg.useNetworkd;
+    })
+  ];
 }

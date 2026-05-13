@@ -6,6 +6,8 @@
 
   networking = {
     hostName = "ghost";
+
+    useNetworkd = true;
     wireless = {
       enable = true;
       secretsFile = "/run/secrets/wireless";
