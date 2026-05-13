@@ -55,6 +55,7 @@ in
         package = pkgs.nerd-fonts.commit-mono;
         name = "Commit Mono Nerd Font";
       };
+      sizes.terminal = 16;
     };
   };
 }

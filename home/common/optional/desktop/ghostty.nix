@@ -5,8 +5,6 @@
     clearDefaultKeybinds = true;
 
     settings = {
-      font-size = 16;
-
       window-decoration = "none";
       resize-overlay = "never";
 
