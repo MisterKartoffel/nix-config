@@ -43,7 +43,6 @@
     services = {
       audio.enable = true;
       sops.enable = true;
-      ssh.enable = true;
     };
   };
 }

@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   ...
 }:
@@ -55,17 +54,7 @@ let
       enable = lib.mkOption {
         description = "Enable SOPS-Nix integration";
         type = lib.types.bool;
-        default = false;
-      };
-    };
-  };
-
-  sshModule = lib.types.submodule {
-    options = {
-      enable = lib.mkOption {
-        description = "Enable SSH services";
-        type = lib.types.bool;
-        default = config.modules.sops.enable;
+        default = true;
       };
     };
   };
@@ -83,11 +72,6 @@ let
       sops = lib.mkOption {
         description = "SOPS-Nix configuration";
         type = sopsModule;
-      };
-
-      ssh = lib.mkOption {
-        description = "System-wide SSH configuration";
-        type = sshModule;
       };
     };
   };
