@@ -161,21 +161,38 @@
         force = true;
         default = "google";
         engines = {
-          MyNixos = {
-            name = "My NixOS";
-            definedAliases = [ "@nx" ];
+          NixOS = {
+            name = "NixOS Search";
+            definedAliases = [ "@ns" ];
             urls = [
               {
-                template = "https://mynixos.com/search?q={searchTerms}";
+                template = "https://search.nixos.org/options?channel=unstable&query={searchQuery}";
                 params = [
                   {
                     name = "query";
-                    value = "searchTerms";
+                    value = "searchQuery";
                   }
                 ];
               }
             ];
           };
+
+          Nixpkgs = {
+            name = "NixOS Packages";
+            definedAliases = [ "@np" ];
+            urls = [
+              {
+                template = "https://search.nixos.org/packages?channel=unstable&query={searchQuery}";
+                params = [
+                  {
+                    name = "query";
+                    value = "searchQuery";
+                  }
+                ];
+              }
+            ];
+          };
+
           GitHub = {
             name = "GitHub Search";
             definedAliases = [ "@gh" ];
