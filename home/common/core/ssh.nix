@@ -5,7 +5,7 @@
 }:
 let
   inherit (lib) mkIf;
-  cfg = osConfig.modules.services.ssh;
+  cfg = osConfig.services.openssh;
 in
 {
   config = mkIf cfg.enable {
