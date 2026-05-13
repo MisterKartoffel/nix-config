@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -13,13 +14,20 @@
 
     autosuggestion.enable = true;
     enableCompletion = true;
+    syntaxHighlighting.enable = true;
+
+    plugins = [
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+    ];
 
     completionInit = ''
       autoload -Uz compinit
       compinit -C -d ${config.xdg.cacheHome}/zsh-zcompdump-$ZSH_VERSION
     '';
-
-    syntaxHighlighting.enable = true;
 
     history = {
       append = true;
@@ -46,7 +54,9 @@
           zstyle ":completion:*:descriptions" format "[%d]"
           zstyle ":completion:*" menu no
         '';
-        zshExtraConfig = "";
+        zshExtraConfig = ''
+          [[ -f ${config.programs.zsh.dotDir}/.p10k.zsh ]] && source ${config.programs.zsh.dotDir}/.p10k.zsh
+        '';
         zshExtraConfigLast = lib.mkAfter "";
       in
       lib.mkMerge [
