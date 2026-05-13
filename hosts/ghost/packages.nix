@@ -3,7 +3,6 @@
   environment.systemPackages = with pkgs; [
     sops
     libsecret
-    nh
   ];
 
   programs = {
