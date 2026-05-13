@@ -1,6 +1,8 @@
 {
   system.stateVersion = "26.05";
-  systemd.network.enable = true;
+
+  time.timeZone = "America/Sao_Paulo";
+  console.keyMap = "br-abnt2";
 
   networking = {
     hostName = "ghost";

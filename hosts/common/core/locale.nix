@@ -1,8 +1,4 @@
 {
-  time.timeZone = "America/Sao_Paulo";
-
-  console.keyMap = "br-abnt2";
-
   i18n = {
     inputMethod = {
       enable = true;
