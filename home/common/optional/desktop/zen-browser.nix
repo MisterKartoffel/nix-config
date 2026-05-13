@@ -138,6 +138,10 @@
       };
 
       settings = {
+        "zen.mods.AudioIndicatorEnhanced.audioWave.enabled" = true;
+        "theme.better_find_bar.enable_custom_background" = true;
+        "theme.better_find_bar.custom_background" = "#1e1e2e";
+
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "zen.view.compact.enable-at-startup" = true;
         "zen.view.experimental-no-window-controls" = true;
@@ -166,13 +170,7 @@
             definedAliases = [ "@ns" ];
             urls = [
               {
-                template = "https://search.nixos.org/options?channel=unstable&query={searchQuery}";
-                params = [
-                  {
-                    name = "query";
-                    value = "searchQuery";
-                  }
-                ];
+                template = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
               }
             ];
           };
@@ -182,13 +180,7 @@
             definedAliases = [ "@np" ];
             urls = [
               {
-                template = "https://search.nixos.org/packages?channel=unstable&query={searchQuery}";
-                params = [
-                  {
-                    name = "query";
-                    value = "searchQuery";
-                  }
-                ];
+                template = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
               }
             ];
           };
