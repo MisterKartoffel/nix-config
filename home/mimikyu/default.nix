@@ -16,6 +16,7 @@ in
       "mail"
       "neovim"
       "theming"
+      "nh.nix"
     ])
   );
 
