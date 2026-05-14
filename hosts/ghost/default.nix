@@ -43,8 +43,6 @@
     services.sops.enable = true;
   };
 
-  programs.niri.enable = true;
-
   services = {
     pipewire.enable = true;
     qbittorrent.enable = true;
