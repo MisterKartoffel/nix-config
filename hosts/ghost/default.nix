@@ -45,6 +45,6 @@
 
   services = {
     pipewire.enable = true;
-    qbittorrent.enable = true;
+    qbittorrent.enable = false;
   };
 }
