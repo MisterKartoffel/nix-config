@@ -22,7 +22,7 @@ in
       };
 
       core = {
-        sshCommand = "${lib.getExe pkgs.ssh} -i ${sshKey}";
+        sshCommand = "${lib.getExe pkgs.openssh} -i ${sshKey}";
         compression = 9;
         editor = "${lib.getExe pkgs.neovim}";
         pager = "${lib.getExe pkgs.diff-so-fancy} | ${lib.getExe pkgs.less} --tabs=4 -RF";

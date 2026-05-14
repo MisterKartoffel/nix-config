@@ -40,6 +40,17 @@ in
 
       secrets =
         let
+          hostSecrets = {
+            "ssh_host_key" = lib.optionalAttrs config.services.openssh.enable {
+              mode = "0600";
+              path = "/etc/ssh/ssh_host_ed25519_key";
+            };
+            "wireless" = lib.optionalAttrs config.networking.wireless.enable {
+              owner = "wpa_supplicant";
+              group = "wpa_supplicant";
+            };
+          };
+
           userSecrets = lib.foldl' lib.mergeAttrs { } (
             map (user: {
               "${user.name}/password".neededForUsers = true;
@@ -50,13 +61,6 @@ in
               };
             }) users
           );
-
-          hostSecrets = lib.optionalAttrs config.networking.wireless.enable {
-            "wireless" = {
-              owner = "wpa_supplicant";
-              group = "wpa_supplicant";
-            };
-          };
         in
         lib.mergeAttrs userSecrets hostSecrets;
     };

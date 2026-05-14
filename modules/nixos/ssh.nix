@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  cfg = config.modules.system.sops;
+  cfg = config.modules.services.sops;
 in
 {
   config = lib.mkIf cfg.enable {
