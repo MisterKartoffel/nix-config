@@ -1,12 +1,19 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   wallpaper = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/paint.jpg";
     hash = "sha256-9/4PtVNTvT+qILYcp+5Dir7VWXox2zbp0DuXkTv/ecU=";
   };
+
+  cfg = config.stylix;
 in
 {
-  systemd.user.services.swaybg = {
+  systemd.user.services.swaybg = lib.mkIf cfg.enable {
     Unit = {
       Description = "Swaybg background image service";
       Documentation = "man:swaybg(1)";

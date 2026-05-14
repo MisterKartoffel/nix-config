@@ -1,6 +1,9 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.ghostty;
+in
 {
-  programs.ghostty = {
-    enable = true;
+  programs.ghostty = lib.mkIf cfg.enable {
     enableZshIntegration = true;
     clearDefaultKeybinds = true;
 

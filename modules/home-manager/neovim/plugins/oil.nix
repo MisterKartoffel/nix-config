@@ -1,5 +1,9 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.nvf;
+in
 {
-  programs.nvf.settings.vim = {
+  programs.nvf.settings.vim = lib.mkIf cfg.enable {
     utility.oil-nvim = {
       enable = true;
       setupOpts = {

@@ -1,16 +1,17 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 let
   inherit (config.modules.secrets) name hotmail;
+
+  inherit (config.programs) ssh;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {
-  home.packages = with pkgs; [ diff-so-fancy ];
-
-  programs.git = {
+  programs.git = lib.mkIf ssh.enable {
     enable = true;
 
     settings = {
@@ -21,10 +22,10 @@ in
       };
 
       core = {
-        sshCommand = "ssh -i ${sshKey}";
+        sshCommand = "${lib.getExe pkgs.ssh} -i ${sshKey}";
         compression = 9;
-        editor = "nvim";
-        pager = "diff-so-fancy | less --tabs=4 -RF";
+        editor = "${lib.getExe pkgs.neovim}";
+        pager = "${lib.getExe pkgs.diff-so-fancy} | ${lib.getExe pkgs.less} --tabs=4 -RF";
         whitespace = "error";
       };
 
@@ -46,7 +47,7 @@ in
 
       interactive = {
         singleKey = true;
-        diffFilter = "diff-so-fancy --patch";
+        diffFilter = "${lib.getExe pkgs.diff-so-fancy} --patch";
       };
 
       log = {
@@ -56,7 +57,7 @@ in
 
       pager = {
         branch = false;
-        diff = "diff-so-fancy | $PAGER";
+        diff = "${lib.getExe pkgs.diff-so-fancy} | $PAGER";
       };
 
       pull = {

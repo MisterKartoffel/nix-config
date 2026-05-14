@@ -1,5 +1,9 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.nvf;
+in
 {
-  programs.nvf.settings.vim.git.gitsigns = {
+  programs.nvf.settings.vim.git.gitsigns = lib.mkIf cfg.enable {
     enable = true;
     mappings = {
       previousHunk = "[g";

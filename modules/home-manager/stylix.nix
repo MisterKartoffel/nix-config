@@ -1,16 +1,17 @@
 {
   inputs,
+  config,
+  lib,
   pkgs,
   ...
 }:
+let
+  cfg = config.stylix;
+in
 {
   imports = [ inputs.stylix.homeModules.stylix ];
 
-  fonts.fontconfig.enable = true;
-
-  stylix = {
-    enable = true;
-
+  stylix = lib.mkIf cfg.enable {
     targets = {
       nvf.enable = false;
       zen-browser.profileNames = [ "Profile0" ];
@@ -32,4 +33,6 @@
       sizes.terminal = 16;
     };
   };
+
+  fonts.fontconfig.enable = true;
 }

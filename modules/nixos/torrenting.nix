@@ -1,7 +1,6 @@
 { pkgs, ... }:
 {
   services.qbittorrent = {
-    enable = false;
     openFirewall = true;
     serverConfig = {
       Preferences = {

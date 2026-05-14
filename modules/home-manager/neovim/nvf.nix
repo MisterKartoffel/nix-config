@@ -5,6 +5,9 @@
   lib,
   ...
 }:
+let
+  cfg = config.programs.nvf;
+in
 {
   home.packages =
     lib.optionals config.programs.nvf.settings.vim.utility.snacks-nvim.enable builtins.attrValues
@@ -12,8 +15,7 @@
 
   imports = [ inputs.nvf.homeManagerModules.default ];
 
-  programs.nvf = {
-    enable = true;
+  programs.nvf = lib.mkIf cfg.enable {
     defaultEditor = true;
     settings.vim.extraLuaFiles = [ ./lua/functions.lua ];
   };

@@ -8,7 +8,6 @@
 let
   inherit (config.home) username homeDirectory;
   inherit (lib) mkIf;
-  cfg = osConfig.modules.services.sops;
 
   nestAttrset =
     secrets:
@@ -16,14 +15,17 @@ let
       acc: path: value:
       lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
     ) { } secrets;
+
+  inherit (osConfig.modules.services) sops;
+  inherit (config.programs) ssh;
 in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-  config = mkIf cfg.enable {
+  config = mkIf sops.enable {
     sops = {
       age = {
-        sshKeyPaths = [ "${homeDirectory}/.ssh/id_ed25519" ];
+        sshKeyPaths = lib.mkIf ssh.enable [ "${homeDirectory}/.ssh/id_ed25519" ];
         keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
         generateKey = true;
       };
@@ -32,7 +34,7 @@ in
       validateSopsFiles = false;
 
       secrets = {
-        "${username}/ssh_key" = {
+        "${username}/ssh_key" = lib.mkIf ssh.enable {
           path = "${homeDirectory}/.ssh/id_ed25519";
           key = "ssh_key";
         };

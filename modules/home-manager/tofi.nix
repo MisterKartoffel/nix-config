@@ -1,8 +1,9 @@
-{ lib, ... }:
+{ config, lib, ... }:
+let
+  cfg = config.programs.tofi;
+in
 {
-  programs.tofi = {
-    enable = true;
-
+  programs.tofi = lib.mkIf cfg.enable {
     settings = {
       font = "Commit Mono Nerd Font";
       font-size = lib.mkForce "24";

@@ -1,9 +1,6 @@
 { pkgs, ... }:
 {
-  environment.systemPackages = with pkgs; [
-    sops
-    libsecret
-  ];
+  environment.systemPackages = with pkgs; [ libsecret ];
 
   programs = {
     zsh.enable = true;

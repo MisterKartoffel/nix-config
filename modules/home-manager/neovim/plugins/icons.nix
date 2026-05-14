@@ -1,11 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.programs.nvf.settings.vim;
+  inherit (config.programs.nvf.settings) vim;
   pluginEnabled = builtins.any (x: x.enable) [
-    cfg.autocomplete.blink-cmp
-    cfg.ui.lualine
-    cfg.utility.oil-nvim
-    cfg.utility.snacks-nvim
+    vim.autocomplete.blink-cmp
+    vim.ui.lualine
+    vim.utility.oil-nvim
+    vim.utility.snacks-nvim
   ];
 in
 {

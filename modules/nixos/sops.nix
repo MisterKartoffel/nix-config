@@ -6,10 +6,8 @@
   ...
 }:
 let
-  inherit (lib) mkIf;
   inherit (config.networking) hostName;
   inherit (config.modules.system) users;
-  cfg = config.modules.services.sops;
 
   nestAttrset =
     secrets:
@@ -17,11 +15,14 @@ let
       acc: path: value:
       lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
     ) { } secrets;
+
+  inherit (config.modules.services) sops;
+  inherit (config.services) openssh;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf sops.enable {
     environment.systemPackages = with pkgs; [
       age
       sops
@@ -29,7 +30,7 @@ in
 
     sops = {
       age = {
-        sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+        sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
         keyFile = "/var/lib/sops-nix/key.txt";
         generateKey = true;
       };
@@ -50,7 +51,7 @@ in
             }) users
           );
 
-          hostSecrets = lib.optionalAttrs config.systemd.network.enable {
+          hostSecrets = lib.optionalAttrs config.networking.wireless.enable {
             "wireless" = {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";

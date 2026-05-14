@@ -1,5 +1,9 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.nvf;
+in
 {
-  programs.nvf.settings.vim.statusline.lualine = {
+  programs.nvf.settings.vim.statusline.lualine = lib.mkIf cfg.enable {
     enable = true;
     icons.enable = true;
 

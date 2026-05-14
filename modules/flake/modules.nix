@@ -61,14 +61,6 @@ let
 
   servicesModule = lib.types.submodule {
     options = {
-      audio = {
-        enable = lib.mkOption {
-          description = "Enable PipeWire audio server";
-          type = lib.types.bool;
-          default = false;
-        };
-      };
-
       sops = lib.mkOption {
         description = "SOPS-Nix configuration";
         type = sopsModule;

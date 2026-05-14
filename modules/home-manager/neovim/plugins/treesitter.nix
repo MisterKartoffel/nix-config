@@ -1,3 +1,7 @@
+{ config, ... }:
+let
+  cfg = config.programs.nvf;
+in
 {
-  programs.nvf.settings.vim.treesitter.enable = true;
+  programs.nvf.settings.vim.treesitter.enable = cfg.enable;
 }

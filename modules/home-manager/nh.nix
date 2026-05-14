@@ -1,6 +1,7 @@
+{ config, lib, ... }:
+let
+  cfg = config.programs.nh;
+in
 {
-  programs.nh = {
-    enable = true;
-    flake = "/home/mimikyu/nix-config/";
-  };
+  programs.nh.flake = lib.mkIf cfg.enable "/home/mimikyu/nix-config/";
 }
