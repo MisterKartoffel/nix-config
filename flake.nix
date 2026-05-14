@@ -6,6 +6,7 @@
       nixpkgs,
       home-manager,
       disko,
+      preservation,
       ...
     }@inputs:
     let
@@ -36,6 +37,7 @@
           modules = [
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
+            preservation.nixosModules.default
             ./hosts/${hostname}
           ]
           ++ host.modules.system.submodules
@@ -48,7 +50,9 @@
     };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -60,6 +64,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    preservation = {
+      url = "github:nix-community/preservation";
+    };
+
     sops-nix = {
       url = "github:mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -67,7 +75,7 @@
 
     nix-secrets = {
       url = "git+ssh://git@github.com/misterkartoffel/nix-secrets.git?ref=main&shallow=1";
-      inputs = { };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     stylix = {

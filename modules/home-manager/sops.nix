@@ -27,7 +27,7 @@ in
       age = {
         sshKeyPaths = lib.mkIf ssh.enable [ "${homeDirectory}/.ssh/id_ed25519" ];
         keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
-        generateKey = true;
+        generateKey = false;
       };
 
       defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";

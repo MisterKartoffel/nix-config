@@ -23,16 +23,18 @@ in
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   config = lib.mkIf sops.enable {
-    environment.systemPackages = with pkgs; [
-      age
-      sops
-    ];
+    environment.systemPackages = builtins.attrValues {
+      inherit (pkgs)
+        age
+        sops
+        ;
+    };
 
     sops = {
       age = {
         sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
         keyFile = "/var/lib/sops-nix/key.txt";
-        generateKey = true;
+        generateKey = false;
       };
 
       defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
