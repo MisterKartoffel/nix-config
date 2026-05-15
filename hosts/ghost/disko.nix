@@ -1,5 +1,8 @@
 {
-  fileSystems."/nix".neededForBoot = true;
+  fileSystems = {
+    "/nix".neededForBoot = true;
+    "/etc/persist".neededForBoot = true;
+  };
 
   disko.devices.nodev = {
     "/" = {
@@ -12,7 +15,7 @@
   };
 
   disko.devices.disk.main = {
-    device = "/dev/disk/by-uuid/c699d00f-fc62-436d-b9c5-0d6125be10f1";
+    device = "/dev/disk/by-id/ata-ST1000DM003-1CH162_S1DJFRC0";
     type = "disk";
 
     content.type = "gpt";
@@ -38,7 +41,7 @@
 
         subvolumes = {
           "/persist" = {
-            mountpoint = "/persist";
+            mountpoint = "/etc/persist";
             mountOptions = [
               "subvol=persist"
               "noatime"

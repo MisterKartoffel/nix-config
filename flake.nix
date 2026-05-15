@@ -6,7 +6,7 @@
       nixpkgs,
       home-manager,
       disko,
-      preservation,
+      impermanence,
       ...
     }@inputs:
     let
@@ -37,7 +37,7 @@
           modules = [
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
-            preservation.nixosModules.default
+            impermanence.nixosModules.impermanence
             ./hosts/${hostname}
           ]
           ++ host.modules.system.submodules
@@ -64,8 +64,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    preservation = {
-      url = "github:nix-community/preservation";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "";
+      inputs.home-manager.follows = "";
     };
 
     sops-nix = {

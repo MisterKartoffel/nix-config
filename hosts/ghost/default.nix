@@ -4,6 +4,8 @@
   time.timeZone = "America/Sao_Paulo";
   console.keyMap = "br-abnt2";
 
+  environment.persistence."/etc/persist".enable = true;
+
   networking = {
     hostName = "ghost";
 
@@ -23,6 +25,7 @@
 
       submodules = [
         ./disko.nix
+        ./impermanence.nix
         ./modules.nix
         ./packages.nix
       ];

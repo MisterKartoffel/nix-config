@@ -32,8 +32,8 @@ in
 
     sops = {
       age = {
-        sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
-        keyFile = "/var/lib/sops-nix/key.txt";
+        sshKeyPaths = lib.mkIf openssh.enable [ "/etc/persist/etc/ssh/ssh_host_ed25519_key" ];
+        keyFile = "/etc/persist/var/lib/sops-nix/key.txt";
         generateKey = false;
       };
 
@@ -43,10 +43,6 @@ in
       secrets =
         let
           hostSecrets = {
-            "ssh_host_key" = lib.optionalAttrs config.services.openssh.enable {
-              mode = "0600";
-              path = "/etc/ssh/ssh_host_ed25519_key";
-            };
             "wireless" = lib.optionalAttrs config.networking.wireless.enable {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
@@ -66,6 +62,18 @@ in
         in
         lib.mergeAttrs userSecrets hostSecrets;
     };
+
+    # https://github.com/Mic92/sops-nix/issues/381
+    system.activationScripts.setSopsAgeKeyOwnership = lib.strings.concatMapStringsSep "\n" (
+      user:
+      let
+        xdgConfigHome = "/home/${user.name}/.config";
+      in
+      ''
+        [ -d ${xdgConfigHome} ] || mkdir ${xdgConfigHome}
+        chown -R ${user.name}:users ${xdgConfigHome}
+      ''
+    ) users;
 
     modules.secrets = {
       home = inputs.nix-secrets.home or { };
