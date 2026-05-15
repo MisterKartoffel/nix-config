@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ niri ];
+  home.packages = [ pkgs.niri ];
 
   xdg.portal = {
     enable = true;
