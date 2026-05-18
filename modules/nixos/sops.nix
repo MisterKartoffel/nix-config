@@ -31,12 +31,9 @@ in
     };
 
     sops = {
-      age = {
-        sshKeyPaths = lib.mkIf openssh.enable [ "/etc/persist/etc/ssh/ssh_host_ed25519_key" ];
-        keyFile = "/etc/persist/var/lib/sops-nix/key.txt";
-        generateKey = false;
-      };
+      age.sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
 
+      useSystemdActivation = true;
       defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
       validateSopsFiles = false;
 
