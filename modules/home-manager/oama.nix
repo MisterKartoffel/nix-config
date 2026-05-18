@@ -11,11 +11,14 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
-      gnome-keyring
-      gcr
-      libsecret
-    ];
+    home.packages = builtins.attrValues {
+      inherit (pkgs)
+        gnome-keyring
+        gcr
+        libsecret
+        oama
+        ;
+    };
 
     services.gnome-keyring.enable = true;
 
