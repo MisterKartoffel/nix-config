@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   ...
 }:
@@ -80,4 +81,17 @@ in
       type = servicesModule;
     };
   };
+
+  config.assertions = [
+    {
+      assertion =
+        let
+          inherit (config.modules.system) users;
+          autologinUsers = builtins.filter (username: users.${username}.autologin) (builtins.attrNames users);
+        in
+        builtins.length autologinUsers <= 1;
+
+      message = "At most one user may have autologin = true";
+    }
+  ];
 }
