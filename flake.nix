@@ -41,7 +41,7 @@
             ./hosts/${hostname}
           ]
           ++ host.modules.system.submodules
-          ++ env.lib.custom.makeImport "modules/flake";
+          ++ env.lib.custom.importTree "modules/flake";
           specialArgs = { inherit inputs; };
         };
     in

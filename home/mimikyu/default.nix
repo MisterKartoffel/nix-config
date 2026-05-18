@@ -7,7 +7,7 @@ let
   inherit (config.programs) nvf ghostty;
 in
 {
-  imports = lib.custom.makeImport "modules/home-manager" ++ [ ./impermanence.nix ];
+  imports = lib.custom.importTree "modules/home-manager" ++ [ ./impermanence.nix ];
 
   programs = {
     ghostty.enable = true;

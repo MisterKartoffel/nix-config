@@ -1,15 +1,14 @@
 { lib }:
 let
-  inherit (lib) hasPrefix hasSuffix;
-  inherit (lib.filesystem) listFilesRecursive;
+  inherit (lib) hasPrefix;
+  inherit (lib.fileset) toList fileFilter;
+
   relativeToRoot = lib.path.append ../.;
 in
 {
   inherit relativeToRoot;
 
-  makeImport =
+  importTree =
     path:
-    builtins.filter (file: hasSuffix ".nix" file && !(hasPrefix "_" (baseNameOf file))) (
-      listFilesRecursive (relativeToRoot path)
-    );
+    toList (fileFilter (file: file.hasExt "nix" && !(hasPrefix "_" file.name)) (relativeToRoot path));
 }

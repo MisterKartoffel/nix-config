@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  imports = lib.custom.makeImport "modules/nixos";
+  imports = lib.custom.importTree "modules/nixos";
 
   hardware.facter.reportPath = ./facter.json;
 }
