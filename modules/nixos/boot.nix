@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   boot.loader = {
     systemd-boot = {
@@ -11,7 +11,11 @@
   };
 
   services.getty = {
-    autologinUser = (builtins.head config.modules.system.users).name;
+    autologinUser =
+      let
+        inherit (config.modules.system) users;
+      in
+      lib.findFirst (username: users.${username}.autologin) null (builtins.attrNames users);
     autologinOnce = true;
   };
 }

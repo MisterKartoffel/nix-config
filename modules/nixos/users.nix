@@ -7,8 +7,9 @@
 }:
 let
   inherit (lib.custom) relativeToRoot;
-  inherit (config.modules) secrets;
-  inherit (config.modules.system) users;
+  inherit (config.modules) secrets services system;
+  inherit (system) users;
+  inherit (services) sops;
 in
 {
   services.userborn.enable = true;
@@ -19,8 +20,11 @@ in
 
     inherit (user) extraGroups;
     shell = pkgs.${user.shell};
-    description = secrets.home.${username}.name;
-    hashedPasswordFile = secrets.host.${username}.password.path;
+    description = lib.mkIf sops.enable secrets.home.${username}.name;
+    initialHashedPassword = lib.mkIf (
+      !sops.enable
+    ) "$y$j9T$9lxUmIACkk7jFAU437ubP/$/dbwqUcskqwzxBC.Lg7WJx4uf/8jxLGcxRjM36U0q57";
+    hashedPasswordFile = lib.mkIf sops.enable secrets.host.${username}.password.path;
 
     openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (
       key: _: relativeToRoot "home/${username}/keys/${key}"

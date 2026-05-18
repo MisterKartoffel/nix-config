@@ -32,6 +32,7 @@
 
       users = {
         "mimikyu" = {
+          autologin = true;
           shell = "zsh";
           extraGroups = [
             "wheel"
