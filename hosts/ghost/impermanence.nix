@@ -21,7 +21,6 @@ in
 
     files = [
       "/etc/machine-id"
-      "/var/lib/sops-nix/key.txt"
     ]
     ++ lib.optionals ssh.enable [
       "/etc/ssh/ssh_host_ed25519_key"
