@@ -49,31 +49,19 @@ in
             };
           };
 
-          userSecrets = lib.foldl' lib.mergeAttrs { } (
-            map (user: {
-              "${user.name}/password".neededForUsers = true;
-              "${user.name}/age_key" = {
-                owner = user.name;
+          userSecrets = lib.mergeAttrsList (
+            lib.mapAttrsToList (username: _: {
+              "${username}/password".neededForUsers = true;
+              "${username}/age_key" = {
+                owner = username;
                 group = "users";
-                path = "/home/${user.name}/.config/sops/age/keys.txt";
+                path = "/home/${username}/.config/sops/age/keys.txt";
               };
             }) users
           );
         in
-        lib.mergeAttrs userSecrets hostSecrets;
+        userSecrets // hostSecrets;
     };
-
-    # https://github.com/Mic92/sops-nix/issues/381
-    system.activationScripts.setSopsAgeKeyOwnership = lib.strings.concatMapStringsSep "\n" (
-      user:
-      let
-        xdgConfigHome = "/home/${user.name}/.config";
-      in
-      ''
-        [ -d ${xdgConfigHome} ] || mkdir ${xdgConfigHome}
-        chown -R ${user.name}:users ${xdgConfigHome}
-      ''
-    ) users;
 
     modules.secrets = {
       home = inputs.nix-secrets.home or { };

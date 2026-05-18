@@ -6,39 +6,34 @@
   ...
 }:
 let
-  inherit (config.modules) system secrets;
   inherit (lib.custom) relativeToRoot;
-  makeAttrs = f: lib.listToAttrs (map f system.users);
+  inherit (config.modules) secrets;
+  inherit (config.modules.system) users;
 in
 {
+  services.userborn.enable = true;
+
   users.mutableUsers = false;
-  users.users = makeAttrs (user: {
-    inherit (user) name;
-    value = {
-      isNormalUser = true;
+  users.users = lib.mapAttrs (username: user: {
+    isNormalUser = true;
 
-      inherit (user) extraGroups;
-      shell = pkgs.${user.shell};
-      description = secrets.home.${user.name}.name;
-      initialPassword = "root";
-      # hashedPasswordFile = secrets.host.${user.name}.password.path;
+    inherit (user) extraGroups;
+    shell = pkgs.${user.shell};
+    description = secrets.home.${username}.name;
+    hashedPasswordFile = secrets.host.${username}.password.path;
 
-      openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (
-        key: _: relativeToRoot "home/${user.name}/keys/${key}"
-      ) (builtins.readDir (relativeToRoot "home/${user.name}/keys"));
+    openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (
+      key: _: relativeToRoot "home/${username}/keys/${key}"
+    ) (builtins.readDir (relativeToRoot "home/${username}/keys"));
+  }) users;
+
+  home-manager.users = lib.mapAttrs (username: _: {
+    imports = map relativeToRoot [ "home/${username}" ];
+    home = {
+      inherit username;
+      homeDirectory = "/home/${username}";
+      inherit (config.system) stateVersion;
     };
-  });
-
-  home-manager.users = makeAttrs (user: {
-    inherit (user) name;
-    value = {
-      imports = map relativeToRoot [ "home/${user.name}" ];
-      home = {
-        username = user.name;
-        homeDirectory = "/home/${user.name}";
-        inherit (config.system) stateVersion;
-      };
-    };
-  });
+  }) users;
   home-manager.extraSpecialArgs = { inherit inputs; };
 }

@@ -30,17 +30,16 @@
         ./packages.nix
       ];
 
-      users = [
-        {
-          name = "mimikyu";
+      users = {
+        "mimikyu" = {
           shell = "zsh";
           extraGroups = [
             "wheel"
             "qbt"
             "video"
           ];
-        }
-      ];
+        };
+      };
     };
 
     services.sops.enable = true;

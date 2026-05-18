@@ -3,15 +3,9 @@
   ...
 }:
 let
-  usersModule = lib.types.listOf (
+  usersModule = lib.types.attrsOf (
     lib.types.submodule {
       options = {
-        name = lib.mkOption {
-          description = "Username";
-          type = lib.types.nullOr lib.types.str;
-          default = null;
-        };
-
         shell = lib.mkOption {
           description = "Default shell";
           type = lib.types.nullOr lib.types.str;
