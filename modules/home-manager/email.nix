@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -7,9 +8,10 @@
 let
   inherit (config.home) homeDirectory;
   inherit (config.modules.secrets) name hotmail;
+  inherit (osConfig.modules.services) sops;
 in
 {
-  accounts.email = {
+  accounts.email = lib.mkIf sops.enable {
     maildirBasePath = "${homeDirectory}/Mail";
 
     accounts = {
