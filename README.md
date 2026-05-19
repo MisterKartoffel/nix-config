@@ -3,18 +3,26 @@
 
 ## Directory Structure Reference
 - `flake.nix` - entrypoint for all host and user configurations.
-- `home/<username>/` - defines Home-Manager settings on a per-user basis.
-  - `keys/` - authorized SSH keys for remote access to this user.
+
 - `hosts/<hostname>/` - defines NixOS settings and users on a per-host basis.
-  - `facter.json` - [NixOS Facter](https://github.com/nix-community/nixos-facter) is my choice of hardware configuration setup.
-  - `disko.nix` - Declarative disk configuration using [Disko](https://github.com/nix-community/disko).
-- `lib/` - defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`.
+  - `default.nix` - host entrypoint, sets default options.
+  - `facter.json` - hardware configuration setup with [NixOS Facter](https://github.com/nix-community/nixos-facter).
+  - `disko.nix` - declarative disk configuration using [Disko](https://github.com/nix-community/disko).
+  - `impermanence.nix` - configures persistent system directories for [Impermanence](https://github.com/nix-community/impermanence).
+
+- `home/<username>/` - defines Home-Manager settings on a per-user basis.
+  - `default.nix` - user entrypoint, sets default options.
+  - `impermanence.nix` - configures persistent user directories for [Impermanence](https://github.com/nix-community/impermanence).
+  - `keys/` - authorized SSH keys for remote access to this user.
+
 - `modules/` - defines all modules in all scopes for all users and all hosts.
   - `flake/` - modules used by `flake.nix` directly.
   - `home/` - main path for all Home-Manager modules.
-    - `core/` - Home-Manager modules used across all users.
+    - `subdirectories` - hold module bundles (Mail, Neovim, etc.) if any.
   - `hosts/` - holds all NixOS modules.
-    - `core/` - NixOS modules used across all hosts.
+    - `subdirectories` - hold module bundles if any.
+
+- `lib/` - defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`.
 
 ## TODO
 - Install and configure:
