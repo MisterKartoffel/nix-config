@@ -29,7 +29,8 @@
   - [just](https://github.com/casey/just).
   - [Newsboat](https://github.com/newsboat/newsboat).
 - Configure dunst to not be an ugly mess.
-- Look into moving sops and age out of environment.systemPackages and into nix-secrets devShell.
+- Set up devshells for nix-config and nix-secrets.
+- Look into and set up direnv.
 
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
