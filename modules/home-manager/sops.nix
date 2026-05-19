@@ -40,6 +40,7 @@ in
         };
         "hotmail/client_id" = { };
         "hotmail/refresh_token" = { };
+        "ufrgs/password" = { };
       };
     };
 

@@ -6,6 +6,7 @@
       "Desktop"
       "Documents"
       "Downloads"
+      "Mail"
       "Music"
       "Pictures"
       "Projects"

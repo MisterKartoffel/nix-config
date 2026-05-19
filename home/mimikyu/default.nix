@@ -11,7 +11,6 @@ in
 
   programs = {
     ghostty.enable = true;
-    neomutt.enable = true;
     nvf.enable = true;
     nh.enable = true;
     tofi.enable = true;

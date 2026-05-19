@@ -6,17 +6,15 @@
 }:
 let
   yamlFormat = pkgs.formats.yaml { };
-
-  cfg = config.programs.neomutt;
+  inherit (config.accounts.email.accounts) hotmail;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (hotmail.enable && hotmail.offlineimap.enable) {
     home.packages = builtins.attrValues {
       inherit (pkgs)
         gnome-keyring
         gcr
         libsecret
-        oama
         ;
     };
 
@@ -24,7 +22,8 @@ in
 
     xdg.configFile."oama/config.yaml".source = yamlFormat.generate "config.yaml" {
       encryption.tag = "KEYRING";
-      services.microsoft.client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753";
+      services.microsoft.client_id =
+        config.accounts.email.accounts.hotmail.offlineimap.extraConfig.remote.oauth2_client_id;
     };
   };
 }
