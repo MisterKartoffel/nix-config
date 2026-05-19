@@ -14,6 +14,7 @@
       "Templates"
       "Videos"
       ".config/zen"
+      ".config/vesktop"
       {
         directory = ".local/share/keyrings";
         mode = "0700";
