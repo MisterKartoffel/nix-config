@@ -22,8 +22,7 @@ in
 
     xdg.configFile."oama/config.yaml".source = yamlFormat.generate "config.yaml" {
       encryption.tag = "KEYRING";
-      services.microsoft.client_id =
-        config.accounts.email.accounts.hotmail.offlineimap.extraConfig.remote.oauth2_client_id;
+      services.microsoft.client_id = hotmail.offlineimap.extraConfig.remote.oauth2_client_id;
     };
   };
 }

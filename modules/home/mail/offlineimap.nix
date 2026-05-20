@@ -4,21 +4,16 @@
   ...
 }:
 let
-  inherit (config.accounts.email.accounts) hotmail ufrgs;
+  inherit (config.accounts.email.accounts) hotmail;
 in
 {
   accounts.email.accounts = {
-    hotmail.offlineimap.extraConfig.remote = lib.mkIf hotmail.offlineimap.enable {
-      auth_mechanisms = lib.toUpper hotmail.imap.authentication;
-      oauth2_client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753";
-      oauth2_request_url = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-      oauth2_access_token_eval = "%(remotepasseval)s";
-      createfolders = false;
-    };
-
-    ufrgs.offlineimap.extraConfig.remote = lib.mkIf ufrgs.offlineimap.enable {
-      auth_mechanisms = lib.toUpper ufrgs.imap.authentication;
-      createfolders = false;
+    hotmail.offlineimap = lib.mkIf hotmail.offlineimap.enable {
+      extraConfig.remote = {
+        oauth2_client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753";
+        oauth2_request_url = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+        oauth2_access_token_eval = "%(remotepasseval)s";
+      };
     };
   };
 

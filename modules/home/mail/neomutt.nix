@@ -2,7 +2,7 @@
 let
   inherit (config.accounts.email.accounts) hotmail ufrgs;
 
-  mailboxSettings = service: overrides: {
+  makeSettings = service: overrides: {
     mailboxName = "${service}/Caixa de Entrada";
     extraMailboxes = [
       {
@@ -30,17 +30,8 @@ let
 in
 {
   accounts.email.accounts = {
-    hotmail.neomutt = lib.mkIf hotmail.neomutt.enable (
-      mailboxSettings "Hotmail" {
-        trash = "Deleted";
-      }
-    );
-
-    ufrgs.neomutt = lib.mkIf ufrgs.neomutt.enable (
-      mailboxSettings "UFRGS" {
-        junk = "Spam";
-      }
-    );
+    hotmail.neomutt = lib.mkIf hotmail.neomutt.enable (makeSettings "Hotmail" { trash = "Deleted"; });
+    ufrgs.neomutt = lib.mkIf ufrgs.neomutt.enable (makeSettings "UFRGS" { junk = "Spam"; });
   };
 
   programs.neomutt =

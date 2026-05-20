@@ -6,21 +6,34 @@
   ...
 }:
 let
-  inherit (config.modules.secrets) name hotmail ufrgs;
+  inherit (config.modules) secrets;
   inherit (osConfig.modules.services) sops;
+
+  mergeDefaults =
+    services: overrides:
+    lib.genAttrs services (
+      service:
+      lib.mkMerge [
+        (import ./_defaults.nix {
+          inherit
+            pkgs
+            lib
+            secrets
+            service
+            overrides
+            ;
+        }).${service}
+        overrides.${service}
+      ]
+    );
 in
 {
   accounts.email = lib.mkIf sops.enable {
     maildirBasePath = "Mail";
 
-    accounts = {
+    accounts = mergeDefaults [ "hotmail" "ufrgs" ] {
       hotmail = {
-        enable = true;
         primary = true;
-
-        address = hotmail.email;
-        userName = hotmail.email;
-        realName = name;
 
         maildir.path = "Hotmail";
         folders.trash = "Deleted";
@@ -29,21 +42,10 @@ in
         imap.authentication = "xoauth2";
         smtp.authentication = "xoauth2";
 
-        passwordCommand = "${lib.getExe pkgs.oama} access ${hotmail.email}";
-
-        neomutt.enable = true;
-        offlineimap.enable = true;
-        imapnotify.enable = true;
-        msmtp.enable = true;
+        passwordCommand = "${lib.getExe pkgs.oama} access ${secrets.hotmail.email}";
       };
 
       ufrgs = {
-        enable = true;
-
-        address = ufrgs.email;
-        userName = ufrgs.email;
-        realName = name;
-
         maildir.path = "UFRGS";
         folders.inbox = "INBOX";
 
@@ -59,12 +61,7 @@ in
           tls.useStartTls = true;
         };
 
-        passwordCommand = "${pkgs.coreutils}/bin/cat ${ufrgs.password.path}";
-
-        neomutt.enable = true;
-        offlineimap.enable = true;
-        imapnotify.enable = true;
-        msmtp.enable = true;
+        passwordCommand = "${pkgs.coreutils}/bin/cat ${secrets.ufrgs.password.path}";
       };
     };
   };
