@@ -10,6 +10,7 @@ in
   imports = lib.custom.importTree "modules/home" ++ [ ./impermanence.nix ];
 
   programs = {
+    eza.enable = true;
     ghostty.enable = true;
     nvf.enable = true;
     nh.enable = true;
