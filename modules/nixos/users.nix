@@ -26,9 +26,9 @@ in
     ) "$y$j9T$9lxUmIACkk7jFAU437ubP/$/dbwqUcskqwzxBC.Lg7WJx4uf/8jxLGcxRjM36U0q57";
     hashedPasswordFile = lib.mkIf sops.enable secrets.host.${username}.password.path;
 
-    openssh.authorizedKeys.keyFiles = lib.mapAttrsToList (
-      key: _: relativeToRoot "home/${username}/keys/${key}"
-    ) (builtins.readDir (relativeToRoot "home/${username}/keys"));
+    openssh.authorizedKeys.keys = [
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJRyJ3RdkVQsdZpnQ0+hPPwzI+lg9XprrK3ntSFPldhBsA4sywtAy4U2P+9DtdeON29opxsUyiDd2yprr2iwWG8= termius@s20fe"
+    ];
   }) users;
 
   home-manager.users = lib.mapAttrs (username: _: {
