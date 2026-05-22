@@ -1,7 +1,7 @@
 { config, ... }:
 let
-  cfg = config.security.run0;
+  inherit (config.security) run0;
 in
 {
-  security.sudo.enable = !cfg.enableSudoAlias;
+  security.sudo.enable = !run0.enableSudoAlias;
 }

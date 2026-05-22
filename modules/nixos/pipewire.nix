@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.services.pipewire;
+  inherit (config.services) pipewire;
 in
 {
-  services = lib.mkIf cfg.enable {
+  services = lib.mkIf pipewire.enable {
     pulseaudio.enable = lib.mkForce false;
 
     pipewire = {

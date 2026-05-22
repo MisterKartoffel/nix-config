@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.programs.nvf;
+  inherit (config.programs) nvf;
 in
 {
-  programs.nvf.settings.vim = lib.mkIf cfg.enable {
+  programs.nvf.settings.vim = lib.mkIf nvf.enable {
     binds.whichKey.enable = true;
 
     keymaps = [

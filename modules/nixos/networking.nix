@@ -1,11 +1,11 @@
 { config, lib, ... }:
 let
-  cfg = config.networking;
+  inherit (config) networking;
   ifaces = config.hardware.facter.detected.dhcp.interfaces;
   bondName = "bond0";
 in
 {
-  systemd.network = lib.mkIf cfg.useNetworkd (
+  systemd.network = lib.mkIf networking.useNetworkd (
     lib.mkMerge [
       {
         enable = true;
@@ -72,10 +72,10 @@ in
     {
       firewall.enable = true;
     }
-    (lib.mkIf (!cfg.useNetworkd || ifaces == [ ]) {
-      networkmanager.enable = !cfg.useNetworkd;
-      useDHCP = !cfg.useNetworkd;
-      dhcpcd.enable = !cfg.useNetworkd;
+    (lib.mkIf (!networking.useNetworkd || ifaces == [ ]) {
+      networkmanager.enable = !networking.useNetworkd;
+      useDHCP = !networking.useNetworkd;
+      dhcpcd.enable = !networking.useNetworkd;
     })
   ];
 }

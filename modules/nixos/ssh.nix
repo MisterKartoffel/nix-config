@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.modules.services.sops;
+  inherit (config.modules.services) sops;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf sops.enable {
     services.openssh = {
       enable = true;
 

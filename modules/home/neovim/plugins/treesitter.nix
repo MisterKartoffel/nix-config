@@ -1,7 +1,7 @@
 { config, ... }:
 let
-  cfg = config.programs.nvf;
+  inherit (config.programs) nvf;
 in
 {
-  programs.nvf.settings.vim.treesitter.enable = cfg.enable;
+  programs.nvf.settings.vim.treesitter.enable = nvf.enable;
 }

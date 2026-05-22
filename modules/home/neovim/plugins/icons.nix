@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   inherit (config.programs.nvf.settings) vim;
   pluginEnabled = builtins.any (x: x.enable) [
@@ -9,5 +9,5 @@ let
   ];
 in
 {
-  programs.nvf.settings.vim.visuals.nvim-web-devicons.enable = lib.mkIf pluginEnabled true;
+  programs.nvf.settings.vim.visuals.nvim-web-devicons.enable = pluginEnabled;
 }

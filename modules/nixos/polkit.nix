@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
-  cfg = config.security.polkit;
+  inherit (config.security) polkit;
 in
 {
-  security.polkit = lib.mkIf cfg.enable { };
+  security.polkit = lib.mkIf polkit.enable { };
 }

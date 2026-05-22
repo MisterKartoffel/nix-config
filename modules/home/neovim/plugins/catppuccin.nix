@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.programs.nvf;
+  inherit (config.programs) nvf;
 in
 {
-  programs.nvf.settings.vim.theme = lib.mkIf cfg.enable {
+  programs.nvf.settings.vim.theme = lib.mkIf nvf.enable {
     enable = true;
     name = "catppuccin";
     style = "mocha";
