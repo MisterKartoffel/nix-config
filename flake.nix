@@ -41,7 +41,7 @@
             ./hosts/${hostname}
           ]
           ++ host.modules.system.submodules
-          ++ env.lib.custom.importTree "modules/flake";
+          ++ env.lib.custom.importTree "modules/nixos";
           specialArgs = { inherit inputs; };
         };
     in

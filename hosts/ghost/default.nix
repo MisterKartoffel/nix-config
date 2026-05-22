@@ -1,4 +1,30 @@
 {
+  modules = {
+    system = {
+      architecture = "x86_64-linux";
+
+      submodules = [
+        ./disko.nix
+        ./impermanence.nix
+        ./packages.nix
+      ];
+
+      users = {
+        "mimikyu" = {
+          autologin = true;
+          shell = "zsh";
+          extraGroups = [
+            "wheel"
+            "qbt"
+            "video"
+          ];
+        };
+      };
+    };
+
+    services.sops.enable = true;
+  };
+
   system.stateVersion = "26.05";
 
   time.timeZone = "America/Sao_Paulo";
@@ -19,35 +45,15 @@
     };
   };
 
-  modules = {
-    system = {
-      architecture = "x86_64-linux";
-
-      submodules = [
-        ./disko.nix
-        ./impermanence.nix
-        ./modules.nix
-        ./packages.nix
-      ];
-
-      users = {
-        "mimikyu" = {
-          autologin = true;
-          shell = "zsh";
-          extraGroups = [
-            "wheel"
-            "qbt"
-            "video"
-          ];
-        };
-      };
-    };
-
-    services.sops.enable = true;
+  security = {
+    polkit.enable = true;
+    run0.enableSudoAlias = true;
   };
 
   services = {
     pipewire.enable = true;
     qbittorrent.enable = false;
   };
+
+  hardware.facter.reportPath = ./facter.json;
 }

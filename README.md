@@ -16,7 +16,6 @@
   - `keys/` - authorized SSH keys for remote access to this user.
 
 - `modules/` - defines all modules in all scopes for all users and all hosts.
-  - `flake/` - modules used by `flake.nix` directly.
   - `home/` - main path for all Home-Manager modules.
     - `subdirectories` - hold module bundles (Mail, Neovim, etc.) if any.
   - `hosts/` - holds all NixOS modules.
