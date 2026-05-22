@@ -147,7 +147,7 @@ in
 
       settings = {
         "zen.mods.AudioIndicatorEnhanced.audioWave.enabled" = true;
-        "theme.better_find_bar.enable_custom_background" = true;
+        "theme-better_find_bar-enable_custom_background" = true;
         "theme.better_find_bar.custom_background" = "#1e1e2e";
 
         "browser.translations.enable" = false;
