@@ -36,12 +36,6 @@ let
         default = "x86_64-linux";
       };
 
-      submodules = lib.mkOption {
-        description = "List of NixOS modules";
-        type = lib.types.listOf lib.types.path;
-        default = [ ];
-      };
-
       users = lib.mkOption {
         description = "List of user entries to create on the system";
         type = usersModule;

@@ -1,11 +1,9 @@
 {
+  imports = [ ./disko.nix ];
+
   modules = {
     system = {
       architecture = "x86_64-linux";
-
-      submodules = [
-        ./disko.nix
-      ];
 
       users = {
         "mimikyu" = {
