@@ -24,14 +24,9 @@ in
 
   config = mkIf sops.enable {
     sops = {
-      age = {
-        sshKeyPaths = lib.mkIf ssh.enable [ "${homeDirectory}/.ssh/id_ed25519" ];
-        keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
-        generateKey = false;
-      };
-
+      age.sshKeyPaths = lib.mkIf ssh.enable [ "${homeDirectory}/.ssh/id_ed25519" ];
       defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
-      validateSopsFiles = false;
+      validateSopsFiles = true;
 
       secrets = {
         "${username}/ssh_key" = lib.mkIf ssh.enable {

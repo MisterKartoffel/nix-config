@@ -32,10 +32,8 @@ in
 
     sops = {
       age.sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
-
-      useSystemdActivation = true;
       defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
-      validateSopsFiles = false;
+      validateSopsFiles = true;
 
       secrets =
         let
