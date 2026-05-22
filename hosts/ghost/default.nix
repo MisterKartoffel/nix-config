@@ -5,7 +5,6 @@
 
       submodules = [
         ./disko.nix
-        ./packages.nix
       ];
 
       users = {
@@ -29,8 +28,6 @@
   time.timeZone = "America/Sao_Paulo";
   console.keyMap = "br-abnt2";
 
-  environment.persistence."/etc/persist".enable = true;
-
   networking = {
     hostName = "ghost";
 
@@ -44,7 +41,18 @@
     };
   };
 
+  environment = {
+    persistence."/etc/persist".enable = true;
+    pathsToLink = [ "/share/zsh" ];
+  };
+
+  programs = {
+    zsh.enable = true;
+    dconf.enable = true;
+  };
+
   security = {
+    pam.services.login.enableGnomeKeyring = true;
     polkit.enable = true;
     run0.enableSudoAlias = true;
   };
