@@ -5,7 +5,6 @@
 
       submodules = [
         ./disko.nix
-        ./impermanence.nix
         ./packages.nix
       ];
 

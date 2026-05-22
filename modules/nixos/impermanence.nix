@@ -4,6 +4,7 @@ let
 in
 {
   environment.persistence."/etc/persist" = {
+    enable = lib.mkDefault false;
     hideMounts = true;
 
     directories = [
