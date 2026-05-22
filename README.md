@@ -27,7 +27,6 @@
 - Install and configure:
   - [just](https://github.com/casey/just).
   - [Newsboat](https://github.com/newsboat/newsboat).
-- Configure dunst to not be an ugly mess.
 - Set up devshells for nix-config and nix-secrets.
 - Look into and set up direnv.
 
