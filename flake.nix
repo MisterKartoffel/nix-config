@@ -12,35 +12,20 @@
     let
       hostList = builtins.attrNames (builtins.readDir ./hosts);
 
-      makeEnv =
-        system:
-        let
-          pkgs = import nixpkgs { inherit system; };
-          lib = pkgs.lib.extend (
-            _: _: {
-              custom = import ./lib { inherit (pkgs) lib; };
-            }
-          );
-        in
-        {
-          inherit pkgs lib;
-        };
-
       makeHost =
         hostname:
         let
-          host = import ./hosts/${hostname};
-          env = makeEnv host.modules.system.architecture;
+          lib = nixpkgs.lib.extend (prev: _: import ./lib { lib = prev; });
         in
-        nixpkgs.lib.nixosSystem {
-          inherit (env) pkgs lib;
+        lib.nixosSystem {
+          inherit lib;
           modules = [
             home-manager.nixosModules.home-manager
             disko.nixosModules.disko
             impermanence.nixosModules.impermanence
             ./hosts/${hostname}
           ]
-          ++ env.lib.custom.importTree "modules/nixos";
+          ++ lib.importTree "modules/nixos";
           specialArgs = { inherit inputs; };
         };
     in

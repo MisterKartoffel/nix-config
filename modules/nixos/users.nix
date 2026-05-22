@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib.custom) relativeToRoot;
+  inherit (lib) relativeToRoot;
   inherit (config.modules) secrets services system;
   inherit (system) users;
   inherit (services) sops;

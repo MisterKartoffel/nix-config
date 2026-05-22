@@ -7,7 +7,7 @@ let
   inherit (config.programs) nvf ghostty;
 in
 {
-  imports = lib.custom.importTree "modules/home";
+  imports = lib.importTree "modules/home";
 
   programs = {
     eza.enable = true;

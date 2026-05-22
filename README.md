@@ -21,7 +21,7 @@
   - `hosts/` - holds all NixOS modules.
     - `subdirectories` - hold module bundles if any.
 
-- `lib/` - defines useful library functions to be used throughout the configuration. Accessible via `lib.custom`.
+- `lib/` - defines useful library functions to be used throughout the configuration. Accessible via an extension of `lib`.
 
 ## TODO
 - Install and configure:
