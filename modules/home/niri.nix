@@ -4,12 +4,21 @@
 
   xdg.portal = {
     enable = true;
+    xdgOpenUsePortal = true;
 
     config.niri = {
-      default = [ "gnome" ];
+      default = [ "gtk" ];
+
+      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
     };
 
-    extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+    extraPortals = builtins.attrValues {
+      inherit (pkgs)
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-gnome
+        ;
+    };
+
   };
 
   xdg.configFile."niri/config.kdl".text = ''
