@@ -32,7 +32,7 @@ in
   }) users;
 
   home-manager.users = lib.mapAttrs (username: _: {
-    imports = map relativeToRoot [ "home/${username}" ];
+    imports = map relativeToRoot [ "home/${username}.nix" ];
     home = {
       inherit username;
       homeDirectory = "/home/${username}";
