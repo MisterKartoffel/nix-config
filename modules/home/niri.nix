@@ -1,4 +1,12 @@
-{ pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  zen-browser = config.programs.zen-browser.package;
+in
 {
   home.packages = [ pkgs.niri ];
 
@@ -113,9 +121,9 @@
     binds {
     	// General use binds
     		Mod+Shift+Slash  repeat=false { show-hotkey-overlay; }
-    		Mod+T            repeat=false { spawn "ghostty" "+new-window"; }
-    		Mod+F            repeat=false { spawn "zen-beta"; }
-    		Mod+Space        repeat=false { spawn "tofi-drun"; }
+    		Mod+T            repeat=false { spawn "${lib.getExe pkgs.ghostty}" "+new-window"; }
+    		Mod+F            repeat=false { spawn "${lib.getExe zen-browser}"; }
+    		Mod+Space        repeat=false { spawn "${lib.getExe' pkgs.tofi "tofi-drun"}"; }
     		Mod+Shift+Delete repeat=false { quit; }
     		Mod+Q            repeat=false { close-window; }
     		Mod+O            repeat=false { toggle-overview; }
@@ -186,16 +194,16 @@
     			Mod+SemiColon { toggle-column-tabbed-display; }
 
     	// Media controls
-    		XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_SINK@" "5%+" "--limit" "0.5"; }
-    		XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_SINK@" "5%-"; }
-    		XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_SINK@" "toggle"; }
-    		Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_SOURCE@" "5%+" "--limit" "1.0"; }
-    		Shift+XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_SOURCE@" "5%-"; }
-    		Shift+XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_SOURCE@" "toggle"; }
-    		XF86AudioPlay allow-when-locked=true { spawn "playerctl" "play-pause"; }
-    		XF86AudioStop allow-when-locked=true { spawn "playerctl" "stop"; }
-    		XF86AudioPrev allow-when-locked=true { spawn "playerctl" "previous"; }
-    		XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
+    		XF86AudioRaiseVolume allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-volume" "@DEFAULT_SINK@" "5%+" "--limit" "0.5"; }
+    		XF86AudioLowerVolume allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-volume" "@DEFAULT_SINK@" "5%-"; }
+    		XF86AudioMute        allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-mute" "@DEFAULT_SINK@" "toggle"; }
+    		Shift+XF86AudioRaiseVolume allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-volume" "@DEFAULT_SOURCE@" "5%+" "--limit" "1.0"; }
+    		Shift+XF86AudioLowerVolume allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-volume" "@DEFAULT_SOURCE@" "5%-"; }
+    		Shift+XF86AudioMute        allow-when-locked=true { spawn "${lib.getExe' pkgs.wireplumber "wpctl"}" "set-mute" "@DEFAULT_SOURCE@" "toggle"; }
+    		XF86AudioPlay allow-when-locked=true { spawn "${lib.getExe pkgs.playerctl}" "play-pause"; }
+    		XF86AudioStop allow-when-locked=true { spawn "${lib.getExe pkgs.playerctl}" "stop"; }
+    		XF86AudioPrev allow-when-locked=true { spawn "${lib.getExe pkgs.playerctl}" "previous"; }
+    		XF86AudioNext allow-when-locked=true { spawn "${lib.getExe pkgs.playerctl}" "next"; }
     }
   '';
 }
