@@ -94,6 +94,7 @@ in
 
     window-rule {
     	match title=r#"^Picture-in-Picture$"# app-id=r#"^zen-beta$"#
+    	match title=r#"^File Upload"# app-id=r#"^xdg-desktop-portal-gtk$"#
     	match app-id=r#"^vesktop$"#
     	exclude title=r#"^Vesktop$"#
 
