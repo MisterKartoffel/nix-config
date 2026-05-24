@@ -22,6 +22,7 @@ in
 
   services = {
     dunst.enable = true;
+    playerctld.enable = true;
   };
 
   stylix.enable = true;
