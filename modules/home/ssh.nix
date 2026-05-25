@@ -5,10 +5,10 @@
 }:
 let
   inherit (lib) mkIf;
-  cfg = osConfig.services.openssh;
+  inherit (osConfig.services) openssh;
 in
 {
-  config = mkIf cfg.enable {
+  config = mkIf openssh.enable {
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
@@ -19,12 +19,6 @@ in
           addKeysToAgent = "yes";
           identitiesOnly = true;
           identityFile = "~/.ssh/id_ed25519";
-        };
-
-        "github" = {
-          host = "github";
-          hostname = "github.com";
-          user = "git";
         };
 
         "kindle" = {

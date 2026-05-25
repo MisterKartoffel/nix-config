@@ -1,19 +1,25 @@
-{ config, lib, ... }:
+{
+  osConfig,
+  config,
+  lib,
+  ...
+}:
 let
   inherit (config.xdg) userDirs;
   inherit (config.accounts.email) maildirBasePath;
   inherit (config.services) gnome-keyring;
   inherit (config.programs)
     offlineimap
-    ssh
     vesktop
     zen-browser
     zsh
     ;
+
+  inherit (osConfig.modules.services) impermanence;
 in
 {
-  home.persistence."/etc/persist" = {
-    enable = lib.mkDefault false;
+  home.persistence.${impermanence.path} = {
+    enable = lib.mkDefault impermanence.enable;
     hideMounts = true;
 
     directories =
@@ -52,13 +58,9 @@ in
         }
       ];
 
-    files =
-      lib.optionals ssh.enable [
-        ".ssh/known_hosts"
-      ]
-      ++ lib.optionals zsh.enable [
-        ".config/zsh/.p10k.zsh"
-        ".local/state/zsh/history"
-      ];
+    files = lib.optionals zsh.enable [
+      ".config/zsh/.p10k.zsh"
+      ".local/state/zsh/history"
+    ];
   };
 }

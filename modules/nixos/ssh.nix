@@ -1,7 +1,7 @@
 { config, lib, ... }:
 let
   inherit (config.modules.services) sops;
-  persistence = config.environment.persistence."/etc/persist";
+  persistence = config.environment.persistence."/persist";
 in
 {
   config = lib.mkIf sops.enable {

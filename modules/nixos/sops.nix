@@ -18,6 +18,7 @@ let
 
   inherit (config.modules.services) sops;
   inherit (config.services) openssh;
+  inherit (config.networking) wireless;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -31,14 +32,19 @@ in
     };
 
     sops = {
-      age.sshKeyPaths = lib.mkIf openssh.enable [ "/etc/ssh/ssh_host_ed25519_key" ];
+      age.keyFile = "/var/lib/sops-nix/key.txt";
       defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
       validateSopsFiles = true;
 
       secrets =
         let
           hostSecrets = {
-            "wireless" = lib.optionalAttrs config.networking.wireless.enable {
+            "ssh_host_key" = lib.optionalAttrs openssh.enable {
+              mode = "0600";
+              path = "/etc/ssh/ssh_host_ed25519_key";
+            };
+
+            "wireless" = lib.optionalAttrs wireless.enable {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
             };

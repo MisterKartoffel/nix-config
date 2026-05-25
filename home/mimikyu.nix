@@ -27,12 +27,8 @@ in
 
   stylix.enable = true;
 
-  home = {
-    persistence."/etc/persist".enable = true;
-
-    sessionVariables = {
-      TERMINAL = if ghostty.enable then "ghostty" else "";
-      MANPAGER = if nvf.enable then "nvim +Man!" else "";
-    };
+  home.sessionVariables = {
+    TERMINAL = if ghostty.enable then "ghostty" else "";
+    MANPAGER = if nvf.enable then "nvim +Man!" else "";
   };
 }

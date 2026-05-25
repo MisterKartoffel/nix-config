@@ -1,7 +1,7 @@
 {
   fileSystems = {
     "/nix".neededForBoot = true;
-    "/etc/persist".neededForBoot = true;
+    "/persist".neededForBoot = true;
   };
 
   disko.devices.nodev = {
@@ -37,11 +37,11 @@
 
       content = {
         type = "btrfs";
-        extraArgs = [ "-f" ];
+        extraArgs = [ "-L NixOS -f" ];
 
         subvolumes = {
           "/persist" = {
-            mountpoint = "/etc/persist";
+            mountpoint = "/persist";
             mountOptions = [
               "subvol=persist"
               "noatime"

@@ -2,23 +2,26 @@
   imports = [ ./disko.nix ];
 
   modules = {
-    system = {
-      architecture = "x86_64-linux";
-
-      users = {
-        "mimikyu" = {
-          autologin = true;
-          shell = "zsh";
-          extraGroups = [
-            "wheel"
-            "qbt"
-            "video"
-          ];
-        };
+    system.users = {
+      "mimikyu" = {
+        autologin = true;
+        shell = "zsh";
+        extraGroups = [
+          "wheel"
+          "qbt"
+          "video"
+        ];
       };
     };
 
-    services.sops.enable = true;
+    services = {
+      sops.enable = true;
+
+      impermanence = {
+        enable = true;
+        path = "/persist";
+      };
+    };
   };
 
   system.stateVersion = "26.05";
@@ -39,11 +42,6 @@
     };
   };
 
-  environment = {
-    persistence."/etc/persist".enable = true;
-    pathsToLink = [ "/share/zsh" ];
-  };
-
   programs = {
     zsh.enable = true;
     dconf.enable = true;
@@ -60,5 +58,6 @@
     qbittorrent.enable = false;
   };
 
+  environment.pathsToLink = [ "/share/zsh" ];
   hardware.facter.reportPath = ./facter.json;
 }

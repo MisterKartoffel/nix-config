@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
-  ssh = config.services.openssh;
+  inherit (config.modules.services) impermanence sops;
 in
 {
-  environment.persistence."/etc/persist" = {
-    enable = lib.mkDefault false;
+  environment.persistence.${impermanence.path} = {
+    inherit (impermanence) enable;
     hideMounts = true;
 
     directories = [
@@ -23,8 +23,11 @@ in
     files = [
       "/etc/machine-id"
     ]
-    ++ lib.optionals ssh.enable [
-      "/etc/ssh/ssh_host_ed25519_key"
+    ++ lib.optionals sops.enable [
+      {
+        file = "/var/lib/sops-nix/key.txt";
+        parentDirectory.mode = "0700";
+      }
     ];
   };
 }

@@ -30,16 +30,22 @@ let
 
   systemModule = lib.types.submodule {
     options = {
-      architecture = lib.mkOption {
-        description = "System architecture";
-        type = lib.types.str;
-        default = "x86_64-linux";
-      };
-
       users = lib.mkOption {
         description = "List of user entries to create on the system";
         type = usersModule;
         default = [ ];
+      };
+    };
+  };
+
+  impermanenceModule = lib.types.submodule {
+    options = {
+      enable = lib.mkEnableOption "Enable system-wide impermanence";
+
+      path = lib.mkOption {
+        description = "Path to persistent directory";
+        type = lib.types.nullOr lib.types.str;
+        default = null;
       };
     };
   };
@@ -56,6 +62,11 @@ let
 
   servicesModule = lib.types.submodule {
     options = {
+      impermanence = lib.mkOption {
+        description = "Impermanence configuration";
+        type = impermanenceModule;
+      };
+
       sops = lib.mkOption {
         description = "SOPS-Nix configuration";
         type = sopsModule;
@@ -86,6 +97,15 @@ in
         builtins.length autologinUsers <= 1;
 
       message = "At most one user may have autologin = true";
+    }
+    {
+      assertion =
+        let
+          inherit (config.modules.services) impermanence;
+        in
+        impermanence.enable -> impermanence.path != null;
+
+      message = "Impermanence is enabled but the impermanence path is not set";
     }
   ];
 }

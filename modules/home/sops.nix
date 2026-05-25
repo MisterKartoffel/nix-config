@@ -7,7 +7,6 @@
 }:
 let
   inherit (config.home) username homeDirectory;
-  inherit (lib) mkIf;
 
   nestAttrset =
     secrets:
@@ -22,9 +21,9 @@ in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-  config = mkIf sops.enable {
+  config = lib.mkIf sops.enable {
     sops = {
-      age.sshKeyPaths = lib.mkIf ssh.enable [ "${homeDirectory}/.ssh/id_ed25519" ];
+      age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
       defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
       validateSopsFiles = true;
 
