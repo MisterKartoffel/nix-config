@@ -279,10 +279,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1779138600,
-        "narHash": "sha256-MWCSx/w706Ki4pJiQPYlUjtzyIVqwDnzczLbTr06yXo=",
+        "lastModified": 1779802170,
+        "narHash": "sha256-m6+YNCGGsMipZAD9OM1Btct5KFRnqHekJe/QW6Utlow=",
         "ref": "main",
-        "rev": "3c8a16df196cafb4cf33bddf04eab70349a4d0c5",
+        "rev": "2347f6258f88c0cce2a5ea504aa6e54a9e765453",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/misterkartoffel/nix-secrets.git"
