@@ -23,7 +23,7 @@ in
       {
         mode = "n";
         key = "J";
-        action = "V<Esc>Jgv<Esc>zz";
+        action = "V<Esc>Jgv<Esc>";
         desc = "Append the line below while keeping cursor still";
         silent = true;
       }
