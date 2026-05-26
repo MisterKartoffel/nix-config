@@ -28,7 +28,7 @@
       enable = true;
 
       onNotify = "${lib.getExe pkgs.offlineimap} -a ${service}";
-      onNotifyPost = "${pkgs.libnotify}/bin/notify-send '[${service}] New mail!'";
+      onNotifyPost = "${lib.getExe' pkgs.libnotify "notify-send"} '[${service}] New mail!'";
 
       extraArgs = [ "-log-level warn" ];
     };

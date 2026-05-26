@@ -61,7 +61,7 @@ in
           tls.useStartTls = true;
         };
 
-        passwordCommand = "${pkgs.coreutils}/bin/cat ${secrets.ufrgs.password.path}";
+        passwordCommand = "${lib.getExe' pkgs.coreutils "cat"} ${secrets.ufrgs.password.path}";
       };
     };
   };
