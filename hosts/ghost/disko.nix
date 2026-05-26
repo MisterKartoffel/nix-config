@@ -1,11 +1,15 @@
+{ config, ... }:
+let
+  inherit (config.modules.services) impermanence;
+in
 {
-  fileSystems."/persist".neededForBoot = true;
+  fileSystems.${impermanence.path}.neededForBoot = true;
 
   disko.devices.nodev = {
     "/" = {
       fsType = "tmpfs";
       mountOptions = [
-        "size=10%"
+        "size=256M"
         "mode=755"
       ];
     };
@@ -37,10 +41,9 @@
         extraArgs = [ "-L NixOS -f" ];
 
         subvolumes = {
-          "/persist" = {
-            mountpoint = "/persist";
+          ${impermanence.path} = {
+            mountpoint = impermanence.path;
             mountOptions = [
-              "subvol=persist"
               "noatime"
               "compress=zstd"
               "defaults"
@@ -49,7 +52,6 @@
           "/nix" = {
             mountpoint = "/nix";
             mountOptions = [
-              "subvol=nix"
               "noatime"
               "compress=zstd"
               "defaults"
