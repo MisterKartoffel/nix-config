@@ -1,8 +1,5 @@
 {
-  fileSystems = {
-    "/nix".neededForBoot = true;
-    "/persist".neededForBoot = true;
-  };
+  fileSystems."/persist".neededForBoot = true;
 
   disko.devices.nodev = {
     "/" = {
