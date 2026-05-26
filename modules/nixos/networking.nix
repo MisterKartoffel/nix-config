@@ -72,10 +72,10 @@ in
     {
       firewall.enable = true;
     }
-    (lib.mkIf (!networking.useNetworkd || ifaces == [ ]) {
-      networkmanager.enable = !networking.useNetworkd;
-      useDHCP = !networking.useNetworkd;
-      dhcpcd.enable = !networking.useNetworkd;
+    (lib.mkIf (networking.useNetworkd -> ifaces == [ ]) {
+      networkmanager.enable = true;
+      useDHCP = true;
+      dhcpcd.enable = true;
     })
   ];
 }
