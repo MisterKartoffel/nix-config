@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services.dunst = {
     settings = {
@@ -15,8 +15,8 @@
         gap_size = 2;
         markup = "full";
         enable_recursive_icon_lookup = true;
-        dmenu = "${pkgs.tofi}/bin/tofi-drun --prompt-text 'dunst:'";
-        browser = "${pkgs.xdg-utils}/bin/xdg-open";
+        dmenu = "${lib.getExe' pkgs.tofi "tofi-drun"} --prompt-text 'dunst:'";
+        browser = "${lib.getExe' pkgs.xdg-utils "xdg-open"}";
         mouse_left_click = "do_action, open_url, close_current";
         mouse_middle_click = "context";
         mouse_right_click = "close_current";
