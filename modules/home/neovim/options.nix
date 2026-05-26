@@ -23,7 +23,10 @@ in
       hlsearch = false;
       wrap = false;
       signcolumn = "yes";
+      complete = ".^5,b^5,t^5,o^5";
       completeopt = "fuzzy,menuone,popup,noinsert";
+      wildmode = "noselect,full";
+      autocomplete = true;
       showmode = false;
       winborder = "rounded";
       pumheight = 10;
