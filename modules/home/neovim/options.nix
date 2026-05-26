@@ -24,7 +24,7 @@ in
       wrap = false;
       signcolumn = "yes";
       complete = ".^5,b^5,t^5,o^5";
-      completeopt = "fuzzy,menuone,popup,noinsert";
+      completeopt = "fuzzy,menuone,popup,noselect";
       wildmode = "noselect,full";
       autocomplete = true;
       showmode = false;
