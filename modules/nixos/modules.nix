@@ -7,11 +7,7 @@ let
   usersModule = lib.types.attrsOf (
     lib.types.submodule {
       options = {
-        autologin = lib.mkOption {
-          description = "Should the system autologin this user.";
-          type = lib.types.bool;
-          default = false;
-        };
+        autologin = lib.mkEnableOption "Should the system autologin this user.";
 
         shell = lib.mkOption {
           description = "Default shell";
@@ -31,9 +27,9 @@ let
   systemModule = lib.types.submodule {
     options = {
       users = lib.mkOption {
-        description = "List of user entries to create on the system";
+        description = "Attribute set of user entries to create on the system";
         type = usersModule;
-        default = [ ];
+        default = { };
       };
     };
   };
@@ -52,11 +48,7 @@ let
 
   sopsModule = lib.types.submodule {
     options = {
-      enable = lib.mkOption {
-        description = "Enable SOPS-Nix integration";
-        type = lib.types.bool;
-        default = true;
-      };
+      enable = lib.mkEnableOption "Enable SOPS-Nix integration";
     };
   };
 
