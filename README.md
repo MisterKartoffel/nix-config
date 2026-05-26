@@ -4,24 +4,22 @@
 ## Directory Structure Reference
 - `flake.nix` - entrypoint for all host and user configurations.
 
-- `hosts/<hostname>/` - defines NixOS settings and users on a per-host basis.
-  - `default.nix` - host entrypoint, sets default options.
-  - `facter.json` - hardware configuration setup with [NixOS Facter](https://github.com/nix-community/nixos-facter).
-  - `disko.nix` - declarative disk configuration using [Disko](https://github.com/nix-community/disko).
-  - `impermanence.nix` - configures persistent system directories for [Impermanence](https://github.com/nix-community/impermanence).
+- `hosts/<hostname>/` - host-specific NixOS configuration.
+  - `default.nix` - host entrypoint and default options.
+  - `facter.json` - hardware configuration generated with [NixOS Facter](https://github.com/nix-community/nixos-facter).
+  - `disko.nix` - declarative disk layout and formatting using [Disko](https://github.com/nix-community/disko).
 
-- `home/<username>/` - defines Home-Manager settings on a per-user basis.
-  - `default.nix` - user entrypoint, sets default options.
-  - `impermanence.nix` - configures persistent user directories for [Impermanence](https://github.com/nix-community/impermanence).
-  - `keys/` - authorized SSH keys for remote access to this user.
+- `home/` - user-specific Home-Manager settings.
+  - `<username>.nix` - user entrypoint and default options.
 
-- `modules/` - defines all modules in all scopes for all users and all hosts.
-  - `home/` - main path for all Home-Manager modules.
-    - `subdirectories` - hold module bundles (Mail, Neovim, etc.) if any.
-  - `hosts/` - holds all NixOS modules.
-    - `subdirectories` - hold module bundles if any.
+- `modules/` - reusable modules shared across users and hosts.
+  - `home/` - Home-Manager modules.
+  - `hosts/` - NixOS modules.
+  - notable modules:
+    - [Impermanence](https://github.com/nix-community/impermanence), state persistence;
+    - [sops-nix](https://github.com/mic92/sops-nix), declarative secret management;
 
-- `lib/` - defines useful library functions to be used throughout the configuration. Accessible via an extension of `lib`.
+- `lib/` - custom functions to be used throughout the configuration. Accessible via an extension of `lib`.
 
 ## TODO
 - Install and configure:
