@@ -56,6 +56,7 @@ in
               "${username}/age_key" = {
                 owner = username;
                 group = "users";
+                mode = "0600";
                 path = "/home/${username}/.config/sops/age/keys.txt";
               };
             }) users
