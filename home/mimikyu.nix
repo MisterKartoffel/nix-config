@@ -1,14 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, ... }:
 let
   inherit (config.programs) nvf ghostty;
 in
 {
-  imports = lib.importTree "modules/home";
-
   programs = {
     eza.enable = true;
     ghostty.enable = true;

@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (lib) relativeToRoot;
+  inherit (lib) importTree;
   inherit (config.modules) secrets services system;
   inherit (system) users;
   inherit (services) sops;
@@ -36,7 +36,10 @@ in
   ];
 
   home-manager.users = lib.mapAttrs (username: _: {
-    imports = map relativeToRoot [ "home/${username}.nix" ];
+    imports = builtins.concatMap importTree [
+      "home/${username}.nix"
+      "modules/home"
+    ];
     home = {
       inherit username;
       homeDirectory = "/home/${username}";
