@@ -15,14 +15,12 @@ in
 
       matchBlocks = {
         "*" = {
-          host = "*";
           addKeysToAgent = "yes";
           identitiesOnly = true;
           identityFile = "~/.ssh/id_ed25519";
         };
 
         "kindle" = {
-          host = "kindle";
           hostname = "192.168.0.202";
           setEnv."TERM" = "linux";
         };
