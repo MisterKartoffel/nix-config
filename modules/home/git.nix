@@ -8,6 +8,7 @@ let
   inherit (config.modules.secrets) name hotmail;
 
   inherit (config.programs) ssh;
+  neovim = config.programs.nvf.finalPackage;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {
@@ -24,7 +25,7 @@ in
       core = {
         sshCommand = "${lib.getExe pkgs.openssh} -i ${sshKey}";
         compression = 9;
-        editor = "${lib.getExe pkgs.neovim}";
+        editor = "${lib.getExe neovim}";
         pager = "${lib.getExe pkgs.diff-so-fancy} | ${lib.getExe pkgs.less} --tabs=4 -RF";
         whitespace = "error";
       };
