@@ -50,7 +50,10 @@
   security = {
     pam.services.login.enableGnomeKeyring = true;
     polkit.enable = true;
-    run0.enableSudoAlias = true;
+    run0 = {
+      enableSudoAlias = true;
+      wheelNeedsPassword = false;
+    };
   };
 
   services = {
