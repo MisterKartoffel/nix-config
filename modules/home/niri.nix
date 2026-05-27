@@ -82,22 +82,14 @@ in
         window-rule = {
           _children = [
             {
-              match._props = {
-                title = "Picture-in-Picture";
-                app-id = "zen-beta";
-              };
+              match._props.title = "Picture-in-Picture";
             }
             {
-              match._props = {
-                title = "File Upload";
-                app-id = "xdg-desktop-portal-gtk";
-              };
+              match._props.app-id = "xdg-desktop-portal-gtk";
             }
             {
               match._props.app-id = "vesktop";
               exclude._props.title = "Vesktop";
-            }
-            {
               default-column-width.proportion = 0.5;
               default-window-height.proportion = 0.5;
               open-floating = true;
