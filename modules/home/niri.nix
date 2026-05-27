@@ -57,18 +57,33 @@ in
         };
       };
 
-      _children = [
+      window-rule._children = [
         {
-          output = {
-            _args = [ "eDP-1" ];
-            mode = "1920x1080";
-            position._props = {
-              x = 0;
-              y = 0;
-            };
-            focus-at-startup = { };
-          };
+          match._props.title = "Picture-in-Picture";
         }
+        {
+          match._props.app-id = "xdg-desktop-portal-gtk";
+        }
+        {
+          match._props.app-id = "vesktop";
+          exclude._props.title = "Vesktop";
+          default-column-width.proportion = 0.5;
+          default-window-height.proportion = 0.5;
+          open-floating = true;
+        }
+      ];
+
+      output = {
+        _args = [ "eDP-1" ];
+        mode = "1920x1080";
+        position._props = {
+          x = 0;
+          y = 0;
+        };
+        focus-at-startup = { };
+      };
+
+      _children = [
         {
           output = {
             _args = [ "HDMI-A-1" ];
@@ -78,25 +93,6 @@ in
               y = -1080;
             };
             hot-corners.off = { };
-          };
-        }
-        {
-          window-rule = {
-            _children = [
-              {
-                match._props.title = "Picture-in-Picture";
-              }
-              {
-                match._props.app-id = "xdg-desktop-portal-gtk";
-              }
-              {
-                match._props.app-id = "vesktop";
-                exclude._props.title = "Vesktop";
-                default-column-width.proportion = 0.5;
-                default-window-height.proportion = 0.5;
-                open-floating = true;
-              }
-            ];
           };
         }
         {
