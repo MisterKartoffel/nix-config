@@ -150,22 +150,27 @@ in
           _props.repeat = false;
           spawn = "${lib.getExe' pkgs.tofi "tofi-drun"}";
         };
+
         "Mod+T" = {
           _props.repeat = false;
           spawn = "${lib.getExe pkgs.ghostty}";
         };
+
         "Mod+F" = {
           _props.repeat = false;
           spawn = "${lib.getExe zen-browser}";
         };
+
         "Mod+Shift+Delete" = {
           _props.repeat = false;
           quit = { };
         };
+
         "Mod+Q" = {
           _props.repeat = false;
           close-window = { };
         };
+
         "Mod+O" = {
           _props.repeat = false;
           toggle-overview = { };
@@ -176,6 +181,7 @@ in
           _props.repeat = false;
           screenshot = { };
         };
+
         "Mod+Shift+Print" = {
           _props.repeat = false;
           screenshot-window = { };
@@ -250,6 +256,7 @@ in
             "0.5"
           ];
         };
+
         "XF86AudioLowerVolume" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -259,6 +266,7 @@ in
             "5%-"
           ];
         };
+
         "XF86AudioMute" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -268,6 +276,7 @@ in
             "toggle"
           ];
         };
+
         "Shift+XF86AudioRaiseVolume" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -279,6 +288,7 @@ in
             "1.0"
           ];
         };
+
         "Shift+XF86AudioLowerVolume" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -288,6 +298,7 @@ in
             "5%-"
           ];
         };
+
         "Shift+XF86AudioMute" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -297,6 +308,7 @@ in
             "toggle"
           ];
         };
+
         "XF86AudioPlay" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -304,6 +316,7 @@ in
             "play-pause"
           ];
         };
+
         "XF86AudioStop" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -311,6 +324,7 @@ in
             "stop"
           ];
         };
+
         "XF86AudioPrev" = {
           _props.allow-when-locked = true;
           spawn = [
@@ -318,6 +332,7 @@ in
             "previous"
           ];
         };
+
         "XF86AudioNext" = {
           _props.allow-when-locked = true;
           spawn = [
