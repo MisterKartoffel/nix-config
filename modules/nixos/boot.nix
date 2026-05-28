@@ -22,7 +22,7 @@ in
     autologinOnce = true;
   };
 
-  environment.loginShellInit = lib.optional niri.enable ''
+  environment.loginShellInit = lib.optionalString niri.enable ''
     if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
     	exec niri-session -l
     fi
