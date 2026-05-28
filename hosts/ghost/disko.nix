@@ -3,6 +3,8 @@ let
   inherit (config.modules.services) impermanence;
 in
 {
+  environment.etc."machine-id".text = "34b006cd91c04059beb077f7cb4f6e1e";
+
   modules.services.impermanence = {
     enable = true;
     path = "/persist";
