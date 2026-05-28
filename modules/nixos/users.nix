@@ -8,7 +8,6 @@
 let
   inherit (lib) importTree;
   inherit (config.modules) secrets services system;
-  inherit (system) users;
   inherit (services) sops;
 in
 {
@@ -30,7 +29,7 @@ in
       openssh.authorizedKeys.keys = [
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJRyJ3RdkVQsdZpnQ0+hPPwzI+lg9XprrK3ntSFPldhBsA4sywtAy4U2P+9DtdeON29opxsUyiDd2yprr2iwWG8= termius@s20fe"
       ];
-    }) users)
+    }) system.users)
 
     { root.initialPassword = "!"; }
   ];
@@ -45,6 +44,11 @@ in
       homeDirectory = "/home/${username}";
       inherit (config.system) stateVersion;
     };
-  }) users;
-  home-manager.extraSpecialArgs = { inherit inputs; };
+  }) system.users;
+
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    extraSpecialArgs = { inherit inputs; };
+  };
 }
