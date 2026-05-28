@@ -1,8 +1,15 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   inherit (config.programs) ghostty;
 in
 {
+  home.sessionVariables.TERMINAL = lib.optionalString ghostty.enable "${lib.getExe pkgs.ghostty}";
+
   programs.ghostty = lib.mkIf ghostty.enable {
     enableZshIntegration = true;
     clearDefaultKeybinds = true;

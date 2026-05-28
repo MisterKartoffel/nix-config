@@ -1,7 +1,3 @@
-{ config, ... }:
-let
-  inherit (config.programs) nvf ghostty;
-in
 {
   accounts = {
     email.accounts = {
@@ -29,9 +25,4 @@ in
   };
 
   stylix.enable = true;
-
-  home.sessionVariables = {
-    TERMINAL = if ghostty.enable then "ghostty" else "";
-    MANPAGER = if nvf.enable then "nvim +Man!" else "";
-  };
 }
