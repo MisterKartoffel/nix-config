@@ -2,15 +2,19 @@
   imports = [ ./disko.nix ];
 
   modules = {
-    system.users = {
-      "mimikyu" = {
-        autologin = true;
-        shell = "zsh";
-        extraGroups = [
-          "wheel"
-          "qbt"
-          "video"
-        ];
+    system = {
+      machine-id = "34b006cd91c04059beb077f7cb4f6e1e";
+
+      users = {
+        "mimikyu" = {
+          autologin = true;
+          shell = "zsh";
+          extraGroups = [
+            "wheel"
+            "qbt"
+            "video"
+          ];
+        };
       };
     };
 

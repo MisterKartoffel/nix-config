@@ -8,6 +8,7 @@
 let
   inherit (config.networking) hostName;
   inherit (config.modules.system) users;
+  inherit (config.system) etc;
 
   nestAttrset =
     secrets:
@@ -39,12 +40,11 @@ in
       secrets =
         let
           hostSecrets = {
-            "ssh_host_key" = lib.optionalAttrs openssh.enable {
+            "ssh_host_key" = lib.mkIf openssh.enable {
               mode = "0600";
-              path = "/etc/ssh/ssh_host_ed25519_key";
+              path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
             };
-
-            "wireless" = lib.optionalAttrs wireless.enable {
+            "wireless" = lib.mkIf wireless.enable {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
             };

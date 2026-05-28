@@ -13,17 +13,9 @@ in
       "/var/lib/systemd/rfkill"
       "/var/lib/systemd/coredump"
       "/var/log"
-      {
-        directory = "/etc/nixos";
-        user = "mimikyu";
-        group = "users";
-      }
     ];
 
-    files = [
-      "/etc/machine-id"
-    ]
-    ++ lib.optionals sops.enable [
+    files = lib.optionals sops.enable [
       {
         file = "/var/lib/sops-nix/key.txt";
         parentDirectory.mode = "0700";
