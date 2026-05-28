@@ -12,7 +12,7 @@ let
 in
 {
   warnings = lib.optional (
-    git.enable -> ssh.enable
+    git.enable -> !ssh.enable
   ) "Current git configuration requires SSH, git will not be enabled.";
 
   programs.git = lib.mkIf (git.enable && ssh.enable) {
