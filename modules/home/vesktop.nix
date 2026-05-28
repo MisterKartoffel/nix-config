@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.programs.vesktop;
+  inherit (config.programs) vesktop;
 in
 {
-  programs.vesktop = lib.mkIf cfg.enable {
+  programs.vesktop = lib.mkIf vesktop.enable {
     settings = {
       discordBranch = "stable";
       hardwareVideoAcceleration = true;

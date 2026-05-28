@@ -7,8 +7,6 @@
 }:
 {
   ${service} = rec {
-    enable = true;
-
     address = secrets.${service}.email;
     userName = address;
     realName = secrets.name;

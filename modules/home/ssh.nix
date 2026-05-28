@@ -1,16 +1,14 @@
 {
-  osConfig,
+  config,
   lib,
   ...
 }:
 let
-  inherit (lib) mkIf;
-  inherit (osConfig.services) openssh;
+  inherit (config.programs) ssh;
 in
 {
-  config = mkIf openssh.enable {
+  config = lib.mkIf ssh.enable {
     programs.ssh = {
-      enable = true;
       enableDefaultConfig = false;
 
       matchBlocks = {

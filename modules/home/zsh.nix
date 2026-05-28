@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.programs.zsh;
+  inherit (config.programs) zsh;
 in
 {
-  programs.zsh = lib.mkIf cfg.enable {
+  programs.zsh = lib.mkIf zsh.enable {
     autocd = true;
     defaultKeymap = "viins";
     dotDir = "${config.xdg.configHome}/zsh";

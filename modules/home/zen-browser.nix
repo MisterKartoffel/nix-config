@@ -5,12 +5,12 @@
   ...
 }:
 let
-  cfg = config.programs.zen-browser;
+  inherit (config.programs) zen-browser;
 in
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
 
-  programs.zen-browser = lib.mkIf cfg.enable {
+  programs.zen-browser = lib.mkIf zen-browser.enable {
     setAsDefaultBrowser = true;
 
     # See https://mozilla.github.io/policy-templates/

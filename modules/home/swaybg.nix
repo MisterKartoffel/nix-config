@@ -10,10 +10,10 @@ let
     hash = "sha256-9/4PtVNTvT+qILYcp+5Dir7VWXox2zbp0DuXkTv/ecU=";
   };
 
-  cfg = config.stylix;
+  inherit (config) stylix;
 in
 {
-  systemd.user.services.swaybg = lib.mkIf cfg.enable {
+  systemd.user.services.swaybg = lib.mkIf stylix.enable {
     Unit = {
       Description = "Swaybg background image service";
       Documentation = "man:swaybg(1)";

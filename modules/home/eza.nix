@@ -1,9 +1,9 @@
 { config, lib, ... }:
 let
-  cfg = config.programs.eza;
+  inherit (config.programs) eza;
 in
 {
-  programs.eza = lib.mkIf cfg.enable {
+  programs.eza = lib.mkIf eza.enable {
     icons = "always";
     colors = "always";
     git = true;

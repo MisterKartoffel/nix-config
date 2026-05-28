@@ -43,7 +43,6 @@
   };
 
   programs = {
-    zsh.enable = true;
     dconf.enable = true;
   };
 
@@ -63,4 +62,5 @@
 
   environment.pathsToLink = [ "/share/zsh" ];
   hardware.facter.reportPath = ./facter.json;
+  zramSwap.enable = true;
 }

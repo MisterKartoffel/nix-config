@@ -6,7 +6,7 @@
   ...
 }:
 let
-  cfg = config.programs.nvf;
+  inherit (config.programs) nvf;
 in
 {
   home.packages =
@@ -15,7 +15,7 @@ in
 
   imports = [ inputs.nvf.homeManagerModules.default ];
 
-  programs.nvf = lib.mkIf cfg.enable {
+  programs.nvf = lib.mkIf nvf.enable {
     defaultEditor = true;
     settings.vim.extraLuaFiles = [ ./lua/functions.lua ];
   };

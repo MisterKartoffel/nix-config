@@ -6,12 +6,12 @@
   ...
 }:
 let
-  cfg = config.stylix;
+  inherit (config) stylix;
 in
 {
   imports = [ inputs.stylix.homeModules.stylix ];
 
-  stylix = lib.mkIf cfg.enable {
+  stylix = lib.mkIf stylix.enable {
     targets = {
       nvf.enable = false;
       zen-browser.profileNames = [ "Profile0" ];
