@@ -7,7 +7,6 @@
 let
   inherit (config.xdg) userDirs;
   inherit (config.accounts.email) maildirBasePath;
-  inherit (config.services) gnome-keyring;
   inherit (config.programs)
     offlineimap
     vesktop
@@ -16,6 +15,11 @@ let
     ;
 
   inherit (osConfig.modules.services) impermanence;
+
+  gnome-keyring.enable = lib.any (service: service.enable) [
+    osConfig.services.gnome.gnome-keyring
+    config.services.gnome-keyring
+  ];
 in
 {
   home.persistence.${impermanence.path} = {
