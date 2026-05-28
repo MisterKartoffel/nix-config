@@ -6,15 +6,16 @@
 }:
 let
   inherit (config.modules.secrets) name hotmail;
-
-  inherit (config.programs) ssh;
+  inherit (config.programs) git ssh;
   neovim = config.programs.nvf.finalPackage;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {
-  programs.git = lib.mkIf ssh.enable {
-    enable = true;
+  warnings = lib.optional (
+    git.enable -> ssh.enable
+  ) "Current git configuration requires SSH, git will not be enabled.";
 
+  programs.git = lib.mkIf (git.enable && ssh.enable) {
     settings = {
       user = {
         inherit name;
