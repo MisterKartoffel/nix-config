@@ -26,7 +26,7 @@
       enable = true;
       boxes = [ (overrides.${service}.folders.inbox or "Inbox") ];
 
-      onNotify = "${lib.getExe pkgs.offlineimap} -a ${service}";
+      onNotify = "${lib.getExe pkgs.offlineimap} -a ${service} -s";
       onNotifyPost = "${lib.getExe' pkgs.libnotify "notify-send"} '[${service}] New mail!'";
 
       extraArgs = [ "-log-level warn" ];
