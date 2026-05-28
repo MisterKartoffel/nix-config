@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -18,7 +19,7 @@ in
         ;
     };
 
-    services.gnome-keyring.enable = true;
+    services.gnome-keyring.enable = !osConfig.services.gnome.gnome-keyring.enable;
 
     xdg.configFile."oama/config.yaml".source = yamlFormat.generate "config.yaml" {
       encryption.tag = "KEYRING";

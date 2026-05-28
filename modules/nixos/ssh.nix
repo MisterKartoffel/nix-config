@@ -1,6 +1,7 @@
 { config, lib, ... }:
 let
   inherit (config.modules.services) sops;
+  inherit (config.services.gnome) gnome-keyring;
   persistence = config.environment.persistence."/persist";
 in
 {
@@ -16,6 +17,6 @@ in
       };
     };
 
-    programs.ssh.startAgent = true;
+    programs.ssh.startAgent = !gnome-keyring.enable;
   };
 }

@@ -1,4 +1,5 @@
 {
+  osConfig,
   config,
   pkgs,
   lib,
@@ -6,31 +7,11 @@
 }:
 let
   toKDL = lib.hm.generators.toKDL { };
+  inherit (osConfig.programs) niri;
   zen-browser = config.programs.zen-browser.package;
 in
 {
-  home.packages = [ pkgs.niri ];
-
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-
-    config.niri = {
-      default = [ "gtk" ];
-
-      "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
-    };
-
-    extraPortals = builtins.attrValues {
-      inherit (pkgs)
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
-        ;
-    };
-
-  };
-
-  xdg.configFile."niri/config.kdl" = {
+  xdg.configFile."niri/config.kdl" = lib.mkIf niri.enable {
     onChange = "${lib.getExe pkgs.niri} validate";
     text = toKDL {
       prefer-no-csd = { };

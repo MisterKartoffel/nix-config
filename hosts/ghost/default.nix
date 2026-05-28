@@ -44,10 +44,11 @@
 
   programs = {
     dconf.enable = true;
+    niri.enable = true;
+    zsh.enable = true;
   };
 
   security = {
-    pam.services.login.enableGnomeKeyring = true;
     polkit.enable = true;
     run0 = {
       enableSudoAlias = true;
