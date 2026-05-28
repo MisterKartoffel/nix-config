@@ -3,6 +3,11 @@ let
   inherit (config.modules.services) impermanence;
 in
 {
+  modules.services.impermanence = {
+    enable = true;
+    path = "/persist";
+  };
+
   fileSystems.${impermanence.path}.neededForBoot = true;
 
   disko.devices.nodev = {
