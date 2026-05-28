@@ -24,6 +24,7 @@
 
     imapnotify = {
       enable = true;
+      boxes = [ (overrides.${service}.folders.inbox or "Inbox") ];
 
       onNotify = "${lib.getExe pkgs.offlineimap} -a ${service}";
       onNotifyPost = "${lib.getExe' pkgs.libnotify "notify-send"} '[${service}] New mail!'";
