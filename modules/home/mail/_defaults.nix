@@ -17,7 +17,7 @@
       enable = true;
 
       extraConfig.remote = {
-        auth_mechanisms = lib.toUpper (overrides.imap.authentication or "plain");
+        auth_mechanisms = lib.toUpper (overrides.${service}.imap.authentication or "plain");
         createfolders = false;
       };
     };
