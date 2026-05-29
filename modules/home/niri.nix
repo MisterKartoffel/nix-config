@@ -39,12 +39,8 @@ in
       };
 
       window-rule._children = [
-        {
-          match._props.title = "Picture-in-Picture";
-        }
-        {
-          match._props.app-id = "xdg-desktop-portal-gtk";
-        }
+        { match._props.title = "Picture-in-Picture"; }
+        { match._props.app-id = "xdg-desktop-portal-gtk"; }
         {
           match._props.app-id = "vesktop";
           exclude._props.title = "Vesktop";

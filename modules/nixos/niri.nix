@@ -9,9 +9,7 @@ let
 in
 {
   config = lib.mkIf niri.enable {
-    programs.niri = {
-      useNautilus = false;
-    };
+    programs.niri.useNautilus = false;
 
     xdg.portal = {
       xdgOpenUsePortal = true;
