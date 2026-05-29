@@ -3,12 +3,16 @@ let
   inherit (config.services) pipewire;
 in
 {
-  services = lib.mkIf pipewire.enable {
-    pulseaudio.enable = lib.mkForce false;
+  config = lib.mkIf pipewire.enable {
+    services = {
+      pulseaudio.enable = lib.mkForce false;
 
-    pipewire = {
-      alsa.enable = true;
-      pulse.enable = true;
+      pipewire = {
+        alsa.enable = true;
+        pulse.enable = true;
+      };
     };
+
+    security.rtkit.enable = true;
   };
 }
