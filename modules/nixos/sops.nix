@@ -6,8 +6,10 @@
   ...
 }:
 let
-  inherit (config.networking) hostName;
   inherit (config.modules.system) users;
+  inherit (config.modules.services) sops;
+  inherit (config.services) openssh;
+  inherit (config.networking) hostName wireless;
   inherit (config.system) etc;
 
   nestAttrset =
@@ -16,10 +18,6 @@ let
       acc: path: value:
       lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
     ) { } secrets;
-
-  inherit (config.modules.services) sops;
-  inherit (config.services) openssh;
-  inherit (config.networking) wireless;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -51,7 +49,7 @@ in
           };
 
           userSecrets = lib.mergeAttrsList (
-            lib.mapAttrsToList (username: _: {
+            map (username: {
               "${username}/password".neededForUsers = true;
               "${username}/age_key" = {
                 owner = username;
@@ -59,7 +57,7 @@ in
                 mode = "0600";
                 path = "/home/${username}/.config/sops/age/keys.txt";
               };
-            }) users
+            }) (builtins.attrNames users)
           );
         in
         userSecrets // hostSecrets;
