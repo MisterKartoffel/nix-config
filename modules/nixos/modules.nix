@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -11,8 +12,8 @@ let
 
         shell = lib.mkOption {
           description = "Default shell";
-          type = lib.types.nullOr lib.types.str;
-          default = null;
+          type = lib.types.package;
+          default = pkgs.bash;
         };
 
         extraGroups = lib.mkOption {

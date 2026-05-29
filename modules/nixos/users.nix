@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -18,8 +17,7 @@ in
     (lib.mapAttrs (username: user: {
       isNormalUser = true;
 
-      inherit (user) extraGroups;
-      shell = pkgs.${user.shell};
+      inherit (user) shell extraGroups;
       description = lib.mkIf sops.enable secrets.home.${username}.name;
       initialHashedPassword = lib.mkIf (
         !sops.enable

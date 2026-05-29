@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 {
   imports = [ ./disko.nix ];
 
@@ -8,7 +9,7 @@
       users = {
         "mimikyu" = {
           autologin = true;
-          shell = "zsh";
+          shell = pkgs.zsh;
           extraGroups = [
             "wheel"
             "qbt"
