@@ -10,6 +10,10 @@ in
     mutable = false;
   };
 
+  # nixos-init: incompatibilities with both NixOS and Home Manager modules
+  # https://github.com/nix-community/impermanence/issues/327
+  system.nixos-init.enable = false;
+
   # GitHub issue workarounds:
   environment.etc = lib.mkIf (overlay.enable && !overlay.mutable) {
     # system.etc.overlay doesn't create /etc/NIXOS file
