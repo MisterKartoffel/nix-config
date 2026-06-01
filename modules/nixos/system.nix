@@ -5,9 +5,12 @@ let
   inherit (config.system.etc) overlay;
 in
 {
-  system.etc.overlay = {
-    enable = true;
-    mutable = false;
+  system = {
+    nixos-init.enable = true;
+    etc.overlay = {
+      enable = true;
+      mutable = false;
+    };
   };
 
   # GitHub issue workarounds:
