@@ -32,6 +32,10 @@ in
       };
       sizes.terminal = 16;
     };
+
+    # stylix: incompatible with home-manager.useGlobalPkgs
+    # https://github.com/nix-community/stylix/issues/1832
+    overlays.enable = false;
   };
 
   fonts.fontconfig.enable = true;
