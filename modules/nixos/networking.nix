@@ -29,7 +29,7 @@ in
         networks =
           lib.listToAttrs (
             map (iface: {
-              name = "20-${iface}";
+              name = "40-${iface}";
               value = {
                 matchConfig.Name = iface;
                 networkConfig.Bond = bondName;
@@ -37,9 +37,12 @@ in
             }) ifaces
           )
           // {
-            "40-${bondName}" = {
+            "50-${bondName}" = {
               matchConfig.Name = bondName;
-              linkConfig.RequiredForOnline = "carrier";
+              linkConfig = {
+                RequiredForOnline = "carrier";
+                MACAddress = "06:F7:E2:F0:75:74"; # locally administered, random
+              };
               networkConfig = {
                 BindCarrier = lib.concatStringsSep " " ifaces;
                 DHCP = "yes";
