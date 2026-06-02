@@ -1,14 +1,13 @@
 { config, lib, ... }:
 let
-  inherit (config.modules.services) sops;
+  inherit (config.modules.services) impermanence sops;
   inherit (config.services.gnome) gnome-keyring;
-  persistence = config.environment.persistence."/persist";
 in
 {
   config = lib.mkIf sops.enable {
     services.openssh = {
       enable = true;
-      generateHostKeys = !persistence.enable;
+      generateHostKeys = !impermanence.enable;
 
       settings = {
         PermitRootLogin = "no";
