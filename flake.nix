@@ -28,9 +28,25 @@
           ++ lib.importTree "modules/nixos";
           specialArgs = { inherit inputs; };
         };
+
+      nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
+
+      systems = nixpkgs.lib.unique (
+        map (host: host.pkgs.system) (builtins.attrValues nixosConfigurations)
+      );
     in
     {
-      nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
+      inherit nixosConfigurations;
+
+      devShells = nixpkgs.lib.genAttrs systems (
+        system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        {
+          default = import ./shell.nix { inherit pkgs; };
+        }
+      );
     };
 
   inputs = {

@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -23,13 +22,6 @@ in
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
   config = lib.mkIf sops.enable {
-    environment.systemPackages = builtins.attrValues {
-      inherit (pkgs)
-        age
-        sops
-        ;
-    };
-
     sops = {
       age.keyFile = "/var/lib/sops-nix/key.txt";
       defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
