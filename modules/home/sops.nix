@@ -32,8 +32,6 @@ in
           path = "${homeDirectory}/.ssh/id_ed25519";
           key = "ssh_key";
         };
-        "hotmail/client_id" = { };
-        "hotmail/refresh_token" = { };
         "ufrgs/password" = { };
       };
     };

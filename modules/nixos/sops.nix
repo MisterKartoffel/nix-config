@@ -30,7 +30,7 @@ in
       secrets =
         let
           hostSecrets = {
-            "ssh_host_key" = lib.mkIf openssh.enable {
+            "ssh_key" = lib.mkIf openssh.enable {
               mode = "0600";
               path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
             };
