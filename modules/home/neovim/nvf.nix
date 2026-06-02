@@ -13,7 +13,7 @@ in
     lib.optionals config.programs.nvf.settings.vim.utility.snacks-nvim.enable builtins.attrValues
       { inherit (pkgs) ripgrep; };
 
-  home.sessionVariables.MANPAGER = lib.optionalString nvf.enable "${lib.getExe nvf.finalPackage}";
+  home.sessionVariables.MANPAGER = lib.optionalString nvf.enable "${lib.getExe nvf.finalPackage} '+Man!'";
 
   imports = [ inputs.nvf.homeManagerModules.default ];
 
