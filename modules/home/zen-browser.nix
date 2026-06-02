@@ -1,11 +1,13 @@
 {
   inputs,
+  osConfig,
   config,
   lib,
   ...
 }:
 let
   inherit (config.programs) zen-browser;
+  inherit (osConfig.services) qbittorrent;
 in
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
@@ -37,6 +39,9 @@ in
         "https://web.whatsapp.com"
         "https://youtube.com"
         "https://github.com"
+      ]
+      ++ lib.optionals qbittorrent.enable [
+        "http://localhost:${toString qbittorrent.webuiPort}"
       ];
 
       DNSOverHTTPS = {

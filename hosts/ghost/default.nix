@@ -56,7 +56,7 @@
 
   services = {
     pipewire.enable = true;
-    qbittorrent.enable = false;
+    qbittorrent.enable = true;
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
