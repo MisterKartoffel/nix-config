@@ -11,16 +11,16 @@ in
     programs.ssh = {
       enableDefaultConfig = false;
 
-      matchBlocks = {
+      settings = {
         "*" = {
-          addKeysToAgent = "yes";
-          identitiesOnly = true;
-          identityFile = "~/.ssh/id_ed25519";
+          AddKeysToAgent = "yes";
+          IdentitiesOnly = true;
+          IdentityFile = "~/.ssh/id_ed25519";
         };
 
         "kindle" = {
-          hostname = "192.168.0.202";
-          setEnv."TERM" = "linux";
+          HostName = "192.168.0.202";
+          SetEnv.TERM = "linux";
         };
       };
     };
