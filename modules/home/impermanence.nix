@@ -48,6 +48,7 @@ in
       )
       ++ lib.optionals offlineimap.enable [
         (baseNameOf maildirBasePath)
+        ".local/share/offlineimap"
       ]
       ++ lib.optionals vesktop.enable [
         ".config/vesktop"
