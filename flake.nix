@@ -32,7 +32,7 @@
       nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
 
       systems = nixpkgs.lib.unique (
-        map (host: host.pkgs.system) (builtins.attrValues nixosConfigurations)
+        map (host: host.config.nixpkgs.hostPlatform.system) (builtins.attrValues nixosConfigurations)
       );
     in
     {
