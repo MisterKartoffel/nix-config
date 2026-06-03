@@ -26,11 +26,25 @@ in
     };
 
     fonts = {
+      serif = {
+        package = pkgs.freefont_ttf;
+        name = "FreeSerif";
+      };
+
+      sansSerif = {
+        package = pkgs.freefont_ttf;
+        name = "FreeSans";
+      };
+
       monospace = {
         package = pkgs.nerd-fonts.commit-mono;
         name = "Commit Mono Nerd Font";
       };
-      sizes.terminal = 16;
+
+      sizes = {
+        desktop = 12;
+        terminal = 16;
+      };
     };
 
     # stylix: incompatible with home-manager.useGlobalPkgs
