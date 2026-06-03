@@ -42,6 +42,7 @@
 
   programs = {
     dconf.enable = true;
+    nh.enable = true;
     niri.enable = true;
     zsh.enable = true;
   };
