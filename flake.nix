@@ -44,7 +44,7 @@
           pkgs = import nixpkgs { inherit system; };
         in
         {
-          default = import ./shell.nix { inherit pkgs; };
+          default = pkgs.callPackage ./shell.nix { };
         }
       );
     };
