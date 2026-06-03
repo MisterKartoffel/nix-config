@@ -24,7 +24,7 @@ in
 
     files = lib.optionals sops.enable [
       {
-        file = "/var/lib/sops-nix/key.txt";
+        file = config.sops.age.keyFile;
         parentDirectory.mode = "0700";
       }
     ];
