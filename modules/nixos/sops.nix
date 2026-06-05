@@ -38,6 +38,8 @@ in
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
             };
+            "rclone/config" = { };
+            "restic/password" = { };
           };
 
           userSecrets = lib.mergeAttrsList (
