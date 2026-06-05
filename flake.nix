@@ -10,35 +10,25 @@
       ...
     }@inputs:
     let
-      hostList = builtins.attrNames (builtins.readDir ./hosts);
-
-      makeHost =
-        hostname:
-        let
-          lib = nixpkgs.lib.extend (prev: _: import ./lib { lib = prev; });
-        in
-        lib.nixosSystem {
-          inherit lib;
-          modules = [
-            home-manager.nixosModules.home-manager
-            disko.nixosModules.disko
-            impermanence.nixosModules.impermanence
-            ./hosts/${hostname}
-          ]
-          ++ lib.importTree "modules/nixos";
-          specialArgs = { inherit inputs; };
-        };
-
-      nixosConfigurations = nixpkgs.lib.genAttrs hostList makeHost;
-
-      systems = nixpkgs.lib.unique (
-        map (host: host.config.nixpkgs.hostPlatform.system) (builtins.attrValues nixosConfigurations)
-      );
+      lib = nixpkgs.lib.extend (prev: _: import ./lib { lib = prev; });
+      systems = [ "x86_64-linux" ];
+      modules = lib.importTree "modules/nixos" ++ [
+        home-manager.nixosModules.home-manager
+        disko.nixosModules.disko
+        impermanence.nixosModules.impermanence
+      ];
     in
     {
-      inherit nixosConfigurations;
+      nixosConfigurations = builtins.mapAttrs (
+        hostname: _:
+        lib.nixosSystem {
+          inherit lib;
+          modules = modules ++ [ ./hosts/${hostname} ];
+          specialArgs = { inherit inputs; };
+        }
+      ) (builtins.readDir ./hosts);
 
-      devShells = nixpkgs.lib.genAttrs systems (
+      devShells = lib.genAttrs systems (
         system:
         let
           pkgs = import nixpkgs { inherit system; };
