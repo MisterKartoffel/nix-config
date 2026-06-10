@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 let
   inherit (config.programs) nh;
 in
@@ -13,8 +13,8 @@ in
       auto-optimise-store = true;
     };
 
-    gc = {
-      automatic = !nh.clean.enable;
+    gc = lib.mkIf (!nh.clean.enable) {
+      automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };

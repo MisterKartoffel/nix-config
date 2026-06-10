@@ -15,7 +15,7 @@ in
 {
   environment.systemPackages = builtins.attrValues { inherit (pkgs) rclone restic; };
 
-  services.restic.backups.impermanence = {
+  services.restic.backups.impermanence = lib.mkIf impermanence.enable {
     initialize = true;
 
     repository = "rclone:mega:restic/${hostName}";

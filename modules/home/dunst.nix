@@ -8,8 +8,8 @@ let
   inherit (config.services) dunst;
 in
 {
-  services.dunst.settings = lib.mkIf dunst.enable {
-    global = {
+  services.dunst = lib.mkIf dunst.enable {
+    settings.global = {
       width = "(100, 300)";
       height = "(0, 300)";
       offset = "(8, 8)";
