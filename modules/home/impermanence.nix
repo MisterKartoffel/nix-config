@@ -8,7 +8,6 @@ let
   inherit (config.xdg) userDirs;
   inherit (config.accounts.email) maildirBasePath;
   inherit (config.programs)
-    direnv
     offlineimap
     vesktop
     zen-browser
@@ -46,9 +45,6 @@ in
           )
         )
       )
-      ++ lib.optionals direnv.enable [
-        ".local/share/direnv"
-      ]
       ++ lib.optionals gnome-keyring.enable [
         {
           directory = ".local/share/keyrings";
