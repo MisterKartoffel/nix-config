@@ -10,13 +10,6 @@ let
   inherit (config.services) openssh;
   inherit (config.networking) hostName wireless;
   inherit (config.system) etc;
-
-  nestAttrset =
-    secrets:
-    lib.foldlAttrs (
-      acc: path: value:
-      lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
-    ) { } secrets;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -57,7 +50,7 @@ in
         userSecrets // hostSecrets;
     };
 
-    modules.secrets = nestAttrset (config.sops.secrets or { });
+    modules.secrets = lib.nestAttrset (config.sops.secrets or { });
   };
 
   options.modules.secrets = lib.mkOption {

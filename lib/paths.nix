@@ -1,7 +1,7 @@
 { lib }:
 let
   inherit (lib) hasPrefix;
-  inherit (lib.fileset) toList fileFilter;
+  inherit (lib.fileset) fileFilter toList;
 
   relativeToRoot = lib.path.append ../.;
 in
