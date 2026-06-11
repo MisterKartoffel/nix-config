@@ -3,6 +3,7 @@
 
 ## Directory Structure Reference
 - `flake.nix` - entrypoint for all host and user configurations.
+- `.tack` - uses [tack](https://github.com/manic-systems/tack) for input pinning.
 
 - `hosts/<hostname>/` - host-specific NixOS configuration.
   - `default.nix` - host entrypoint and default options.
@@ -25,8 +26,6 @@
 - Install and configure:
   - [just](https://github.com/casey/just).
   - [Newsboat](https://github.com/newsboat/newsboat).
-- Set up devshells for nix-config and nix-secrets.
-- Look into and set up direnv.
 
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
