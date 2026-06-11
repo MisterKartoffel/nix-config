@@ -1,0 +1,80 @@
+{
+  "disko": {
+    "lastModified": 1768920986,
+    "narHash": "sha256-CNzzBsRhq7gg4BMBuTDObiWDH/rFYHEuDRVOwCcwXw4=",
+    "owner": "nix-community",
+    "repo": "disko",
+    "rev": "de5708739256238fb912c62f03988815db89ec9a",
+    "type": "github"
+  },
+  "home-manager": {
+    "lastModified": 1781189114,
+    "narHash": "sha256-5inaamLgUMWy+MOBE9ChF9QAF1o/74LFuHkI0W/9rqc=",
+    "owner": "nix-community",
+    "repo": "home-manager",
+    "rev": "486595d2cf49cfcd649b58a284fa11ac0e34da22",
+    "type": "github"
+  },
+  "impermanence": {
+    "lastModified": 1769548169,
+    "narHash": "sha256-03+JxvzmfwRu+5JafM0DLbxgHttOQZkUtDWBmeUkN8Y=",
+    "owner": "nix-community",
+    "repo": "impermanence",
+    "rev": "7b1d382faf603b6d264f58627330f9faa5cba149",
+    "type": "github"
+  },
+  "nix-secrets": {
+    "lastModified": 1781188343,
+    "narHash": "sha256-LRJYJp5qIGNuk3gyES49QOUjn71Ks/n+addNc7BC7zI=",
+    "ref": "refs/heads/main",
+    "rev": "4b333280b35442fc6020083138c041a4c5228428",
+    "type": "git",
+    "url": "ssh://git@github.com/MisterKartoffel/nix-secrets.git"
+  },
+  "nixpkgs": {
+    "lastModified": 1780879182,
+    "narHash": "sha256-G5B1h4sOH4DN/RZ85xYi6zPm2MHdOrNMeUmMslZ28Qs=",
+    "type": "tarball",
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1011622.a799d3e3886d/nixexprs.tar.xz"
+  },
+  "nvf": {
+    "lastModified": 1781182504,
+    "narHash": "sha256-U0JwGV8NkaNTWbfNOmUZdajA97mW+LTtYogTz/GYy5o=",
+    "owner": "notashelf",
+    "repo": "nvf",
+    "rev": "7fca440370dedda2406efb58a8b4547eb1345de5",
+    "type": "github"
+  },
+  "sops-nix": {
+    "lastModified": 1780547341,
+    "narHash": "sha256-Gq8KNx5A7hBB3uGJaj6eQfLDIz5YdLu92gqBcvHvoUo=",
+    "owner": "mic92",
+    "repo": "sops-nix",
+    "rev": "9ed65852b6257fbeae4355bc24ecfea307ca759a",
+    "type": "github"
+  },
+  "stylix": {
+    "lastModified": 1781018772,
+    "narHash": "sha256-C+cGIUaC6dqfwTbI+BwCd572PbESGA3WYxR1sLTqxkY=",
+    "owner": "nix-community",
+    "repo": "stylix",
+    "rev": "a378e4c09031fb15a4d65da88aa628f71fc52f6b",
+    "type": "github"
+  },
+  "tack": {
+    "lastModified": 1780213242,
+    "narHash": "sha256-5dYWCjKBwjHOCJBlQK9iBKJxoUosTGQvI62vPBdQUgs=",
+    "owner": "manic-systems",
+    "repo": "tack",
+    "rev": "8c574901340af860979500f24495417ce7e53cdc",
+    "type": "github"
+  },
+  "zen-browser": {
+    "lastModified": 1781173532,
+    "narHash": "sha256-MwnZpL82aQO1I15JH525vz6REI/OULEAmXDp6cIcgNg=",
+    "owner": "0xc000022070",
+    "repo": "zen-browser-flake",
+    "rev": "f13e82162fae68af7716147207fa5f868f5ca381",
+    "type": "github"
+  }
+}
