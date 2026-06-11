@@ -42,7 +42,6 @@
   };
 
   programs = {
-    dconf.enable = true;
     nh.enable = true;
     niri.enable = true;
     zsh.enable = true;
@@ -57,7 +56,6 @@
   };
 
   services = {
-    pipewire.enable = true;
     qbittorrent.enable = true;
   };
 

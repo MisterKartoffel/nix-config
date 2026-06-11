@@ -8,7 +8,6 @@ in
   systemd.network = lib.mkIf networking.useNetworkd (
     lib.mkMerge [
       {
-        enable = true;
         wait-online.anyInterface = true;
       }
       (lib.mkIf (ifaces != [ ]) {
@@ -71,14 +70,7 @@ in
     };
   };
 
-  networking = lib.mkMerge [
-    {
-      firewall.enable = true;
-    }
-    (lib.mkIf (networking.useNetworkd -> ifaces == [ ]) {
-      networkmanager.enable = true;
-      useDHCP = true;
-      dhcpcd.enable = true;
-    })
-  ];
+  networking = lib.mkIf (networking.useNetworkd -> ifaces == [ ]) {
+    networkmanager.enable = true;
+  };
 }

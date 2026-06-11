@@ -11,7 +11,6 @@ in
   programs.zsh = lib.mkIf zsh.enable {
     autocd = true;
     defaultKeymap = "viins";
-    dotDir = "${config.xdg.configHome}/zsh";
 
     autosuggestion.enable = true;
     enableCompletion = true;
@@ -32,12 +31,9 @@ in
 
     history = {
       append = true;
-      share = true;
       expireDuplicatesFirst = true;
       ignoreAllDups = true;
-      ignoreSpace = true;
       path = "${config.xdg.stateHome}/zsh/history";
-      size = 10000;
     };
 
     setOptions = [

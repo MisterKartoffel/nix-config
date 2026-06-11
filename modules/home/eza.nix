@@ -1,12 +1,12 @@
 { config, lib, ... }:
 let
-  inherit (config.programs) eza;
+  inherit (config.programs) eza git;
 in
 {
   programs.eza = lib.mkIf eza.enable {
     icons = "always";
     colors = "always";
-    git = true;
+    git = git.enable;
     extraOptions = [ "--group-directories-first" ];
   };
 }
