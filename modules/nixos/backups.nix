@@ -19,8 +19,8 @@ in
     initialize = true;
 
     repository = "rclone:mega:restic/${hostName}";
-    passwordFile = secrets.host.restic.password.path;
-    rcloneConfigFile = secrets.host.rclone.config.path;
+    passwordFile = secrets.restic.password.path;
+    rcloneConfigFile = secrets.rclone.config.path;
 
     paths = [ snapshotPath ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent" ];

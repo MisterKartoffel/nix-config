@@ -7,6 +7,8 @@
 }:
 let
   inherit (config.home) username homeDirectory;
+  inherit (osConfig.modules.services) sops;
+  inherit (config.programs) ssh;
 
   nestAttrset =
     secrets:
@@ -14,9 +16,6 @@ let
       acc: path: value:
       lib.recursiveUpdate acc (lib.attrsets.setAttrByPath (lib.splitString "/" path) value)
     ) { } secrets;
-
-  inherit (osConfig.modules.services) sops;
-  inherit (config.programs) ssh;
 in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
@@ -36,14 +35,11 @@ in
       };
     };
 
-    modules.secrets = lib.foldl' lib.recursiveUpdate { } [
-      (nestAttrset (config.sops.secrets or { }))
-      (inputs.nix-secrets.home.${username} or { })
-    ];
+    modules.secrets = nestAttrset (config.sops.secrets or { });
   };
 
   options.modules.secrets = lib.mkOption {
-    description = "Attribute set of inputs.nix-secrets.home.${username} and sops-nix secrets";
+    description = "Attribute set of sops-nix secrets";
     type = lib.types.attrs;
     default = { };
   };

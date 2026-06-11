@@ -8,6 +8,12 @@ let
   usersModule = lib.types.attrsOf (
     lib.types.submodule {
       options = {
+        description = lib.mkOption {
+          description = "User description";
+          type = lib.types.nullOr lib.types.str;
+          default = null;
+        };
+
         autologin = lib.mkEnableOption "Should the system autologin this user.";
 
         shell = lib.mkOption {

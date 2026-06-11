@@ -1,15 +1,13 @@
 {
   pkgs,
   lib,
-  secrets,
   service,
   overrides ? { },
 }:
 {
-  ${service} = rec {
-    address = secrets.${service}.email;
-    userName = address;
-    realName = secrets.name;
+  ${service} = {
+    userName = overrides.${service}.address;
+    realName = "Felipe Duarte";
 
     neomutt.enable = true;
 

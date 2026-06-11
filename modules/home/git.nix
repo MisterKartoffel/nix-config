@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (config.modules.secrets) name hotmail;
   inherit (config.programs) git ssh;
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
@@ -17,8 +16,8 @@ in
   programs.git = lib.mkIf (git.enable && ssh.enable) {
     settings = {
       user = {
-        inherit name;
-        inherit (hotmail) email;
+        name = "Felipe Duarte";
+        email = "felipesdrs@hotmail.com";
         signingKey = "${sshKey}.pub";
       };
 

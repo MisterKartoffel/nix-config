@@ -18,7 +18,6 @@ let
           inherit
             pkgs
             lib
-            secrets
             service
             overrides
             ;
@@ -42,8 +41,9 @@ in
     maildirBasePath = "Mail";
 
     accounts = mergeDefaults [ "hotmail" "ufrgs" ] {
-      hotmail = {
+      hotmail = rec {
         primary = true;
+        address = "felipesdrs@hotmail.com";
 
         maildir.path = "Hotmail";
         folders.trash = "Deleted";
@@ -52,10 +52,12 @@ in
         imap.authentication = "xoauth2";
         smtp.authentication = "xoauth2";
 
-        passwordCommand = "${lib.getExe pkgs.oama} access ${secrets.hotmail.email}";
+        passwordCommand = "${lib.getExe pkgs.oama} access ${address}";
       };
 
       ufrgs = {
+        address = "00288910@ufrgs.br";
+
         maildir.path = "UFRGS";
         folders.inbox = "INBOX";
 

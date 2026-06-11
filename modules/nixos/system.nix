@@ -32,7 +32,7 @@ in
   # see issue above
   services.openssh.hostKeys = lib.optionals (sops.enable && overlay.enable && !overlay.mutable) [
     {
-      path = secrets.host.ssh_key.path;
+      path = secrets.ssh_key.path;
       type = "ed25519";
     }
   ];

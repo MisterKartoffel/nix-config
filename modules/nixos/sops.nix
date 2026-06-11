@@ -57,33 +57,12 @@ in
         userSecrets // hostSecrets;
     };
 
-    modules.secrets = {
-      home = inputs.nix-secrets.home or { };
-      host = lib.recursiveUpdate (nestAttrset (config.sops.secrets or { })) (
-        inputs.nix-secrets.hosts.${hostName} or { }
-      );
-    };
+    modules.secrets = nestAttrset (config.sops.secrets or { });
   };
 
   options.modules.secrets = lib.mkOption {
-    description = "Submodule of inputs.nix-secrets.home, inputs.nix-secrets.hosts.${hostName} and sops-nix secrets";
-
-    type = lib.types.submodule {
-      options = {
-        home = lib.mkOption {
-          description = "Home-manager unencrypted secrets";
-          type = lib.types.attrs;
-          default = { };
-        };
-
-        host = lib.mkOption {
-          description = "NixOS secrets";
-          type = lib.types.attrs;
-          default = { };
-        };
-      };
-    };
-
+    description = "Attribute set of sops-nix secrets";
+    type = lib.types.attrs;
     default = { };
   };
 }

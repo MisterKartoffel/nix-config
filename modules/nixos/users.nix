@@ -16,10 +16,9 @@ in
   users.users =
     (lib.mapAttrs (username: user: {
       isNormalUser = true;
-      inherit (user) shell extraGroups;
-      description = lib.mkIf sops.enable secrets.home.${username}.name;
+      inherit (user) shell description extraGroups;
 
-      hashedPasswordFile = lib.mkIf sops.enable secrets.host.${username}.password.path;
+      hashedPasswordFile = lib.mkIf sops.enable secrets.${username}.password.path;
       initialHashedPassword = lib.mkIf (
         !sops.enable
       ) "$y$j9T$9lxUmIACkk7jFAU437ubP/$/dbwqUcskqwzxBC.Lg7WJx4uf/8jxLGcxRjM36U0q57";

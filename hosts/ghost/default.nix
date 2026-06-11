@@ -8,6 +8,7 @@
 
       users = {
         "mimikyu" = {
+          description = "Felipe Duarte";
           autologin = true;
           shell = pkgs.zsh;
           extraGroups = [
