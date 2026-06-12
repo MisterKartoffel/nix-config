@@ -28,7 +28,7 @@ in
       };
     };
 
-    modules.secrets = lib.nestAttrset (config.sops.secrets or { });
+    modules.secrets = lib.custom.nestAttrset (config.sops.secrets or { });
   };
 
   options.modules.secrets = lib.mkOption {

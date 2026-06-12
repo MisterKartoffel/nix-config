@@ -5,7 +5,6 @@
   ...
 }:
 let
-  inherit (lib) importTree;
   inherit (config.modules) secrets services system;
   inherit (services) sops;
 in
@@ -32,7 +31,7 @@ in
     };
 
   home-manager.users = lib.mapAttrs (username: _: {
-    imports = builtins.concatMap importTree [
+    imports = builtins.concatMap lib.custom.importTree [
       "home/${username}.nix"
       "modules/home"
     ];

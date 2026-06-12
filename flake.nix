@@ -5,12 +5,12 @@
     _:
     let
       inputs = import ./.tack;
-      lib = inputs.nixpkgs.lib.extend (prev: _: import ./lib { lib = prev; });
+      lib = inputs.nixpkgs.lib.extend (_: prev: { custom = import ./lib { lib = prev; }; });
       forAllSystems = lib.genAttrs lib.systems.flakeExposed;
 
       modules =
         hostname:
-        lib.importTree "modules/nixos"
+        lib.custom.importTree "modules/nixos"
         ++ [
           inputs.home-manager.nixosModules.default
           inputs.impermanence.nixosModules.default
