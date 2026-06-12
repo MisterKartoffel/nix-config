@@ -24,10 +24,10 @@
     "type": "github"
   },
   "nix-secrets": {
-    "lastModified": 1781188343,
-    "narHash": "sha256-LRJYJp5qIGNuk3gyES49QOUjn71Ks/n+addNc7BC7zI=",
+    "lastModified": 1781272709,
+    "narHash": "sha256-PTLcqmSp91g/zIFyTdcvLPqXOaj3Z4A/Uf6KrwMpGf8=",
     "ref": "refs/heads/main",
-    "rev": "4b333280b35442fc6020083138c041a4c5228428",
+    "rev": "0f77ebf5a07b0e90565b01fc28ef61990c5c1ca1",
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets.git"
   },

@@ -27,17 +27,20 @@ in
               mode = "0600";
               path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
             };
+
             "wireless" = lib.mkIf wireless.enable {
               owner = "wpa_supplicant";
               group = "wpa_supplicant";
             };
-            "rclone/config" = { };
-            "restic/password" = { };
+
+            "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+            "restic/password".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
           };
 
           userSecrets = lib.mergeAttrsList (
             map (username: {
               "${username}/password".neededForUsers = true;
+
               "${username}/age_key" = {
                 owner = username;
                 group = "users";
