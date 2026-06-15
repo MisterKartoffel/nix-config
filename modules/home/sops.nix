@@ -20,10 +20,10 @@ in
       validateSopsFiles = true;
 
       secrets = {
-        "${username}/ssh_key" = lib.mkIf ssh.enable {
+        "ssh_key" = lib.mkIf ssh.enable {
           path = "${homeDirectory}/.ssh/id_ed25519";
-          key = "ssh_key";
         };
+
         "ufrgs/password" = { };
       };
     };
