@@ -26,8 +26,8 @@ in
     paths = [ snapshotPath ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];
 
-    backupPrepareCommand = baseCommand + "snapshot -r ${impermanence.path}" + snapshotPath;
-    backupCleanupCommand = baseCommand + "delete" + snapshotPath;
+    backupPrepareCommand = baseCommand + " snapshot -r ${impermanence.path} " + snapshotPath;
+    backupCleanupCommand = baseCommand + " delete " + snapshotPath;
 
     timerConfig = {
       OnCalendar = "daily";
