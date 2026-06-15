@@ -20,7 +20,14 @@
       };
     };
 
-    services.sops.enable = true;
+    services = {
+      sops.enable = true;
+      impermanence = {
+        enable = true;
+        path = "/persist";
+      };
+    };
+
   };
 
   system.stateVersion = "26.05";

@@ -3,21 +3,14 @@ let
   inherit (config.modules.services) impermanence;
 in
 {
-  modules.services.impermanence = {
-    enable = true;
-    path = "/persist";
-  };
-
   fileSystems.${impermanence.path}.neededForBoot = true;
 
-  disko.devices.nodev = {
-    "/" = {
-      fsType = "tmpfs";
-      mountOptions = [
-        "size=256M"
-        "mode=755"
-      ];
-    };
+  disko.devices.nodev."/" = {
+    fsType = "tmpfs";
+    mountOptions = [
+      "size=256M"
+      "mode=755"
+    ];
   };
 
   disko.devices.disk.main = {
