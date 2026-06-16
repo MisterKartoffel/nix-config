@@ -37,7 +37,7 @@ url = "github:nix-community/impermanence"
 url = "github:Mic92/sops-nix"
 
 [inputs.nix-secrets]
-url = "git+ssh:MisterKartoffel/nix-secrets.git?ref=main"
+url = "git+ssh:MisterKartoffel/nix-secrets.git"
 type = "fetch"
 
 [inputs.stylix]
