@@ -9,6 +9,7 @@
   programs = {
     direnv.enable = true;
     eza.enable = true;
+    fzf.enable = true;
     ghostty.enable = true;
     git.enable = true;
     nvf.enable = true;

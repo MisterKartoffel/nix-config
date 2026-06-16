@@ -5,7 +5,7 @@
   ...
 }:
 let
-  inherit (config.programs) zsh;
+  inherit (config.programs) fzf zsh;
 in
 {
   programs.zsh = lib.mkIf zsh.enable {
@@ -21,6 +21,12 @@ in
         name = "powerlevel10k";
         src = pkgs.zsh-powerlevel10k;
         file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+    ]
+    ++ lib.optionals fzf.enable [
+      {
+        name = "fzf-tab";
+        src = pkgs.zsh-fzf-tab.src;
       }
     ];
 
