@@ -18,7 +18,11 @@ in
       user = {
         name = "Felipe Duarte";
         email = "felipesdrs@hotmail.com";
-        signingKey = "${sshKey}.pub";
+      };
+
+      gpg = {
+        format = "ssh";
+        ssh.defaultKeyCommand = "${lib.getExe' pkgs.openssh "ssh-keygen"} -y -f ${sshKey}";
       };
 
       core = {
@@ -32,7 +36,6 @@ in
       column.ui = "auto";
       commit.gpgsign = true;
       fetch.prune = true;
-      gpg.format = "ssh";
       help.autocorrect = "prompt";
       init.defaultBranch = "main";
       merge.conflictstyle = "zdiff3";
