@@ -25,42 +25,44 @@ in
   home.persistence.${impermanence.path} = lib.mkIf impermanence.enable {
     hideMounts = true;
 
-    directories =
-      lib.optionals (userDirs.enable && userDirs.createDirectories) (
-        map baseNameOf (
-          builtins.filter (path: path != null) (
-            builtins.attrValues {
-              inherit (userDirs)
-                desktop
-                documents
-                download
-                music
-                pictures
-                projects
-                publicShare
-                templates
-                videos
-                ;
-            }
-          )
+    directories = [
+      ".cache/nix"
+    ]
+    ++ lib.optionals (userDirs.enable && userDirs.createDirectories) (
+      map baseNameOf (
+        builtins.filter (path: path != null) (
+          builtins.attrValues {
+            inherit (userDirs)
+              desktop
+              documents
+              download
+              music
+              pictures
+              projects
+              publicShare
+              templates
+              videos
+              ;
+          }
         )
       )
-      ++ lib.optionals gnome-keyring.enable [
-        {
-          directory = ".local/share/keyrings";
-          mode = "0700";
-        }
-      ]
-      ++ lib.optionals offlineimap.enable [
-        (baseNameOf maildirBasePath)
-        ".local/share/offlineimap"
-      ]
-      ++ lib.optionals vesktop.enable [
-        ".config/vesktop"
-      ]
-      ++ lib.optionals zen-browser.enable [
-        ".config/zen"
-      ];
+    )
+    ++ lib.optionals gnome-keyring.enable [
+      {
+        directory = ".local/share/keyrings";
+        mode = "0700";
+      }
+    ]
+    ++ lib.optionals offlineimap.enable [
+      (baseNameOf maildirBasePath)
+      ".local/share/offlineimap"
+    ]
+    ++ lib.optionals vesktop.enable [
+      ".config/vesktop"
+    ]
+    ++ lib.optionals zen-browser.enable [
+      ".config/zen"
+    ];
 
     files = lib.optionals zsh.enable [
       ".config/zsh/.p10k.zsh"
