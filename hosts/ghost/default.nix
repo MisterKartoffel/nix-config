@@ -56,10 +56,7 @@
 
   security = {
     polkit.enable = true;
-    run0 = {
-      enableSudoAlias = true;
-      wheelNeedsPassword = false;
-    };
+    run0.enable = true;
   };
 
   services = {
