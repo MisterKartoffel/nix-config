@@ -3,8 +3,6 @@
 
 # shorturl schemes. scheme:rest expands rest into {path}
 [shorturls]
-channels = "https://channels.nixos.org/{path}/nixexprs.tar.xz"
-"git+ssh" = "git+ssh://git@github.com/{path}"
 
 # all_follow: input name -> top-level pin it follows wherever it appears
 # opt out per-input with exclude_follow
@@ -22,7 +20,7 @@ home-manager = "home-manager"
 #   submodules      fetch git submodules
 #   unpack          fixed-only: tarball or file
 [inputs.nixpkgs]
-url = "channels:nixos-unstable"
+url = "github:nixos/nixpkgs/nixos-unstable"
 
 [inputs.home-manager]
 url = "github:nix-community/home-manager"
@@ -37,7 +35,7 @@ url = "github:nix-community/impermanence"
 url = "github:Mic92/sops-nix"
 
 [inputs.nix-secrets]
-url = "git+ssh:MisterKartoffel/nix-secrets.git"
+url = "git+ssh://git@github.com/MisterKartoffel/nix-secrets"
 type = "fetch"
 
 [inputs.stylix]
