@@ -6,7 +6,8 @@
     let
       inputs = import ./.tack;
       lib = inputs.nixpkgs.lib.extend (_: prev: { custom = import ./lib { lib = prev; }; });
-      forAllSystems = lib.genAttrs lib.systems.flakeExposed;
+      forAllSystems =
+        f: lib.genAttrs lib.systems.flakeExposed (system: f system inputs.nixpkgs.legacyPackages.${system});
 
       modules =
         hostname:
@@ -18,7 +19,7 @@
           ./hosts/${hostname}
         ];
     in
-    {
+    rec {
       nixosConfigurations = builtins.mapAttrs (
         hostname: _:
         lib.nixosSystem {
@@ -29,12 +30,23 @@
       ) (builtins.readDir ./hosts);
 
       devShells = forAllSystems (
-        system:
-        let
-          pkgs = import inputs.nixpkgs { inherit system; };
-        in
-        {
+        system: pkgs: {
           default = pkgs.callPackage ./shell.nix { inherit inputs system; };
+        }
+      );
+
+      packages = forAllSystems (
+        _: pkgs: {
+          tack-diff = pkgs.callPackage ./pkgs/tack-diff.nix { };
+        }
+      );
+
+      apps = forAllSystems (
+        system: _: {
+          tack-diff = {
+            type = "app";
+            program = "${lib.getExe packages.${system}.tack-diff}";
+          };
         }
       );
     };

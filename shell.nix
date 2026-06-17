@@ -1,14 +1,14 @@
 {
-  inputs,
-  pkgs,
-  system,
+  inputs ? import ./.tack,
+  system ? builtins.currentSystem,
+  mkShell,
+  just,
 }:
 let
   inherit (inputs.tack.packages.${system}) tack;
 in
-pkgs.mkShell {
+mkShell {
   packages = builtins.attrValues {
-    inherit tack;
-    inherit (pkgs) just;
+    inherit just tack;
   };
 }
