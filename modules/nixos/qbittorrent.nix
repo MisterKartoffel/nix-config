@@ -28,6 +28,7 @@ in
           AdditionalTrackersURL = "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt";
           ReannounceWhenAddressChanged = true;
           AnnounceToAllTrackers = true;
+          BandwidthSchedulerEnabled = true;
           AlternativeGlobalDLSpeedLimit = 3000;
           AlternativeGlobalUPSpeedLimit = 3000;
           MaxActiveCheckingTorrents = 10;
