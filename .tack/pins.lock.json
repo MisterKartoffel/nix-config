@@ -11,9 +11,9 @@
     "type": "github",
     "owner": "nix-community",
     "repo": "home-manager",
-    "rev": "d8dac1f668fd861369571be3678ec75b1573e7e3",
-    "narHash": "sha256-+vMR3KPBVoY9nJrQI9qje5H1vmv51dJgMYkUuYimtJg=",
-    "lastModified": 1782103446
+    "rev": "351959fcdbe5cadec1c3434d7abd14dff31af2d5",
+    "narHash": "sha256-S+/v+BWz9c8IbGhRM8L4UUVC5j2oZuAHj1b5XlkBjyw=",
+    "lastModified": 1782159472
   },
   "impermanence": {
     "type": "github",
@@ -26,10 +26,10 @@
   "nix-secrets": {
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
-    "ref": "refs/heads/main",
-    "rev": "484890eb017ba4a31a3ba8721cdc628e213c52a2",
-    "narHash": "sha256-KsBZCEjUDlUHLkqx18qKit0EKNbrumqFAxYscvME4XA=",
-    "lastModified": 1781740563
+    "ref": "HEAD",
+    "rev": "ca31a5d153f37f6b6b530a085ae92074ff9b8743",
+    "narHash": "sha256-J3cd0Ti2K5T0vGqq7wOkuuOWN0biF/kcH0plud1Av9M=",
+    "lastModified": 1782164728
   },
   "nixpkgs": {
     "type": "tarball",
