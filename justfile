@@ -7,7 +7,7 @@ os ACTION="test": rebuild-pre
 	@nh os {{ACTION}} . --ask
 
 look:
-	@tack look
+	@tack look --verbose
 
 update:
 	@TMPDIR={{tmpdir}} tack update
