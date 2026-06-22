@@ -19,7 +19,7 @@
           ./hosts/${hostname}
         ];
     in
-    rec {
+    {
       nixosConfigurations = builtins.mapAttrs (
         hostname: _:
         lib.nixosSystem {
@@ -32,21 +32,6 @@
       devShells = forAllSystems (
         system: pkgs: {
           default = pkgs.callPackage ./shell.nix { inherit inputs system; };
-        }
-      );
-
-      packages = forAllSystems (
-        _: pkgs: {
-          tack-diff = pkgs.callPackage ./pkgs/tack-diff.nix { };
-        }
-      );
-
-      apps = forAllSystems (
-        system: _: {
-          tack-diff = {
-            type = "app";
-            program = "${lib.getExe packages.${system}.tack-diff}";
-          };
         }
       );
     };
