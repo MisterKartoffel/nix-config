@@ -22,13 +22,9 @@ in
     interfaces.bond0.macAddress = "06:F7:E2:F0:75:74";
   };
 
-  services.resolved = {
-    enable = true;
-
-    settings.Resolve = {
-      FallbackDNS = [ "8.8.8.8#dns.google" ];
-      DNSOverTLS = true;
-      DNSSEC = true;
-    };
+  services.resolved.settings.Resolve = {
+    FallbackDNS = [ "8.8.8.8#dns.google" ];
+    DNSOverTLS = true;
+    DNSSEC = true;
   };
 }

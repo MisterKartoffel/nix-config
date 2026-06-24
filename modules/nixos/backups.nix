@@ -14,8 +14,6 @@ let
   baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
 in
 {
-  environment.systemPackages = builtins.attrValues { inherit (pkgs) rclone restic; };
-
   services.restic.backups.impermanence = lib.mkIf impermanence.enable {
     initialize = true;
 

@@ -4,7 +4,8 @@ let
   inherit (config.services) qbittorrent;
 in
 {
-  environment.persistence.${impermanence.path} = lib.mkIf impermanence.enable {
+  environment.persistence.${impermanence.path} = {
+    inherit (impermanence) enable;
     hideMounts = true;
 
     directories = [

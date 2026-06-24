@@ -1,14 +1,6 @@
+{ pkgs, ... }:
 {
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-let
-  inherit (config.services) qbittorrent;
-in
-{
-  services.qbittorrent = lib.mkIf qbittorrent.enable rec {
+  services.qbittorrent = rec {
     openFirewall = true;
     torrentingPort = 6881;
 

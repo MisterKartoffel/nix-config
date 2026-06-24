@@ -56,11 +56,14 @@
 
   security = {
     polkit.enable = true;
+    rtkit.enable = true;
     run0.enable = true;
   };
 
   services = {
+    openssh.enable = true;
     qbittorrent.enable = true;
+    resolved.enable = true;
   };
 
   environment.pathsToLink = [ "/share/zsh" ];

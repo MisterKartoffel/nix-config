@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  lib,
   ...
 }:
 let
@@ -21,8 +20,8 @@ in
       auto-optimise-store = true;
     };
 
-    gc = lib.mkIf (!nh.clean.enable) {
-      automatic = true;
+    gc = {
+      automatic = !nh.clean.enable;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };

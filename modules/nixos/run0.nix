@@ -1,14 +1,14 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
   inherit (config.security) run0;
 in
 {
-  security = lib.mkIf run0.enable {
+  security = {
     run0 = {
       enableSudoAlias = true;
       wheelNeedsPassword = false;
     };
 
-    sudo.enable = false;
+    sudo.enable = !run0.enable;
   };
 }
