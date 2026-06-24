@@ -14,7 +14,7 @@ in
 
     autosuggestion.enable = true;
     enableCompletion = true;
-    syntaxHighlighting.enable = true;
+    fastSyntaxHighlighting.enable = true;
 
     plugins = [
       {
@@ -60,7 +60,13 @@ in
         zshExtraConfig = ''
           [[ -f ${config.programs.zsh.dotDir}/.p10k.zsh ]] && source ${config.programs.zsh.dotDir}/.p10k.zsh
         '';
-        zshExtraConfigLast = lib.mkAfter "";
+        zshExtraConfigLast = lib.mkAfter ''
+          autoload -Uz edit-command-line
+          zle -N edit-command-line
+          bindkey "^[e" edit-command-line
+
+          bindkey " " magic-space
+        '';
       in
       lib.mkMerge [
         zshExtraConfigEarlyInit
