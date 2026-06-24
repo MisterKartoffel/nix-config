@@ -1,9 +1,5 @@
-{ config, lib, ... }:
-let
-  inherit (config.programs) nvf;
-in
 {
-  programs.nvf.settings.vim = lib.mkIf nvf.enable {
+  programs.nvf.settings.vim = {
     clipboard = {
       enable = true;
       providers.wl-copy.enable = true;

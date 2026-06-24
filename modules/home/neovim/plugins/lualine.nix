@@ -1,10 +1,5 @@
-{ config, lib, ... }:
-let
-  inherit (config.programs) nvf;
-in
 {
-  programs.nvf.settings.vim.statusline.lualine = lib.mkIf nvf.enable {
-    enable = true;
+  programs.nvf.settings.vim.statusline.lualine = {
     icons.enable = true;
 
     activeSection = {

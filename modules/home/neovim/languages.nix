@@ -1,18 +1,10 @@
-{ config, lib, ... }:
-let
-  inherit (config.programs) nvf;
-in
 {
-  programs.nvf.settings.vim = lib.mkIf nvf.enable {
+  programs.nvf.settings.vim = {
     lsp = {
-      enable = true;
       formatOnSave = true;
       lspconfig.enable = true;
 
       mappings = {
-        listImplementations = "gri";
-        listReferences = "grr";
-        goToDefinition = "grd";
         previousDiagnostic = "[d";
         nextDiagnostic = "]d";
         renameSymbol = "grn";
@@ -20,17 +12,13 @@ in
         hover = "K";
       };
 
-      servers = {
-        "*" = {
-          capabilities = {
-            textDocument = {
-              semanticTokens.multilineTokenSupport = true;
-              completion.completionItem.snippetSupport = true;
-            };
-
-            workspace.didChangeWatchedFiles.dynamicRegistration = true;
-          };
+      servers."*".capabilities = {
+        textDocument = {
+          semanticTokens.multilineTokenSupport = true;
+          completion.completionItem.snippetSupport = true;
         };
+
+        workspace.didChangeWatchedFiles.dynamicRegistration = true;
       };
     };
 

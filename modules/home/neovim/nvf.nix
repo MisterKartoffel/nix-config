@@ -7,18 +7,32 @@
 }:
 let
   inherit (config.programs) nvf;
+  inherit (nvf.settings.vim.utility) snacks-nvim;
 in
 {
-  home.packages =
-    lib.optionals config.programs.nvf.settings.vim.utility.snacks-nvim.enable builtins.attrValues
-      { inherit (pkgs) ripgrep; };
-
-  home.sessionVariables.MANPAGER = lib.optionalString nvf.enable "${lib.getExe nvf.finalPackage} '+Man!'";
-
   imports = [ inputs.nvf.homeManagerModules.default ];
 
-  programs.nvf = lib.mkIf nvf.enable {
+  home = {
+    packages = lib.optionals snacks-nvim.enable builtins.attrValues { inherit (pkgs) ripgrep; };
+    sessionVariables.MANPAGER = lib.optionalString nvf.enable "${lib.getExe nvf.finalPackage} '+Man!'";
+  };
+
+  programs.nvf = {
     defaultEditor = true;
-    settings.vim.extraLuaFiles = [ ./lua/functions.lua ];
+
+    settings.vim = {
+      extraLuaFiles = [ ./lua/functions.lua ];
+
+      binds.whichKey.enable = true;
+      git.gitsigns.enable = true;
+      git.neogit.enable = true;
+      lsp.enable = true;
+      statusline.lualine.enable = true;
+      theme.enable = true;
+      treesitter.enable = true;
+      ui.colorizer.enable = true;
+      utility.oil-nvim.enable = true;
+      utility.snacks-nvim.enable = true;
+    };
   };
 }
