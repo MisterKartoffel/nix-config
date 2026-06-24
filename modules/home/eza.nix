@@ -1,9 +1,9 @@
-{ config, lib, ... }:
+{ config, ... }:
 let
-  inherit (config.programs) eza git;
+  inherit (config.programs) git;
 in
 {
-  programs.eza = lib.mkIf eza.enable {
+  programs.eza = {
     icons = "always";
     colors = "always";
     git = git.enable;

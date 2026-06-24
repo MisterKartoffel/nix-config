@@ -22,7 +22,8 @@ let
   ];
 in
 {
-  home.persistence.${impermanence.path} = lib.mkIf impermanence.enable {
+  home.persistence.${impermanence.path} = {
+    inherit (impermanence) enable;
     hideMounts = true;
 
     directories = [

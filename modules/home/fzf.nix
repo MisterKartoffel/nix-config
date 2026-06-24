@@ -5,11 +5,10 @@
   ...
 }:
 let
-  inherit (config.programs) fzf;
   inherit (config.xdg.userDirs) projects;
 in
 {
-  programs.fzf = lib.mkIf fzf.enable {
+  programs.fzf = {
     fileWidgetCommand = "${lib.getExe pkgs.fd} --type file --base-directory ${projects} --exclude .git --exclude .direnv";
 
     changeDirWidgetOptions = [

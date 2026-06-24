@@ -24,6 +24,7 @@
   services = {
     dunst.enable = true;
     playerctld.enable = true;
+    ssh-agent.enable = true;
   };
 
   stylix.enable = true;

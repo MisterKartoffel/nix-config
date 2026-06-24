@@ -5,10 +5,10 @@
   ...
 }:
 let
-  inherit (config.programs) fzf zsh;
+  inherit (config.programs) fzf;
 in
 {
-  programs.zsh = lib.mkIf zsh.enable {
+  programs.zsh = {
     autocd = true;
     defaultKeymap = "viins";
 

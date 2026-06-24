@@ -1,18 +1,16 @@
 {
   inputs,
   osConfig,
-  config,
   lib,
   ...
 }:
 let
-  inherit (config.programs) zen-browser;
   inherit (osConfig.services) qbittorrent;
 in
 {
   imports = [ inputs.zen-browser.homeModules.beta ];
 
-  programs.zen-browser = lib.mkIf zen-browser.enable {
+  programs.zen-browser = {
     setAsDefaultBrowser = true;
 
     # See https://mozilla.github.io/policy-templates/
