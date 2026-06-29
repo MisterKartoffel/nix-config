@@ -39,6 +39,7 @@
     hostName = "ghost";
 
     useNetworkd = true;
+    nftables.enable = true;
     wireless = {
       enable = true;
       secretsFile = "/run/secrets/wireless";
