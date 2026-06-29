@@ -11,7 +11,6 @@ in
 
     bonds.bond0 = {
       inherit interfaces;
-
       driverOptions = {
         mode = "active-backup";
         primary_reselect = "better";
