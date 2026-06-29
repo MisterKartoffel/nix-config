@@ -31,7 +31,7 @@ in
 
   # sshd daemon fails to start if key is not found
   # see issue above
-  services.openssh.hostKeys = lib.optionals (sops.enable && overlay.enable && !overlay.mutable) [
+  services.openssh.hostKeys = lib.optionals sops.enable [
     {
       path = secrets."ssh_key".path;
       type = "ed25519";
