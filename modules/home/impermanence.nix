@@ -6,6 +6,7 @@
 }:
 let
   inherit (config.xdg) userDirs;
+  inherit (config.home) homeDirectory;
   inherit (config.accounts.email) maildirBasePath;
   inherit (config.programs)
     offlineimap
@@ -30,7 +31,7 @@ in
       ".cache/nix"
     ]
     ++ lib.optionals (userDirs.enable && userDirs.createDirectories) (
-      map baseNameOf (
+      map (lib.removePrefix homeDirectory) (
         builtins.filter (path: path != null) (
           builtins.attrValues {
             inherit (userDirs)
