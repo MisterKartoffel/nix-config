@@ -13,27 +13,14 @@ in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
-  config = lib.mkIf sops.enable {
-    sops = {
-      age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
-      defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
-      validateSopsFiles = true;
+  sops = lib.mkIf sops.enable {
+    age.keyFile = "${homeDirectory}/.config/sops/age/keys.txt";
+    defaultSopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+    validateSopsFiles = true;
 
-      secrets = {
-        "ssh_key" = lib.mkIf ssh.enable {
-          path = "${homeDirectory}/.ssh/id_ed25519";
-        };
-
-        "ufrgs/password" = { };
-      };
+    secrets = {
+      "ssh_key".path = lib.mkIf ssh.enable "${homeDirectory}/.ssh/id_ed25519";
+      "ufrgs/password" = { };
     };
-
-    modules.secrets = lib.custom.nestAttrset (config.sops.secrets or { });
-  };
-
-  options.modules.secrets = lib.mkOption {
-    description = "Attribute set of sops-nix secrets";
-    type = lib.types.attrs;
-    default = { };
   };
 }

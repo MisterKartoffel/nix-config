@@ -6,8 +6,8 @@
   ...
 }:
 let
-  inherit (config.modules) secrets;
   inherit (osConfig.modules.services) sops;
+  inherit (config.sops) secrets;
 
   mergeDefaults =
     services: overrides:
@@ -73,7 +73,7 @@ in
           tls.useStartTls = true;
         };
 
-        passwordCommand = "${lib.getExe' pkgs.coreutils "cat"} ${secrets.ufrgs.password.path}";
+        passwordCommand = "${lib.getExe' pkgs.coreutils "cat"} ${secrets."ufrgs/password".path}";
       };
     };
   };

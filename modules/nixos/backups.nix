@@ -6,9 +6,9 @@
 }:
 let
   inherit (config.modules.services) impermanence;
-  inherit (config.modules) secrets;
   inherit (config.networking) hostName;
   inherit (config.services) qbittorrent;
+  inherit (config.sops) secrets;
 
   snapshotPath = "${impermanence.path}/.snapshot";
   baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
@@ -18,8 +18,8 @@ in
     initialize = true;
 
     repository = "rclone:mega:restic/${hostName}";
-    passwordFile = secrets.restic.password.path;
-    rcloneConfigFile = secrets.rclone.config.path;
+    passwordFile = secrets."restic/password".path;
+    rcloneConfigFile = secrets."rclone/config".path;
 
     paths = [ snapshotPath ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];

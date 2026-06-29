@@ -1,8 +1,9 @@
 { config, lib, ... }:
 let
   inherit (config.modules.services) sops;
-  inherit (config.modules) system secrets;
+  inherit (config.modules) system;
   inherit (config.system.etc) overlay;
+  inherit (config.sops) secrets;
 in
 {
   system.etc.overlay = {
@@ -32,7 +33,7 @@ in
   # see issue above
   services.openssh.hostKeys = lib.optionals (sops.enable && overlay.enable && !overlay.mutable) [
     {
-      path = secrets.ssh_key.path;
+      path = secrets."ssh_key".path;
       type = "ed25519";
     }
   ];

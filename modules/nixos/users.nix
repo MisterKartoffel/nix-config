@@ -5,8 +5,9 @@
   ...
 }:
 let
-  inherit (config.modules) secrets services system;
+  inherit (config.modules) services system;
   inherit (services) sops;
+  inherit (config.sops) secrets;
 in
 {
   services.userborn.enable = true;
@@ -17,7 +18,7 @@ in
       isNormalUser = true;
       inherit (user) shell description extraGroups;
 
-      hashedPasswordFile = lib.mkIf sops.enable secrets.${username}.password.path;
+      hashedPasswordFile = lib.mkIf sops.enable secrets."${username}/password".path;
       initialHashedPassword = lib.mkIf (
         !sops.enable
       ) "$y$j9T$9lxUmIACkk7jFAU437ubP/$/dbwqUcskqwzxBC.Lg7WJx4uf/8jxLGcxRjM36U0q57";
