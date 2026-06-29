@@ -1,45 +1,30 @@
+{ config, ... }:
 {
-  config,
-  lib,
-  ...
-}:
-let
-  inherit (config.accounts.email.accounts) hotmail;
-in
-{
-  accounts.email.accounts = {
-    hotmail.offlineimap = lib.mkIf hotmail.offlineimap.enable {
-      extraConfig.remote = {
-        oauth2_client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753";
-        oauth2_request_url = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
-        oauth2_access_token_eval = "%(remotepasseval)s";
-      };
-    };
+  accounts.email.accounts.hotmail.offlineimap.extraConfig.remote = {
+    oauth2_client_id = "9e5f94bc-e8a4-4e73-b8be-63364c29d753";
+    oauth2_request_url = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize";
+    oauth2_access_token_eval = "%(remotepasseval)s";
   };
 
-  programs.offlineimap =
-    lib.mkIf
-      (
-        lib.any (account: account.offlineimap.enable) (lib.attrValues config.accounts.email.accounts)
-        || config.services.imapnotify.enable
-      )
-      {
-        enable = true;
+  programs.offlineimap = {
+    enable = builtins.any (account: account.offlineimap.enable) (
+      builtins.attrValues config.accounts.email.accounts
+    );
 
-        # Needed because the default remotepasseval strips
-        # on bytes and offlineimap strips on string.
-        pythonFile = ''
-          import subprocess
+    # Needed because the default remotepasseval strips
+    # on bytes and offlineimap strips on string.
+    pythonFile = ''
+      import subprocess
 
-          class SafeString(str):
-          	def strip(self, chars=None):
-          		if isinstance(chars, (bytes, bytearray)):
-          			chars = chars.decode("utf-8", errors="ignore")
-          		return SafeString(super().strip(chars))
+      class SafeString(str):
+      	def strip(self, chars=None):
+      		if isinstance(chars, (bytes, bytearray)):
+      			chars = chars.decode("utf-8", errors="ignore")
+      		return SafeString(super().strip(chars))
 
-          def get_pass(service, cmd):
-          	out = subprocess.check_output(cmd)
-          	return SafeString(out.decode("utf-8", errors="replace").strip())
-        '';
-      };
+      def get_pass(service, cmd):
+      	out = subprocess.check_output(cmd)
+      	return SafeString(out.decode("utf-8", errors="replace").strip())
+    '';
+  };
 }

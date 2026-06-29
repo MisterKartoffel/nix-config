@@ -30,7 +30,7 @@ in
   assertions = [
     {
       assertion =
-        lib.any (account: account.enable) (builtins.attrValues config.accounts.email.accounts)
+        builtins.any (account: account.enable) (builtins.attrValues config.accounts.email.accounts)
         -> sops.enable;
 
       message = "Mail account configuration requires sops-nix to be enabled.";

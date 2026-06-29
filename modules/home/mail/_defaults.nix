@@ -4,12 +4,36 @@
   service,
   overrides ? { },
 }:
+let
+  inherit (lib) toSentenceCase;
+in
 {
   ${service} = {
     userName = overrides.${service}.address;
     realName = "Felipe Duarte";
 
-    neomutt.enable = true;
+    neomutt = {
+      enable = true;
+      mailboxName = "${toSentenceCase service}/Caixa de Entrada";
+      extraMailboxes = [
+        {
+          name = "${toSentenceCase service}/Arquivo Morto";
+          mailbox = "Arquivo Morto";
+        }
+        {
+          name = "${toSentenceCase service}/Enviados";
+          mailbox = overrides.${service}.folders.sent or "Sent";
+        }
+        {
+          name = "${toSentenceCase service}/Rascunhos";
+          mailbox = overrides.${service}.folders.drafts or "Drafts";
+        }
+        {
+          name = "${toSentenceCase service}/Excluído";
+          mailbox = overrides.${service}.folders.trash or "Trash";
+        }
+      ];
+    };
 
     offlineimap = {
       enable = true;

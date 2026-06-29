@@ -1,26 +1,7 @@
 { config, lib, ... }:
 let
-  inherit (config.accounts.email.accounts) hotmail ufrgs;
-
-  makeSettings = service: overrides: {
-    mailboxName = "${service}/Caixa de Entrada";
-    extraMailboxes = [
-      {
-        name = "${service}/Arquivo Morto";
-        mailbox = "Arquivo Morto";
-      }
-      {
-        name = "${service}/Enviados";
-        mailbox = "Sent";
-      }
-      {
-        name = "${service}/Rascunhos";
-        mailbox = "Drafts";
-      }
-      {
-        name = "${service}/Excluído";
-        mailbox = overrides.trash or "Trash";
-      }
+  makeMailboxes = service: overrides: {
+    extraMailboxes = lib.mkAfter [
       {
         name = "${service}/Lixo Eletrônico";
         mailbox = overrides.junk or "Junk";
@@ -30,217 +11,217 @@ let
 in
 {
   accounts.email.accounts = {
-    hotmail.neomutt = lib.mkIf hotmail.neomutt.enable (makeSettings "Hotmail" { trash = "Deleted"; });
-    ufrgs.neomutt = lib.mkIf ufrgs.neomutt.enable (makeSettings "UFRGS" { junk = "Spam"; });
+    hotmail.neomutt = makeMailboxes "Hotmail" { };
+    ufrgs.neomutt = makeMailboxes "UFRGS" { junk = "Spam"; };
   };
 
-  programs.neomutt =
-    lib.mkIf (lib.any (account: account.neomutt.enable) (lib.attrValues config.accounts.email.accounts))
+  programs.neomutt = {
+    enable = builtins.any (account: account.neomutt.enable) (
+      builtins.attrValues config.accounts.email.accounts
+    );
+
+    settings = {
+      sort = "reverse-last-date";
+      use_threads = "threads";
+      sort_browser = "unsorted";
+      markers = "no";
+    };
+
+    binds = [
       {
-        enable = true;
-
-        settings = {
-          sort = "reverse-last-date";
-          use_threads = "threads";
-          sort_browser = "unsorted";
-          markers = "no";
-        };
-
-        binds = [
-          {
-            map = [
-              "attach"
-              "browser"
-              "index"
-              "pager"
-            ];
-            key = "g";
-            action = "noop";
-          }
-          {
-            map = [
-              "attach"
-              "browser"
-              "index"
-            ];
-            key = "gg";
-            action = "first-entry";
-          }
-          {
-            map = [
-              "attach"
-              "browser"
-              "index"
-            ];
-            key = "G";
-            action = "last-entry";
-          }
-          {
-            map = [
-              "attach"
-              "browser"
-              "index"
-              "pager"
-            ];
-            key = "\\Cu";
-            action = "half-up";
-          }
-          {
-            map = [
-              "attach"
-              "browser"
-              "index"
-              "pager"
-            ];
-            key = "\\Cd";
-            action = "half-down";
-          }
-          {
-            map = [ "index" ];
-            key = "k";
-            action = "previous-entry";
-          }
-          {
-            map = [ "index" ];
-            key = "j";
-            action = "next-entry";
-          }
-          {
-            map = [ "pager" ];
-            key = "gg";
-            action = "top";
-          }
-          {
-            map = [ "pager" ];
-            key = "G";
-            action = "bottom";
-          }
-          {
-            map = [ "pager" ];
-            key = "k";
-            action = "previous-line";
-          }
-          {
-            map = [ "pager" ];
-            key = "j";
-            action = "next-line";
-          }
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
         ];
-
-        macros = [
-          {
-            map = [ "index" ];
-            key = "c";
-            action = "<change-folder>?";
-          }
+        key = "g";
+        action = "noop";
+      }
+      {
+        map = [
+          "attach"
+          "browser"
+          "index"
         ];
+        key = "gg";
+        action = "first-entry";
+      }
+      {
+        map = [
+          "attach"
+          "browser"
+          "index"
+        ];
+        key = "G";
+        action = "last-entry";
+      }
+      {
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
+        ];
+        key = "\\Cu";
+        action = "half-up";
+      }
+      {
+        map = [
+          "attach"
+          "browser"
+          "index"
+          "pager"
+        ];
+        key = "\\Cd";
+        action = "half-down";
+      }
+      {
+        map = [ "index" ];
+        key = "k";
+        action = "previous-entry";
+      }
+      {
+        map = [ "index" ];
+        key = "j";
+        action = "next-entry";
+      }
+      {
+        map = [ "pager" ];
+        key = "gg";
+        action = "top";
+      }
+      {
+        map = [ "pager" ];
+        key = "G";
+        action = "bottom";
+      }
+      {
+        map = [ "pager" ];
+        key = "k";
+        action = "previous-line";
+      }
+      {
+        map = [ "pager" ];
+        key = "j";
+        action = "next-line";
+      }
+    ];
 
-        extraConfig = ''
-          ignore *
-          unignore subject: from: to: cc: date:
-          hdr_order subject: from: to: cc: date:
+    macros = [
+      {
+        map = [ "index" ];
+        key = "c";
+        action = "<change-folder>?";
+      }
+    ];
 
-          # In order: not addressed to me, addressed to me,
-          # addressed to group, copied to me, sent by me, mailing list
-          set to_chars = "󰫭󰭕󰭘󱉯 "
+    extraConfig = ''
+      ignore *
+      unignore subject: from: to: cc: date:
+      hdr_order subject: from: to: cc: date:
 
-          # tagged, favorited, marked for deletion,
-          # attachment marked for deletion, replied to,
-          # old mail, new mail, old mail thread, new mail thread
-          set flag_chars = "󰓼󱫃󰼠󰵂󰵂  "
+      # In order: not addressed to me, addressed to me,
+      # addressed to group, copied to me, sent by me, mailing list
+      set to_chars = "󰫭󰭕󰭘󱉯 "
 
-          # unchanged, synchronize, read-only, attach-message
-          set status_chars = "󰶉󰁝󰶎󰁦"
+      # tagged, favorited, marked for deletion,
+      # attachment marked for deletion, replied to,
+      # old mail, new mail, old mail thread, new mail thread
+      set flag_chars = "󰓼󱫃󰼠󰵂󰵂  "
 
-          set index_format = " %zs %zt  %-20.20L | %@attachment_info@ %s %*    | %<[m?%<[d?%[hoje, %R]& %[%a, %R]>&%[%d %h %Y]> "
-          index-format-hook attachment_info "=B text/calendar ~X 1-" "󰁦"
-          index-format-hook attachment_info "=B text/calendar" " "
-          index-format-hook attachment_info "~X 1-" "󰁦 "
-          index-format-hook attachment_info "~A" "  "
+      # unchanged, synchronize, read-only, attach-message
+      set status_chars = "󰶉󰁝󰶎󰁦"
 
-          set compose_format = " Compose %a 󰁦 %* Message size: %l "
-          set size_show_bytes = yes
-          set size_show_fractions = yes
+      set index_format = " %zs %zt  %-20.20L | %@attachment_info@ %s %*    | %<[m?%<[d?%[hoje, %R]& %[%a, %R]>&%[%d %h %Y]> "
+      index-format-hook attachment_info "=B text/calendar ~X 1-" "󰁦"
+      index-format-hook attachment_info "=B text/calendar" " "
+      index-format-hook attachment_info "~X 1-" "󰁦 "
+      index-format-hook attachment_info "~A" "  "
 
-          set attach_format = " %2n %u%D%I%T | %d %*  | %.7m/%.10m, %s "
-          set status_format = " %r %D %?u? %u ?%?R? %R ?%?d? %d ?%?t?󰓼 %t ?%?F? %F ?%?p?󰲶 %p?"
-          set mailbox_folder_format = " %2C %<N?󰵂&%<n?&%<m?& >>> %i "
-          set pager_format = " %zs %zt %L %s %*  %P "
+      set compose_format = " Compose %a 󰁦 %* Message size: %l "
+      set size_show_bytes = yes
+      set size_show_fractions = yes
 
-          # Statusbar Colors ---------------------------------------------
-          color status color8   default '(|)'
-          color status default  color8  '\s*[^ ]+\s*'
-          color status green    color8  '( [0-9]+)?'
-          color status blue     color8  '( [0-9]+)?'
-          color status color229 color8  '( [0-9]+)?'
-          color status color216 color8  '󰓼( [0-9]+)?'
-          color status color210 color8  '( [0-9]+)?'
-          color status color255 color8  '󰲶( [0-9]+)?'
+      set attach_format = " %2n %u%D%I%T | %d %*  | %.7m/%.10m, %s "
+      set status_format = " %r %D %?u? %u ?%?R? %R ?%?d? %d ?%?t?󰓼 %t ?%?F? %F ?%?p?󰲶 %p?"
+      set mailbox_folder_format = " %2C %<N?󰵂&%<n?&%<m?& >>> %i "
+      set pager_format = " %zs %zt %L %s %*  %P "
 
-          # Index Colors -------------------------------------------------
-          color index         default  default
-          color index_author  color147 default
-          color index_date    color245 default
-          color index_flags   blue     default
-          color index_subject color245 default
+      # Statusbar Colors ---------------------------------------------
+      color status color8   default '(|)'
+      color status default  color8  '\s*[^ ]+\s*'
+      color status green    color8  '( [0-9]+)?'
+      color status blue     color8  '( [0-9]+)?'
+      color status color229 color8  '( [0-9]+)?'
+      color status color216 color8  '󰓼( [0-9]+)?'
+      color status color210 color8  '( [0-9]+)?'
+      color status color255 color8  '󰲶( [0-9]+)?'
 
-          color index_flags   green    default ~U
-          color index_subject color252 default ~U
+      # Index Colors -------------------------------------------------
+      color index         default  default
+      color index_author  color147 default
+      color index_date    color245 default
+      color index_flags   blue     default
+      color index_subject color245 default
 
-          color index_author  color229 default ~F
-          color index_date    color229 default ~F
-          color index_flags   color229 default ~F
-          color index_subject color229 default ~F
+      color index_flags   green    default ~U
+      color index_subject color252 default ~U
 
-          color index_author  color216 default ~T
-          color index_date    color216 default ~T
-          color index_flags   color216 default ~T
-          color index_subject color216 default ~T
+      color index_author  color229 default ~F
+      color index_date    color229 default ~F
+      color index_flags   color229 default ~F
+      color index_subject color229 default ~F
 
-          color index_author  color210 default ~D
-          color index_date    color210 default ~D
-          color index_flags   color210 default ~D
-          color index_subject color210 default ~D
+      color index_author  color216 default ~T
+      color index_date    color216 default ~T
+      color index_flags   color216 default ~T
+      color index_subject color216 default ~T
 
-          color normal    color15  default
-          color indicator	white		 default 
-          color error     color210 default
-          color status    color15  default
-          color tree      color15  default
-          color tilde     color15  default
+      color index_author  color210 default ~D
+      color index_date    color210 default ~D
+      color index_flags   color210 default ~D
+      color index_subject color210 default ~D
 
-          color quoted  color15 default
-          color quoted1 color7  default
-          color quoted2 color8  default
-          color quoted3 color0  default
-          color quoted4 color0  default
-          color quoted5 color0  default
+      color normal    color15  default
+      color indicator	white		 default 
+      color error     color210 default
+      color status    color15  default
+      color tree      color15  default
+      color tilde     color15  default
 
-          # Message Headers ----------------------------------------------
-          color hdrdefault color245 default
-          color header     color189 default '^From:'
-          color header     color189 default '^Subject:'
+      color quoted  color15 default
+      color quoted1 color7  default
+      color quoted2 color8  default
+      color quoted3 color0  default
+      color quoted4 color0  default
+      color quoted5 color0  default
 
-          # Message Body -------------------------------------------------
-          # Text formatting (bold, underline, italic)
-          color body white default '(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$)'
-          color body white default '(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)'
-          color body white default '(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)'
+      # Message Headers ----------------------------------------------
+      color hdrdefault color245 default
+      color header     color189 default '^From:'
+      color header     color189 default '^Subject:'
 
-          # Attachments
-          color attachment color8 default
+      # Message Body -------------------------------------------------
+      # Text formatting (bold, underline, italic)
+      color body white default '(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$)'
+      color body white default '(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)'
+      color body white default '(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)'
 
-          # Signature
-          color signature color8 default
+      # Attachments
+      color attachment color8 default
 
-          # Emails
-          color body color2 default '[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+'
+      # Signature
+      color signature color8 default
 
-          # URLs
-          color body color4 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
+      # Emails
+      color body color2 default '[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+'
 
-          # mailto
-          color body color2 default '<mailto:[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+>'
-        '';
-      };
+      # URLs
+      color body color4 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
+
+      # mailto
+      color body color2 default '<mailto:[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+>'
+    '';
+  };
 }
