@@ -1,18 +1,13 @@
 { lib }:
-builtins.foldl'
-  (
-    acc: file:
-    builtins.foldl' (
-      acc': function:
-      if builtins.hasAttr function acc' then
-        throw "lib: duplicate function '${function}'"
-      else
-        acc' // { ${function} = file.${function}; }
-    ) acc (builtins.attrNames file)
-  )
-  { }
-  (
-    map (file: import ./${file} { inherit lib; }) (
-      builtins.attrNames (removeAttrs (builtins.readDir ./.) [ "default.nix" ])
-    )
-  )
+let
+  files = map (file: import ./${file} { inherit lib; }) (
+    builtins.filter (file: file != "default.nix") (builtins.attrNames (builtins.readDir ./.))
+  );
+in
+builtins.zipAttrsWith (
+  name: values:
+  if builtins.length values > 1 then
+    throw "lib: duplicate function '${name}'"
+  else
+    builtins.head values
+) files
