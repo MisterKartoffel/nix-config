@@ -14,7 +14,7 @@ let
           default = null;
         };
 
-        autologin = lib.mkEnableOption "Should the system autologin this user.";
+        autologin = lib.mkEnableOption "autologin for this user.";
 
         shell = lib.mkOption {
           description = "Default shell";
@@ -43,7 +43,7 @@ let
 
   impermanenceModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable system-wide impermanence";
+      enable = lib.mkEnableOption "system-wide impermanence";
 
       path = lib.mkOption {
         description = "Path to persistent directory";
@@ -55,7 +55,7 @@ let
 
   sopsModule = lib.types.submodule {
     options = {
-      enable = lib.mkEnableOption "Enable SOPS-Nix integration";
+      enable = lib.mkEnableOption "sops-nix integration";
     };
   };
 
