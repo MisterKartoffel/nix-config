@@ -33,12 +33,6 @@ let
 
   systemModule = lib.types.submodule {
     options = {
-      machine-id = lib.mkOption {
-        description = "Unique machine ID of the host machine.";
-        type = lib.types.str;
-        default = "";
-      };
-
       users = lib.mkOption {
         description = "Attribute set of user entries to create on the system";
         type = usersModule;

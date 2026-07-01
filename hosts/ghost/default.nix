@@ -3,21 +3,15 @@
   imports = [ ./disko.nix ];
 
   modules = {
-    system = {
-      machine-id = "34b006cd91c04059beb077f7cb4f6e1e";
-
-      users = {
-        "mimikyu" = {
-          description = "Felipe Duarte";
-          autologin = true;
-          shell = pkgs.zsh;
-          extraGroups = [
-            "wheel"
-            "qbt"
-            "video"
-          ];
-        };
-      };
+    system.users."mimikyu" = {
+      description = "Felipe Duarte";
+      autologin = true;
+      shell = pkgs.zsh;
+      extraGroups = [
+        "wheel"
+        "qbt"
+        "video"
+      ];
     };
 
     services = {
