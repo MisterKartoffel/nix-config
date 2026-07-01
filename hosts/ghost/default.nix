@@ -62,6 +62,8 @@
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
+  hardware.amdgpu.legacySupport.enable = true;
   hardware.facter.reportPath = ./facter.json;
+  powerManagement.cpuFreqGovernor = "performance";
   zramSwap.enable = true;
 }
