@@ -1,13 +1,15 @@
 { pkgs, ... }:
+let
+  # I don't know why the NixOS module does all this
+  # song and dance with a nested qBittorrent/qBittorrent
+  # but I for sure didn't like it
+  profileDir = "/var/lib";
+in
 {
-  services.qbittorrent = rec {
+  services.qbittorrent = {
+    inherit profileDir;
     openFirewall = true;
     torrentingPort = 6881;
-
-    # I don't know why the NixOS module does all this
-    # song and dance with a nested qBittorrent/qBittorrent
-    # but I for sure didn't like it
-    profileDir = "/var/lib";
 
     serverConfig = {
       Network.PortForwardingEnabled = false;
