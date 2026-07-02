@@ -19,37 +19,32 @@ in
     defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
     validateSopsFiles = true;
 
-    secrets =
-      let
-        hostSecrets = {
-          "ssh_key" = lib.mkIf openssh.enable {
-            mode = "0600";
-            path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
-          };
+    secrets = {
+      "ssh_key" = lib.mkIf openssh.enable {
+        mode = "0600";
+        path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
+      };
 
-          "wireless" = lib.mkIf wireless.enable {
-            owner = "wpa_supplicant";
-            group = "wpa_supplicant";
-          };
-        }
-        // lib.optionalAttrs impermanence.enable {
-          "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
-          "restic/password".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+      "wireless" = lib.mkIf wireless.enable {
+        owner = "wpa_supplicant";
+        group = "wpa_supplicant";
+      };
+    }
+    // lib.optionalAttrs impermanence.enable {
+      "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+      "restic/password".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+    }
+    // lib.mergeAttrsList (
+      map (username: {
+        "${username}/password".neededForUsers = true;
+
+        "${username}/age_key" = {
+          owner = username;
+          group = "users";
+          mode = "0600";
+          path = "/home/${username}/.config/sops/age/keys.txt";
         };
-
-        userSecrets = lib.mergeAttrsList (
-          map (username: {
-            "${username}/password".neededForUsers = true;
-
-            "${username}/age_key" = {
-              owner = username;
-              group = "users";
-              mode = "0600";
-              path = "/home/${username}/.config/sops/age/keys.txt";
-            };
-          }) (builtins.attrNames users)
-        );
-      in
-      userSecrets // hostSecrets;
+      }) (builtins.attrNames users)
+    );
   };
 }
