@@ -26,6 +26,7 @@ in
           AlternativeGlobalDLSpeedLimit = 3000;
           AlternativeGlobalUPSpeedLimit = 3000;
           MaxActiveCheckingTorrents = 10;
+          QueueingSystemEnabled = false;
           DefaultSavePath = "${profileDir}/qBittorrent/Torrents/Complete";
           TempPath = "${profileDir}/qBittorrent/Torrents/Incomplete";
           FinishedTorrentExportDirectory = "${profileDir}/qBittorrent/.torrents/Complete";
