@@ -1,8 +1,8 @@
 { config, lib, ... }:
 let
   inherit (config.programs.nvf.settings.vim) binds utility;
-  inherit (utility) oil-nvim snacks-nvim;
   inherit (binds) whichKey;
+  inherit (utility) oil-nvim snacks-nvim;
 in
 {
   programs.nvf.settings.vim.keymaps = [

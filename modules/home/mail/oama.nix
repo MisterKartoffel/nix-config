@@ -6,8 +6,9 @@
   ...
 }:
 let
-  yamlFormat = pkgs.formats.yaml { };
   inherit (config.accounts.email.accounts) hotmail;
+
+  yamlFormat = pkgs.formats.yaml { };
 in
 {
   config = lib.mkIf (hotmail.enable && hotmail.offlineimap.enable) (

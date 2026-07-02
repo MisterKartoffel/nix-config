@@ -6,8 +6,8 @@
   ...
 }:
 let
-  inherit (config.home) username homeDirectory;
   inherit (osConfig.modules.services) sops;
+  inherit (config.home) username homeDirectory;
   inherit (config.programs) ssh;
 in
 {

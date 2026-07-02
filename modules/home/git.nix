@@ -6,6 +6,7 @@
 }:
 let
   inherit (config.programs) git ssh;
+
   sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
 in
 {

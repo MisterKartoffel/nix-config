@@ -5,8 +5,8 @@
   ...
 }:
 let
-  inherit (config.modules) services system;
-  inherit (services) sops;
+  inherit (config.modules.services) sops;
+  inherit (config.modules.system) users;
   inherit (config.sops) secrets;
 in
 {
@@ -26,7 +26,7 @@ in
       openssh.authorizedKeys.keys = [
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJRyJ3RdkVQsdZpnQ0+hPPwzI+lg9XprrK3ntSFPldhBsA4sywtAy4U2P+9DtdeON29opxsUyiDd2yprr2iwWG8= termius@s20fe"
       ];
-    }) system.users)
+    }) users)
     // {
       root.initialPassword = "!";
     };
@@ -41,7 +41,7 @@ in
       homeDirectory = "/home/${username}";
       inherit (config.system) stateVersion;
     };
-  }) system.users;
+  }) users;
 
   home-manager = {
     useGlobalPkgs = true;

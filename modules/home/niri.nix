@@ -6,9 +6,10 @@
   ...
 }:
 let
-  toKDL = lib.hm.generators.toKDL { };
   inherit (osConfig.programs) niri;
+
   zen-browser = config.programs.zen-browser.package;
+  toKDL = lib.hm.generators.toKDL { };
 in
 {
   xdg.configFile."niri/config.kdl".source = lib.mkIf niri.enable (

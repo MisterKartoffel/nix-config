@@ -5,12 +5,12 @@
   ...
 }:
 let
+  inherit (config) stylix;
+
   wallpaper = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/paint.jpg";
     hash = "sha256-9/4PtVNTvT+qILYcp+5Dir7VWXox2zbp0DuXkTv/ecU=";
   };
-
-  inherit (config) stylix;
 in
 {
   systemd.user.services.swaybg = lib.mkIf stylix.enable {

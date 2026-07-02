@@ -10,8 +10,8 @@ let
   inherit (config.services) qbittorrent;
   inherit (config.sops) secrets;
 
-  snapshotPath = "${impermanence.path}/.snapshot";
   baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
+  snapshotPath = "${impermanence.path}/.snapshot";
 in
 {
   services.restic.backups.impermanence = lib.mkIf impermanence.enable {

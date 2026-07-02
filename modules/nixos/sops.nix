@@ -5,10 +5,10 @@
   ...
 }:
 let
-  inherit (config.modules.system) users;
   inherit (config.modules.services) impermanence sops;
-  inherit (config.services) openssh;
+  inherit (config.modules.system) users;
   inherit (config.networking) hostName wireless;
+  inherit (config.services) openssh;
   inherit (config.system) etc;
 in
 {

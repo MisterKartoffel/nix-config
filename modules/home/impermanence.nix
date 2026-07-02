@@ -5,17 +5,16 @@
   ...
 }:
 let
-  inherit (config.xdg) userDirs;
-  inherit (config.home) homeDirectory;
+  inherit (osConfig.modules.services) impermanence;
   inherit (config.accounts.email) maildirBasePath;
+  inherit (config.home) homeDirectory;
+  inherit (config.xdg) userDirs;
   inherit (config.programs)
     offlineimap
     vesktop
     zen-browser
     zsh
     ;
-
-  inherit (osConfig.modules.services) impermanence;
 
   gnome-keyring.enable = lib.any (service: service.enable) [
     osConfig.services.gnome.gnome-keyring
