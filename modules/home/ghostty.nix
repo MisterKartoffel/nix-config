@@ -11,7 +11,6 @@ in
   home.sessionVariables.TERMINAL = lib.optionalString ghostty.enable "${lib.getExe pkgs.ghostty}";
 
   programs.ghostty = {
-    enableZshIntegration = true;
     clearDefaultKeybinds = true;
 
     settings = {
