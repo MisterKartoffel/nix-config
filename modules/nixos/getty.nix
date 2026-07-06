@@ -4,7 +4,7 @@
 
     autologinUser =
       let
-        inherit (config.modules.system) users;
+        inherit (config.modules) users;
       in
       lib.findFirst (username: users.${username}.autologin) null (builtins.attrNames users);
   };

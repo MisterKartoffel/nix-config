@@ -3,7 +3,7 @@
   imports = [ ./disko.nix ];
 
   modules = {
-    system.users."mimikyu" = {
+    users."mimikyu" = {
       description = "Felipe Duarte";
       autologin = true;
       shell = pkgs.zsh;

@@ -6,7 +6,7 @@
 }:
 let
   inherit (config.modules.services) sops;
-  inherit (config.modules.system) users;
+  inherit (config.modules) users;
   inherit (config.sops) secrets;
 in
 {

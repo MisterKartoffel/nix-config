@@ -31,16 +31,6 @@ let
     }
   );
 
-  systemModule = lib.types.submodule {
-    options = {
-      users = lib.mkOption {
-        description = "Attribute set of user entries to create on the system";
-        type = usersModule;
-        default = { };
-      };
-    };
-  };
-
   impermanenceModule = lib.types.submodule {
     options = {
       enable = lib.mkEnableOption "system-wide impermanence";
@@ -75,9 +65,9 @@ let
 in
 {
   options.modules = {
-    system = lib.mkOption {
-      description = "System-wide settings";
-      type = systemModule;
+    users = lib.mkOption {
+      description = "Users to create on this host";
+      type = usersModule;
     };
 
     services = lib.mkOption {
@@ -90,7 +80,7 @@ in
     {
       assertion =
         let
-          inherit (config.modules.system) users;
+          inherit (config.modules) users;
           autologinUsers = builtins.filter (username: users.${username}.autologin) (builtins.attrNames users);
         in
         builtins.length autologinUsers <= 1;

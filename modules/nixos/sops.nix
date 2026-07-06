@@ -6,7 +6,7 @@
 }:
 let
   inherit (config.modules.services) impermanence sops;
-  inherit (config.modules.system) users;
+  inherit (config.modules) users;
   inherit (config.networking) hostName wireless;
   inherit (config.services) openssh;
   inherit (config.system) etc;
