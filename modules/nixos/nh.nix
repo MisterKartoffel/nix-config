@@ -2,6 +2,6 @@
   programs.nh.clean = {
     enable = true;
     dates = "daily";
-    extraArgs = "--keep 3";
+    extraArgs = "--keep-one --keep 3";
   };
 }
