@@ -9,23 +9,23 @@ let
 in
 {
   programs.fzf = {
-    fileWidgetCommand = "${lib.getExe pkgs.fd} --type file --base-directory ${projects} --exclude .git --exclude .direnv";
-
-    changeDirWidgetOptions = [
+    changeDirWidget.options = [
       "--style full"
       "--preview '${lib.getExe pkgs.eza} --all --icons=always --color=always --group-directories-first --tree --level 1 {}'"
       "--preview-window '70%'"
       "--bind 'backward-eof:abort'"
     ];
 
-    fileWidgetOptions = [
-      "--style full"
-      "--walker-skip .ssh,.gnupg,.cache"
-      "--preview '[[ -f ${projects}/{} ]] && ${lib.getExe' pkgs.coreutils "cat"} --number ${projects}/{}; [[ -d ${projects}/{} ]] && ${lib.getExe pkgs.eza} --all --icons=always --color=always --tree --level 1 ${projects}/{}'"
-      "--bind 'backward-eof:abort'"
-    ];
+    fileWidget = {
+      command = "${lib.getExe pkgs.fd} --type file --base-directory ${projects} --exclude .git --exclude .direnv";
+      options = [
+        "--style full"
+        "--preview '[[ -f ${projects}/{} ]] && ${lib.getExe' pkgs.coreutils "cat"} --number ${projects}/{}; [[ -d ${projects}/{} ]] && ${lib.getExe pkgs.eza} --all --icons=always --color=always --tree --level 1 ${projects}/{}'"
+        "--bind 'backward-eof:abort'"
+      ];
+    };
 
-    historyWidgetOptions = [
+    historyWidget.options = [
       "--style full"
       "--reverse"
       "--preview 'echo {}'"
