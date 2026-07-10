@@ -189,91 +189,71 @@ in
 
           # Media controls
           // lib.mapAttrs (_: value: { _props.allow-when-locked = true; } // value) {
-            "XF86AudioRaiseVolume" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-volume"
-                "@DEFAULT_SINK@"
-                "5%+"
-                "--limit"
-                "0.5"
-              ];
-            };
+            "XF86AudioRaiseVolume".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-volume"
+              "@DEFAULT_SINK@"
+              "5%+"
+              "--limit"
+              "0.5"
+            ];
 
-            "XF86AudioLowerVolume" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-volume"
-                "@DEFAULT_SINK@"
-                "5%-"
-              ];
-            };
+            "XF86AudioLowerVolume".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-volume"
+              "@DEFAULT_SINK@"
+              "5%-"
+            ];
 
-            "XF86AudioMute" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-mute"
-                "@DEFAULT_SINK@"
-                "toggle"
-              ];
-            };
+            "XF86AudioMute".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-mute"
+              "@DEFAULT_SINK@"
+              "toggle"
+            ];
 
-            "Shift+XF86AudioRaiseVolume" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-volume"
-                "@DEFAULT_SOURCE@"
-                "5%+"
-                "--limit"
-                "1.0"
-              ];
-            };
+            "Shift+XF86AudioRaiseVolume".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-volume"
+              "@DEFAULT_SOURCE@"
+              "5%+"
+              "--limit"
+              "1.0"
+            ];
 
-            "Shift+XF86AudioLowerVolume" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-volume"
-                "@DEFAULT_SOURCE@"
-                "5%-"
-              ];
-            };
+            "Shift+XF86AudioLowerVolume".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-volume"
+              "@DEFAULT_SOURCE@"
+              "5%-"
+            ];
 
-            "Shift+XF86AudioMute" = {
-              spawn = [
-                "${lib.getExe' pkgs.wireplumber "wpctl"}"
-                "set-mute"
-                "@DEFAULT_SOURCE@"
-                "toggle"
-              ];
-            };
+            "Shift+XF86AudioMute".spawn = [
+              "${lib.getExe' pkgs.wireplumber "wpctl"}"
+              "set-mute"
+              "@DEFAULT_SOURCE@"
+              "toggle"
+            ];
 
-            "XF86AudioPlay" = {
-              spawn = [
-                "${lib.getExe pkgs.playerctl}"
-                "play-pause"
-              ];
-            };
+            "XF86AudioPlay".spawn = [
+              "${lib.getExe pkgs.playerctl}"
+              "play-pause"
+            ];
 
-            "XF86AudioStop" = {
-              spawn = [
-                "${lib.getExe pkgs.playerctl}"
-                "stop"
-              ];
-            };
+            "XF86AudioStop".spawn = [
+              "${lib.getExe pkgs.playerctl}"
+              "stop"
+            ];
 
-            "XF86AudioPrev" = {
-              spawn = [
-                "${lib.getExe pkgs.playerctl}"
-                "previous"
-              ];
-            };
+            "XF86AudioPrev".spawn = [
+              "${lib.getExe pkgs.playerctl}"
+              "previous"
+            ];
 
-            "XF86AudioNext" = {
-              spawn = [
-                "${lib.getExe pkgs.playerctl}"
-                "next"
-              ];
-            };
+            "XF86AudioNext".spawn = [
+              "${lib.getExe pkgs.playerctl}"
+              "next"
+            ];
           };
       };
     }
