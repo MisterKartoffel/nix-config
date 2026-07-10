@@ -1,11 +1,7 @@
 {
-  inputs ? import ./.tack,
-  system,
   mkShell,
+  tack,
 }:
-let
-  inherit (inputs.tack.packages.${system}) tack;
-in
 mkShell {
   packages = [ tack ];
 }

@@ -23,7 +23,7 @@
       ) (builtins.readDir ./hosts);
 
       devShells = forAllSystems (pkgs: {
-        default = pkgs.callPackage ./shell.nix { inherit inputs; };
+        default = pkgs.callPackage ./shell.nix { };
       });
     };
 }

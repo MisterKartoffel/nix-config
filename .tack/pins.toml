@@ -48,6 +48,3 @@ url = "github:0xc000022070/zen-browser-flake/beta"
 
 [inputs.nvf]
 url = "github:NotAShelf/nvf"
-
-[inputs.tack]
-url = "github:manic-systems/tack"

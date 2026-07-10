@@ -1,0 +1,3 @@
+{
+  programs.tack.enable = true;
+}
