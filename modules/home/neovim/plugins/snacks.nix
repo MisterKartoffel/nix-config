@@ -32,19 +32,7 @@
       ];
     };
 
-    notifier.style = {
-      border = "rounded";
-      zindex = 100;
-      ft = "markdown";
-      wo = {
-        winblend = 5;
-        wrap = false;
-        conceallevel = 2;
-        colorcolumn = "";
-      };
-      bo.filetype = "snacks_notif";
-    };
-
+    notifier.enabled = true;
     picker.enabled = true;
 
     statuscolumn.folds = {
