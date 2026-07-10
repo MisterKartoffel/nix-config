@@ -36,7 +36,10 @@
     wireless = {
       enable = true;
       secretsFile = "/run/secrets/wireless";
-      networks."JOSE LUIS".pskRaw = "ext:home";
+      networks = {
+        "JOSE LUIS".pskRaw = "ext:sala";
+        "FELIPE DUARTE".pskRaw = "ext:quarto";
+      };
     };
   };
 
