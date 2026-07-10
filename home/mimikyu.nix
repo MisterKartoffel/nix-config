@@ -25,6 +25,7 @@
     dunst.enable = true;
     playerctld.enable = true;
     ssh-agent.enable = true;
+    swayidle.enable = true;
   };
 
   stylix.enable = true;
