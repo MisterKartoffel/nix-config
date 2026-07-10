@@ -16,6 +16,7 @@ in
 {
   services.restic.backups.impermanence = lib.mkIf impermanence.enable {
     initialize = true;
+    inhibitsSleep = true;
 
     repository = "rclone:mega:restic/${hostName}";
     passwordFile = secrets."restic/password".path;
