@@ -18,7 +18,7 @@ in
       checkPhase = "${lib.getExe pkgs.niri} validate -c $out";
       text = toKDL {
         prefer-no-csd = { };
-        screenshot-path = "/tmp/niri-screenshot.png";
+        screenshot-path = null;
         clipboard.disable-primary = { };
         recent-windows.off = { };
 
