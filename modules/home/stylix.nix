@@ -17,6 +17,11 @@ in
       zen-browser.profileNames = [ "Profile0" ];
     };
 
+    image = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/refs/heads/master/cat-vibin.png";
+      hash = "sha256-ERZ4sAGhkaBM/tMBPfxeY5dF6xs61i9xXy1z/ovtJr8=";
+    };
+
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
     cursor = {
