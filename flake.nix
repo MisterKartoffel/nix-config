@@ -1,8 +1,8 @@
 {
   outputs =
-    _:
+    args:
     let
-      inputs = import ./.tack;
+      inputs = (import ./.tack) { overrides = args.tackOverrides or { }; };
       lib = inputs.nixpkgs.lib.extend (_: prev: { custom = import ./lib { lib = prev; }; });
       forAllSystems =
         f: lib.genAttrs lib.systems.flakeExposed (system: f inputs.nixpkgs.legacyPackages.${system});

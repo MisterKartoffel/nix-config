@@ -12,6 +12,9 @@ nixpkgs = "https://channels.nixos.org/{path}/nixexprs.tar.xz"
 nixpkgs = "nixpkgs"
 home-manager = "home-manager"
 
+[tack]
+recomposable = true
+
 # [inputs.<name>] fields
 #   url             required, shorturl ok; ?rev=<sha> pins an exact commit
 #   type            flake (default), fetch, or fixed
