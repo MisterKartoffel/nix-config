@@ -5,31 +5,29 @@
   ...
 }:
 let
-  usersModule = lib.types.attrsOf (
-    lib.types.submodule {
-      options = {
-        description = lib.mkOption {
-          description = "User description";
-          type = lib.types.nullOr lib.types.str;
-          default = null;
-        };
-
-        autologin = lib.mkEnableOption "autologin for this user.";
-
-        shell = lib.mkOption {
-          description = "Default shell";
-          type = lib.types.package;
-          default = pkgs.bash;
-        };
-
-        extraGroups = lib.mkOption {
-          description = "Groups to add to";
-          type = lib.types.listOf lib.types.str;
-          default = [ ];
-        };
+  usersModule = lib.types.submodule {
+    options = {
+      description = lib.mkOption {
+        description = "User description";
+        type = lib.types.nullOr lib.types.str;
+        default = null;
       };
-    }
-  );
+
+      autologin = lib.mkEnableOption "autologin for this user.";
+
+      shell = lib.mkOption {
+        description = "Default shell";
+        type = lib.types.package;
+        default = pkgs.bash;
+      };
+
+      extraGroups = lib.mkOption {
+        description = "Groups to add to";
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
+    };
+  };
 
   impermanenceModule = lib.types.submodule {
     options = {
@@ -67,7 +65,7 @@ in
   options.modules = {
     users = lib.mkOption {
       description = "Users to create on this host";
-      type = usersModule;
+      type = lib.types.attrsOf usersModule;
     };
 
     services = lib.mkOption {
