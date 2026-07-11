@@ -12,7 +12,6 @@ in
       "/var/lib/nixos"
       "/var/lib/systemd/timers"
       "/var/lib/systemd/rfkill"
-      "/var/lib/systemd/coredump"
       "/var/log"
     ]
     ++ lib.optionals qbittorrent.enable [
