@@ -59,6 +59,7 @@
   };
 
   services = {
+    dunst.enable = true;
     openssh.enable = true;
     qbittorrent.enable = true;
     resolved.enable = true;
