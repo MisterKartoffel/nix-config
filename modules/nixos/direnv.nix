@@ -2,7 +2,7 @@
   programs.direnv = {
     nix-direnv.enable = true;
 
-    config = {
+    settings = {
       global = {
         strict_env = true;
         warn_timeout = "1m";

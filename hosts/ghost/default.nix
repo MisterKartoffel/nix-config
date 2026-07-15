@@ -44,6 +44,7 @@
   };
 
   programs = {
+    direnv.enable = true;
     nh.enable = true;
     niri.enable = true;
     zsh.enable = true;
