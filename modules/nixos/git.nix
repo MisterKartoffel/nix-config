@@ -5,16 +5,17 @@
   ...
 }:
 let
-  inherit (config.programs) git ssh;
+  inherit (config.programs) git;
+  inherit (config.services) openssh;
 
-  sshKey = "${config.home.homeDirectory}/.ssh/id_ed25519";
+  sshKey = "/home/mimikyu/.ssh/id_ed25519";
 in
 {
   warnings = lib.optional (
-    git.enable -> !ssh.enable
+    git.enable -> !openssh.enable
   ) "Current git configuration requires SSH, git will not be enabled.";
 
-  programs.git.settings = lib.mkIf ssh.enable {
+  programs.git.config = lib.mkIf openssh.enable {
     user = {
       name = "Felipe Duarte";
       email = "felipesdrs@hotmail.com";

@@ -45,6 +45,7 @@
 
   programs = {
     direnv.enable = true;
+    git.enable = true;
     nh.enable = true;
     niri.enable = true;
     zsh.enable = true;
