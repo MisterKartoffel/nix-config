@@ -11,7 +11,6 @@
     fzf.enable = true;
     ghostty.enable = true;
     nvf.enable = true;
-    ssh.enable = true;
     tofi.enable = true;
     vesktop.enable = true;
     zathura.enable = true;

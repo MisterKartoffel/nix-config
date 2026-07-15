@@ -48,6 +48,7 @@
     git.enable = true;
     nh.enable = true;
     niri.enable = true;
+    ssh.enable = true;
     zsh.enable = true;
   };
 
