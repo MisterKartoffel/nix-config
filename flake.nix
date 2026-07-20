@@ -25,5 +25,9 @@
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
       });
+
+      packages = forAllSystems (pkgs: {
+        nvim = pkgs.callPackage ./pkgs/nvim.nix { };
+      });
     };
 }
