@@ -32,7 +32,7 @@ in
     };
 
   home-manager.users = lib.mapAttrs (username: _: {
-    imports = builtins.concatMap lib.custom.importTree [
+    imports = lib.custom.importTree [
       "home/${username}.nix"
       "modules/home"
     ];
