@@ -7,6 +7,9 @@ let
 in
 {
   importTree =
-    path:
-    toList (fileFilter (file: file.hasExt "nix" && !(hasPrefix "_" file.name)) (relativeToRoot path));
+    paths:
+    builtins.concatMap (
+      path:
+      toList (fileFilter (file: file.hasExt "nix" && !(hasPrefix "_" file.name)) (relativeToRoot path))
+    ) paths;
 }
