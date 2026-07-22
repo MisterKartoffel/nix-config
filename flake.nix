@@ -12,11 +12,11 @@
         hostname: _:
         lib.nixosSystem {
           inherit lib;
-          modules = lib.custom.importTree "modules/nixos" ++ [
             inputs.home-manager.nixosModules.default
             inputs.impermanence.nixosModules.default
             inputs.disko.nixosModules.default
             ./hosts/${hostname}
+          modules = lib.custom.importTree [
           ];
           specialArgs = { inherit inputs; };
         }
