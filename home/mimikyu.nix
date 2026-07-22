@@ -13,7 +13,6 @@
     vesktop.enable = true;
     zathura.enable = true;
     zen-browser.enable = true;
-    zsh.enable = true;
   };
 
   services = {

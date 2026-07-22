@@ -65,7 +65,7 @@ in
       ".config/zen"
     ];
 
-    files = lib.optionals zsh.enable [
+    files = [
       ".config/zsh/.p10k.zsh"
       ".local/state/zsh/history"
     ];
