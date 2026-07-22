@@ -9,7 +9,6 @@
   programs = {
     eza.enable = true;
     fzf.enable = true;
-    ghostty.enable = true;
     nvf.enable = true;
     tofi.enable = true;
     vesktop.enable = true;

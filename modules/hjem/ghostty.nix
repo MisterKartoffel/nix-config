@@ -1,32 +1,37 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-let
-  inherit (config.programs) ghostty;
-in
-{
-  home.sessionVariables.TERMINAL = lib.optionalString ghostty.enable "${lib.getExe pkgs.ghostty}";
+{ pkgs, lib, ... }: {
+  packages = builtins.attrValues { inherit (pkgs) ghostty; };
+  systemd.packages = builtins.attrValues { inherit (pkgs) ghostty; };
 
-  programs.ghostty = {
-    clearDefaultKeybinds = true;
-
-    settings = {
+  xdg.config.files."ghostty/config" = {
+    generator = lib.generators.toKeyValue { listsAsDuplicateKeys = true; };
+    value = {
+      theme = "Catppuccin Mocha";
+      font-family = "Monospace";
       window-decoration = "none";
       resize-overlay = "never";
 
       confirm-close-surface = false;
       quit-after-last-window-closed = false;
-
-      notify-on-command-finish = "unfocused";
-      notify-on-command-finish-action = "bell,notify";
-      bell-features = "border";
-
       gtk-single-instance = true;
 
+      shell-integration = "zsh";
+      shell-integration-features = [
+        "cursor"
+        "sudo"
+        "title"
+      ];
+
+      bell-features = "border";
+      notify-on-command-finish = "unfocused";
+      notify-on-command-finish-action = [
+        "bell"
+        "notify"
+      ];
+
       keybind = [
+        # Clear default keybinds
+        "clear"
+
         # General keybinds
         "alt+comma=reload_config"
         "performable:ctrl+shift+c=copy_to_clipboard"
