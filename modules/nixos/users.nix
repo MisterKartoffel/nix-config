@@ -48,4 +48,13 @@ in
     useUserPackages = true;
     extraSpecialArgs = { inherit inputs; };
   };
+
+  hjem.users = lib.mapAttrs (username: _: {
+    imports = lib.custom.importTree [
+      "hjem/${username}.nix"
+      "modules/hjem"
+    ];
+  }) users;
+
+  hjem.specialArgs = { inherit inputs; };
 }

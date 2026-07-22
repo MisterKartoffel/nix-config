@@ -27,6 +27,9 @@ recomposable = true
 [inputs.nixpkgs]
 url = "nixpkgs:nixos-unstable"
 
+[inputs.hjem]
+url = "github:feel-co/hjem"
+
 [inputs.home-manager]
 url = "github:nix-community/home-manager"
 
