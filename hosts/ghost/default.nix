@@ -43,6 +43,9 @@
     };
   };
 
+  fonts.fontconfig.enable = true;
+  qt.enable = true;
+
   programs = {
     direnv.enable = true;
     git.enable = true;

@@ -22,6 +22,4 @@
     ssh-agent.enable = true;
     swayidle.enable = true;
   };
-
-  stylix.enable = true;
 }

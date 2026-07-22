@@ -1,4 +1,12 @@
 {
+  "basix": {
+    "type": "github",
+    "owner": "NotAShelf",
+    "repo": "Basix",
+    "rev": "c790a788e9e83c96d34ad6ca7c1ad07e5cb96a11",
+    "narHash": "sha256-95ZUDCwDLrrXkn2vMa1dne3iP151MMSyX5NuhxdmQp0=",
+    "lastModified": 1784542850
+  },
   "disko": {
     "type": "github",
     "owner": "nix-community",
@@ -60,14 +68,6 @@
     "rev": "f1406619a3884cd5c47992a70b8b35c9c0fcb4c9",
     "narHash": "sha256-aCWC8ngycU7OdJrU2+Je3qf+1a2ykuBvpPhZT/9tXMc=",
     "lastModified": 1783174389
-  },
-  "stylix": {
-    "type": "github",
-    "owner": "nix-community",
-    "repo": "stylix",
-    "rev": "14814ef555d8148ab82eba5054e654cd9eae3a1f",
-    "narHash": "sha256-/F85cBWvU8b2hpawuCog464065ZTJtdMgVPWwJ9yHjE=",
-    "lastModified": 1783358511
   },
   "zen-browser": {
     "type": "github",

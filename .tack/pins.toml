@@ -46,8 +46,8 @@ url = "github:Mic92/sops-nix"
 url = "git+ssh:MisterKartoffel/nix-secrets"
 type = "fetch"
 
-[inputs.stylix]
-url = "github:nix-community/stylix"
+[inputs.basix]
+url = "github:NotAShelf/Basix"
 
 [inputs.zen-browser]
 url = "github:0xc000022070/zen-browser-flake/beta"
