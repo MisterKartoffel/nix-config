@@ -10,7 +10,6 @@
     eza.enable = true;
     fzf.enable = true;
     nvf.enable = true;
-    tofi.enable = true;
     vesktop.enable = true;
     zathura.enable = true;
     zen-browser.enable = true;
