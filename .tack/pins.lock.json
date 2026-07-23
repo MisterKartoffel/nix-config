@@ -35,9 +35,9 @@
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
     "ref": "HEAD",
-    "rev": "03d0ae7ca917cbb67af475a1907a92c2e17a21a5",
-    "narHash": "sha256-G6As6WBbDnRarFetLcAwrBABR9BEWaN7cPXya6F79uo=",
-    "lastModified": 1783638752
+    "rev": "db7e6071b0f2c621cec12df6e11506592a05231c",
+    "narHash": "sha256-q8f/VqZrlpRjH37O591omiziPESF6ADzNKGkq/wgPXk=",
+    "lastModified": 1784771979
   },
   "nixpkgs": {
     "type": "tarball",

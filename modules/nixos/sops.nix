@@ -37,13 +37,28 @@ in
     }
     // lib.mergeAttrsList (
       map (username: {
-        "${username}/password".neededForUsers = true;
+        "${username}/password" = {
+          sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+          key = "password";
+          neededForUsers = true;
+        };
 
         "${username}/age_key" = {
+          sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+          key = "age_key";
           owner = username;
           group = "users";
           mode = "0600";
           path = "/home/${username}/.config/sops/age/keys.txt";
+        };
+
+        "${username}/ssh_key" = lib.mkIf openssh.enable {
+          sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+          key = "ssh_key";
+          owner = username;
+          group = "users";
+          mode = "0600";
+          path = "/home/${username}/.ssh/id_ed25519";
         };
       }) (builtins.attrNames users)
     );

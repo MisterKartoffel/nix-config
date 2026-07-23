@@ -14,9 +14,7 @@
       ];
     };
 
-    services = {
-      sops.enable = true;
-    };
+    services.sops.enable = true;
   };
 
   system.stateVersion = "26.05";
