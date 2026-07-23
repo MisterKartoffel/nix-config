@@ -1,11 +1,14 @@
 {
   osConfig,
+  config,
   pkgs,
   lib,
   ...
 }:
 let
   inherit (osConfig.programs) zsh;
+
+  xdg.config = config.xdg.config.directory;
 
   plugins = [
     "${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh"
@@ -21,6 +24,9 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = lib.concatMapStringsSep "\n" (plugin: "source ${plugin}") plugins;
+    text = ''
+      [[ -f ${xdg.config}/zsh/.p10k.zsh ]] && source ${xdg.config}/zsh/.p10k.zsh
+    ''
+    + lib.concatMapStringsSep "\n" (plugin: "source ${plugin}") plugins;
   };
 }

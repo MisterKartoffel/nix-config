@@ -33,12 +33,12 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = lib.concatMapStringsSep "\n" (option: "setopt ${option}") options + ''
-
+    text = ''
       HISTFILE=${xdg.state}/zsh/history
       HISTSIZE=10000
       SAVEHIST=$HISTSIZE
       HISTDUP=erase
-    '';
+    ''
+    + lib.concatMapStringsSep "\n" (option: "setopt ${option}") options;
   };
 }

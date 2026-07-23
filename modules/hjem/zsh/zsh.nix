@@ -1,7 +1,6 @@
 {
   osConfig,
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -23,10 +22,6 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = lib.concatMapStringsSep "\n" (file: "source ${xdg.config}/zsh/${file}") files + ''
-
-      eval "$(${lib.getExe pkgs.direnv} hook zsh)"
-      [[ -f ${xdg.config}/zsh/.p10k.zsh ]] && source ${xdg.config}/zsh/.p10k.zsh
-    '';
+    text = lib.concatMapStringsSep "\n" (file: "source ${xdg.config}/zsh/${file}") files;
   };
 }
