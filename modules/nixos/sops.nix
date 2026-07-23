@@ -5,11 +5,12 @@
   ...
 }:
 let
-  inherit (config.modules.services) impermanence sops;
+  inherit (config.modules.services) sops;
   inherit (config.modules) users;
   inherit (config.networking) hostName wireless;
   inherit (config.services) openssh;
   inherit (config.system) etc;
+  inherit (config) preservation;
 in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
@@ -30,7 +31,7 @@ in
         group = "wpa_supplicant";
       };
     }
-    // lib.optionalAttrs impermanence.enable {
+    // lib.optionalAttrs preservation.enable {
       "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
       "restic/password".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
     }

@@ -16,14 +16,11 @@
 
     services = {
       sops.enable = true;
-      impermanence = {
-        enable = true;
-        path = "/persist";
-      };
     };
   };
 
   system.stateVersion = "26.05";
+  preservation.enable = true;
 
   time.timeZone = "America/Sao_Paulo";
   console.keyMap = "br-abnt2";

@@ -5,16 +5,16 @@
   ...
 }:
 let
-  inherit (config.modules.services) impermanence;
   inherit (config.networking) hostName;
   inherit (config.services) qbittorrent;
   inherit (config.sops) secrets;
+  inherit (config) preservation;
 
   baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
-  snapshotPath = "${impermanence.path}/.snapshot";
+  snapshotPath = "/persist/.snapshot";
 in
 {
-  services.restic.backups.impermanence = lib.mkIf impermanence.enable {
+  services.restic.backups.impermanence = lib.mkIf preservation.enable {
     initialize = true;
     inhibitsSleep = true;
 
@@ -25,7 +25,7 @@ in
     paths = [ snapshotPath ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];
 
-    backupPrepareCommand = baseCommand + " snapshot -r ${impermanence.path} " + snapshotPath;
+    backupPrepareCommand = baseCommand + " snapshot -r /persist " + snapshotPath;
     backupCleanupCommand = baseCommand + " delete " + snapshotPath;
 
     timerConfig = {

@@ -36,8 +36,8 @@ url = "github:nix-community/home-manager"
 [inputs.disko]
 url = "github:nix-community/disko/latest"
 
-[inputs.impermanence]
-url = "github:nix-community/impermanence"
+[inputs.preservation]
+url = "github:nix-community/preservation"
 
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"

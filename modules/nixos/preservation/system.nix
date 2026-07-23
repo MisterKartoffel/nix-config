@@ -1,15 +1,20 @@
 { config, lib, ... }:
 let
-  inherit (config.modules.services) impermanence sops;
+  inherit (config.modules.services) sops;
   inherit (config.services) qbittorrent;
 in
 {
-  environment.persistence.${impermanence.path} = {
-    inherit (impermanence) enable;
-    hideMounts = true;
+  preservation.preserveAt."/persist" = {
+    commonMountOptions = [
+      "x-gvfs-hide"
+      "x-gdu.hide"
+    ];
 
     directories = [
-      "/var/lib/nixos"
+      {
+        directory = "/var/lib/nixos";
+        inInitrd = true;
+      }
       "/var/lib/systemd/timers"
       "/var/lib/systemd/rfkill"
       "/var/log"
@@ -24,7 +29,9 @@ in
     files = lib.optionals sops.enable [
       {
         file = config.sops.age.keyFile;
-        parentDirectory.mode = "0700";
+        inInitrd = true;
+        configureParent = true;
+        parent.mode = "0700";
       }
     ];
   };
