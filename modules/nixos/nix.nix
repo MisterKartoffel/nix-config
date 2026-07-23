@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  lib,
   ...
 }:
 let
@@ -8,8 +9,12 @@ let
 in
 {
   nix = {
-    registry.nixpkgs.flake = inputs.nixpkgs;
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    registry = lib.pipe inputs [
+      (lib.filterAttrs (_: value: value ? outPath))
+      (builtins.mapAttrs (_: value: { flake = value; }))
+    ];
+
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     settings = {
       experimental-features = [
