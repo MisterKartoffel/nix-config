@@ -1,8 +1,10 @@
 { pkgs, ... }:
 let
-  # I don't know why the NixOS module does all this
-  # song and dance with a nested qBittorrent/qBittorrent
-  # but I for sure didn't like it
+  /*
+    I don't know why the NixOS module does all this
+    song and dance with a nested qBittorrent/qBittorrent
+    but I for sure didn't like it
+  */
   profileDir = "/var/lib";
 in
 {
