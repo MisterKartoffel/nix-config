@@ -1,11 +1,4 @@
 {
-  accounts = {
-    email.accounts = {
-      hotmail.enable = true;
-      ufrgs.enable = true;
-    };
-  };
-
   programs = {
     fzf.enable = true;
     nvf.enable = true;
