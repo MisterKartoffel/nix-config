@@ -2,7 +2,6 @@
   neovim-unwrapped,
   wrapNeovimUnstable,
   vimPlugins,
-  lib,
 }:
 wrapNeovimUnstable neovim-unwrapped {
   plugins = [
@@ -10,12 +9,15 @@ wrapNeovimUnstable neovim-unwrapped {
       plugin = vimPlugins.catppuccin-nvim;
       type = "lua";
       config = ''
-        require("catppuccin").setup(${
-          lib.generators.toLua { } {
-            flavour = "mocha";
-            integrations.snacks = true;
-          }
+        require("catppuccin").setup({
+        	flavour = "mocha",
+        	integrations = {
+        		snacks = true,
+        		lualine = true,
+        	},
         })
+
+        vim.cmd.colorscheme("catppuccin")
       '';
     }
     {
@@ -46,6 +48,39 @@ wrapNeovimUnstable neovim-unwrapped {
       '';
     }
     {
+      plugin = vimPlugins.oil-nvim;
+      type = "lua";
+      config = ''
+        function _G.get_oil_winbar()
+        	local path = vim.fn.expand("%")
+        	path = path:gsub("oil://", "")
+
+        	return vim.fn.fnamemodify(path, ":~")
+        end
+
+        local oil = require("oil")
+        local map = vim.keymap.set
+
+        oil.setup({
+        	watch_for_changes = true,
+        	view_options = { show_hidden = true, },
+        	win_options = {
+        		winbar = "%!v:lua.get_oil_winbar()",
+        		signcolumn = "yes:2",
+        	},
+        })
+
+        map("n", "-", ":Oil<CR>", { desc = "Open parent directory in Oil", })
+      '';
+    }
+    {
+      plugin = vimPlugins.oil-git-status-nvim;
+      type = "lua";
+      config = ''
+        require("oil-git-status").setup({})
+      '';
+    }
+    {
       plugin = vimPlugins.lualine-nvim;
       type = "lua";
       config = ''
@@ -64,7 +99,6 @@ wrapNeovimUnstable neovim-unwrapped {
         local lualine = require("lualine")
 
         lualine.setup({
-        	options = { theme = "catppuccin", },
         	sections = {
         		lualine_b = {
         			{ "b:gitsigns_head", icon = "", },
