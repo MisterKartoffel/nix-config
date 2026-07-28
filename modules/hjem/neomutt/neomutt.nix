@@ -10,17 +10,17 @@ in
     account-hook imap.ufrgs.br "source account-hook/ufrgs"
 
     named-mailboxes "Hotmail/Caixa de Entrada" "imaps://outlook.office365.com/Inbox" \
-    								"Hotmail/Arquivo Morto" "imaps://outlook.office365.com/Arquivo Morto" \
-    								"Hotmail/Lixeira" "imaps://outlook.office365.com/Deleted" \
-    								"Hotmail/Rascunhos" "imaps://outlook.office365.com/Drafts" \
-    								"Hotmail/Enviados" "imaps://outlook.office365.com/Sent" \
-    								"Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk"
-    								# "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX" \
-    								# "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto" \
-    								# "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash" \
-    								# "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts" \
-    								# "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent" \
-    								# "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
+                    "Hotmail/Arquivo Morto" "imaps://outlook.office365.com/Arquivo Morto" \
+                    "Hotmail/Lixeira" "imaps://outlook.office365.com/Deleted" \
+                    "Hotmail/Rascunhos" "imaps://outlook.office365.com/Drafts" \
+                    "Hotmail/Enviados" "imaps://outlook.office365.com/Sent" \
+                    "Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk"
+                    # "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX" \
+                    # "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto" \
+                    # "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash" \
+                    # "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts" \
+                    # "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent" \
+                    # "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
 
     folder-hook outlook.office365.com "source folder-hook/hotmail"
     # folder-hook imap.ufrgs.br "source folder-hook/ufrgs"
