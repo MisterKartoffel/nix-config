@@ -119,7 +119,7 @@ in
       binds =
         builtins.mapAttrs (_: value: { _props.repeat = false; } // value) {
           # General use binds
-          "Mod+Space".spawn = "${lib.getExe' pkgs.tofi "tofi-drun"}"; # TODO: Change once tofi is figured out
+          "Mod+Space".spawn = lib.getExe' pkgs.tofi "tofi-drun";
           "Mod+T".spawn = lib.getExe pkgs.ghostty;
           "Mod+F".spawn = "zen-beta"; # TODO: Change once zen is figured out
 
