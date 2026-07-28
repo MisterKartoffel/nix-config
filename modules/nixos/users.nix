@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   config,
   lib,
   ...
@@ -54,5 +55,5 @@ in
     ];
   }) users;
 
-  hjem.specialArgs = { inherit inputs; };
+  hjem.specialArgs = { inherit self inputs; };
 }

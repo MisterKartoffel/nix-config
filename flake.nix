@@ -1,11 +1,12 @@
 {
   outputs =
-    args:
+    { self, ... }@args:
     let
       inputs = (import ./.tack) { overrides = args.tackOverrides or { }; };
       lib = inputs.nixpkgs.lib.extend (_: prev: { custom = import ./lib { lib = prev; }; });
       forAllSystems =
-        f: lib.genAttrs lib.systems.flakeExposed (system: f inputs.nixpkgs.legacyPackages.${system});
+        apply:
+        lib.genAttrs lib.systems.flakeExposed (system: apply inputs.nixpkgs.legacyPackages.${system});
     in
     {
       nixosConfigurations = builtins.mapAttrs (
@@ -16,7 +17,7 @@
             "hosts/${hostname}"
             "modules/nixos"
           ];
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit self inputs; };
         }
       ) (builtins.readDir ./hosts);
 
@@ -25,7 +26,7 @@
       });
 
       packages = forAllSystems (pkgs: {
-        nvim = pkgs.callPackage ./pkgs/nvim.nix { };
+        nvim = pkgs.callPackage ./pkgs/nvim { };
       });
     };
 }
