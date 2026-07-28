@@ -1,7 +1,7 @@
 {
-  stdenv,
   lib,
   neovim-unwrapped,
+  stdenvNoCC,
   wrapNeovimUnstable,
 }:
 {
@@ -9,7 +9,6 @@
   plugins ? [ ],
   treesitter ? [ ],
   extraPackages ? [ ],
-  ignoreConfigRegexes ? [ ],
   extraLuaPackages ? _: [ ],
   extraPython3Packages ? _: [ ],
   withPython3 ? false,
@@ -23,90 +22,63 @@
 let
   customAppName = appName != "nvim" && appName != null && appName != "";
 
-  defaultPlugin = {
-    plugin = null;
-    config = null;
-    optional = false;
+  runtimePaths = [
+    "after"
+    "lsp"
+    "lua"
+    "plugin"
+  ];
+
+  nvimRtp = stdenvNoCC.mkDerivation {
+    name = "nvim-rtp";
+    src =
+      let
+        root = ../.;
+      in
+      lib.fileset.toSource {
+        inherit root;
+        fileset = lib.fileset.unions (map (path: root + "/${path}") runtimePaths);
+      };
+    dontUnpack = true;
+
+    installPhase = ''
+      for dir in ${builtins.concatStringsSep " " runtimePaths}; do
+        mkdir -p "$out/$dir"
+        cp -a "$src/$dir/." "$out/$dir/"
+      done
+    '';
   };
 
   normalizedPlugins =
-    map (x: defaultPlugin // (if x ? plugin then x else { plugin = x; })) plugins ++ treesitter;
+    map (
+      x:
+      {
+        plugin = null;
+        config = null;
+        optional = false;
+      }
+      // (if x ? plugin then x else { plugin = x; })
+    ) plugins
+    ++ treesitter;
 
-  nvimRtpSrc =
-    let
-      src = ../.;
-    in
-    lib.cleanSourceWith {
-      inherit src;
-      name = "nvim-rtp-src";
-      filter =
-        path: _:
-        let
-          srcPrefix = toString src + "/";
-          relPath = lib.removePrefix srcPrefix (toString path);
-        in
-        builtins.all (regex: builtins.match regex relPath == null) ignoreConfigRegexes;
-    };
-
-  nvimRtp = stdenv.mkDerivation {
-    name = "nvim-rtp";
-    src = nvimRtpSrc;
-
-    buildPhase = ''
-      mkdir -p $out/nvim
-      mkdir -p $out/lua
-      rm -r nix
-      rm init.lua default.nix
-    '';
-
-    installPhase = ''
-      cp -r lua $out/lua
-      rm -r lua
-
-      if [ -d "after" ]; then
-        cp -r after $out/after
-        rm -r after
-      fi
-
-      if [ ! -z "$(ls -A)" ]; then
-        cp -r -- * $out/nvim
-      fi
-    '';
-  };
-
-  initLua =
-    initLuaPre
-    + ""
-    + ''
-      vim.opt.rtp:prepend("${nvimRtp}/lua")
-    ''
-    + ""
-    + (builtins.readFile ../init.lua)
-    + ""
-    + ''
-      vim.opt.rtp:prepend("${nvimRtp}/nvim")
-      vim.opt.rtp:prepend("${nvimRtp}/after")
-    '';
-
-  extraMakeWrapperArgs = builtins.concatStringsSep " " (
-    (lib.optional customAppName ''--set NVIM_APPNAME "${appName}"'')
-    ++ (lib.optional (extraPackages != [ ]) ''--prefix PATH : "${lib.makeBinPath extraPackages}"'')
-  );
+  initLua = ''
+    ${initLuaPre}
+    vim.opt.rtp:prepend("${nvimRtp}")
+    ${builtins.readFile ../init.lua}
+  '';
 
   luaPackages = neovim-unwrapped.lua.pkgs;
   resolvedExtraLuaPackages = extraLuaPackages luaPackages;
+  luaPath = lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages;
 
-  extraMakeWrapperLuaCArgs =
-    lib.optionalString (resolvedExtraLuaPackages != [ ])
-      ''--suffix LUA_CPATH ";" "${
-        lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages
-      }"'';
-
-  extraMakeWrapperLuaArgs =
-    lib.optionalString (resolvedExtraLuaPackages != [ ])
-      ''--suffix LUA_PATH ";" "${
-        lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages
-      }"'';
+  wrapperArgs = lib.concatStringsSep " " (
+    lib.optional customAppName ''--set NVIM_APPNAME "${appName}"''
+    ++ lib.optional (extraPackages != [ ]) ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
+    ++ lib.optional (resolvedExtraLuaPackages != [ ]) ''
+      --suffix LUA_CPATH ";" "${luaPath}"
+      --suffix LUA_PATH ";" "${luaPath}"
+    ''
+  );
 
   neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
     inherit
@@ -114,20 +86,20 @@ let
       withPython3
       withRuby
       withNodeJs
-      viAlias
       vimAlias
+      viAlias
       wrapRc
       ;
 
     plugins = normalizedPlugins;
     luaRcContent = initLua;
-    wrapperArgs = extraMakeWrapperArgs + " " + extraMakeWrapperLuaCArgs + " " + extraMakeWrapperLuaArgs;
+    inherit wrapperArgs;
   };
 in
 if customAppName then
   neovim-wrapped.overrideAttrs (oldAttrs: {
     buildPhase = oldAttrs.buildPhase + ''
-      mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
+      mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
     '';
 
     meta.mainProgram = appName;

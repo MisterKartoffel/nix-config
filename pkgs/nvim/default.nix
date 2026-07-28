@@ -1,5 +1,5 @@
 {
-  stdenv,
+  stdenvNoCC,
   lib,
   vimPlugins,
   vimUtils,
@@ -10,7 +10,7 @@
 let
   makeNeovim = import ./nix/wrapper.nix {
     inherit
-      stdenv
+      stdenvNoCC
       lib
       neovim-unwrapped
       wrapNeovimUnstable
