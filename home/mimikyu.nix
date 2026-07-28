@@ -1,6 +1,5 @@
 {
   programs = {
-    fzf.enable = true;
     vesktop.enable = true;
     zathura.enable = true;
     zen-browser.enable = true;
