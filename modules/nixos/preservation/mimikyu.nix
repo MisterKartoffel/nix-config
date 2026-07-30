@@ -21,7 +21,7 @@ in
       "Templates"
       "Videos"
 
-      ".config/vesktop"
+      ".config/legcord"
       ".config/zen"
     ]
     ++ lib.optionals gnome-keyring.enable [
