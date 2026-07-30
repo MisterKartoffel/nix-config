@@ -11,6 +11,7 @@ in
     value = {
       theme = "Catppuccin Mocha";
       font-family = "Monospace";
+      font-size = 16;
       window-decoration = "none";
       resize-overlay = "never";
 
