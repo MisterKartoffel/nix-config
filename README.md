@@ -11,15 +11,11 @@
   - `facter.json` - hardware configuration generated with [NixOS Facter](https://github.com/nix-community/nixos-facter).
   - `disko.nix` - declarative disk layout and formatting using [Disko](https://github.com/nix-community/disko).
 
-- `hjem/` - user-specific hjem settings.
-  - `<username>.nix` - user entrypoint and default options.
-
-- `home/` - user-specific Home-Manager settings.
+- `users/` - user-specific settings. Sourced by `hjem` in `modules/nixos/users.nix`.
   - `<username>.nix` - user entrypoint and default options.
 
 - `modules/` - reusable modules shared across users and hosts.
   - `hjem/` - hjem modules.
-  - `home/` - Home-Manager modules.
   - `hosts/` - NixOS modules.
   - notable modules:
     - [Impermanence](https://github.com/nix-community/impermanence), state persistence;

@@ -30,27 +30,9 @@ in
       root.initialPassword = "!";
     };
 
-  home-manager.users = builtins.mapAttrs (username: _: {
-    imports = lib.custom.importTree [
-      "home/${username}.nix"
-      "modules/home"
-    ];
-    home = {
-      inherit username;
-      homeDirectory = "/home/${username}";
-      inherit (config.system) stateVersion;
-    };
-  }) users;
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
-  };
-
   hjem.users = builtins.mapAttrs (username: _: {
     imports = lib.custom.importTree [
-      "hjem/${username}.nix"
+      "users/${username}.nix"
       "modules/hjem"
     ];
   }) users;

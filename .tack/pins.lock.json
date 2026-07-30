@@ -23,14 +23,6 @@
     "narHash": "sha256-7pu4iFZMGMdOYFaV+ezdF6XKmcdGOMGzeYkw69nXfe0=",
     "lastModified": 1785346857
   },
-  "home-manager": {
-    "type": "github",
-    "owner": "nix-community",
-    "repo": "home-manager",
-    "rev": "e705714e918c3b11affcdd15db2cbe3a070420a0",
-    "narHash": "sha256-DScBkW0fOgpGPK2trNoX3ryLTlaC14+gglFo/BhGJ4g=",
-    "lastModified": 1785306346
-  },
   "nix-secrets": {
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
