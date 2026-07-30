@@ -2,7 +2,7 @@ if vim.fn.executable("nixd") ~= 1 or vim.fn.executable("nil") == 1 then
   return {}
 end
 
-local root_files = {
+local root_markers = {
   "flake.nix",
   "default.nix",
   "shell.nix",
@@ -11,5 +11,5 @@ local root_files = {
 return {
   cmd = { "nixd", },
   filetypes = { "nix", },
-  root_dir = vim.fs.dirname(vim.fs.find(root_files, { upward = true, })[1]),
+  root_markers = root_markers,
 }
