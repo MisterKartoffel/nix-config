@@ -33,19 +33,19 @@ in
         };
       }
       // lib.optionalAttrs preservation.enable {
-        "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
-        "restic/password".sopsFile = "${inputs.nix-secrets}/sops/common.yaml";
+        "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
+        "restic/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
       }
       // lib.mergeAttrsList (
         map (username: {
           "${username}/password" = {
-            sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
             key = "password";
             neededForUsers = true;
           };
 
           "${username}/age_key" = {
-            sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
             key = "age_key";
             owner = username;
             group = "users";
@@ -54,7 +54,7 @@ in
           };
 
           "${username}/ssh_key" = lib.mkIf openssh.enable {
-            sopsFile = "${inputs.nix-secrets}/sops/home/${username}.yaml";
+            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
             key = "ssh_key";
             owner = username;
             group = "users";
