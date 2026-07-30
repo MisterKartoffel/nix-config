@@ -7,6 +7,7 @@
 }:
 let
   inherit (osConfig.programs) niri;
+  inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zen-browser;
 in
 {
@@ -116,6 +117,13 @@ in
           hide-when-single-tab = { };
           place-within-column = { };
         };
+      };
+
+      cursor = {
+        xcursor-theme = "Bibata-Modern-Ice";
+        xcursor-size = 24;
+        hide-when-typing = { };
+        hide-after-inactive-ms = 1000;
       };
 
       binds =
