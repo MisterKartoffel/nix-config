@@ -4,9 +4,12 @@
   lib,
   ...
 }:
-{
+let
   packages = builtins.attrValues { inherit (pkgs) dunst; };
-  systemd.packages = builtins.attrValues { inherit (pkgs) dunst; };
+in
+{
+  inherit packages;
+  systemd = { inherit packages; };
 
   xdg.config.files."dunst/dunstrc" = {
     generator = lib.generators.toGitINI;

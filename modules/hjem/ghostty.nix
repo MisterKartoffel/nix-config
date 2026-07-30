@@ -1,6 +1,10 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+let
   packages = builtins.attrValues { inherit (pkgs) ghostty; };
-  systemd.packages = builtins.attrValues { inherit (pkgs) ghostty; };
+in
+{
+  inherit packages;
+  systemd = { inherit packages; };
 
   xdg.config.files."ghostty/config" = {
     generator = lib.generators.toKeyValue { listsAsDuplicateKeys = true; };
