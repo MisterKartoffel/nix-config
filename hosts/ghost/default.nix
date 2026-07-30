@@ -55,6 +55,7 @@
 
   services = {
     openssh.enable = true;
+    playerctld.enable = true;
     qbittorrent.enable = true;
     resolved.enable = true;
     watt.enable = true;
