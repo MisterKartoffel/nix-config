@@ -1,17 +1,15 @@
-{ pkgs, ... }: {
-  runtimeInputs = builtins.attrValues { inherit (pkgs) nixfmt stylua; };
-
+{ pkgs, lib, ... }: {
   settings = {
     global.tree-root-file = "flake.nix";
 
     formatter = {
       nix = {
-        command = "nixfmt";
+        command = lib.getExe pkgs.nixfmt;
         includes = [ "*.nix" ];
       };
 
       lua = {
-        command = "stylua";
+        command = lib.getExe pkgs.stylua;
         includes = [ "*.lua" ];
       };
     };

@@ -30,6 +30,8 @@
         zen-browser = pkgs.callPackage ./pkgs/zen-browser { inherit inputs; };
       });
 
-      formatter = forAllSystems (pkgs: pkgs.treefmt.withConfig (import ./treefmt.nix { inherit pkgs; }));
+      formatter = forAllSystems (
+        pkgs: pkgs.treefmt.withConfig (import ./treefmt.nix { inherit pkgs lib; })
+      );
     };
 }
