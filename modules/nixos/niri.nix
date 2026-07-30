@@ -9,7 +9,6 @@ in
 {
   config = lib.mkIf niri.enable {
     programs.niri.useNautilus = false;
-
     xdg.portal.xdgOpenUsePortal = true;
 
     environment.loginShellInit = ''

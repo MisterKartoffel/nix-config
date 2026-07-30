@@ -1,7 +1,16 @@
 {
   mkShell,
   tack,
+  nil,
+  nixfmt,
+  lua-language-server,
 }:
 mkShell {
-  packages = [ tack ];
+  packages = [
+    tack
+    nil
+    nixfmt
+
+    lua-language-server
+  ];
 }

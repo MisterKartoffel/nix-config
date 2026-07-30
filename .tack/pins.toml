@@ -27,14 +27,14 @@ recomposable = true
 [inputs.nixpkgs]
 url = "nixpkgs:nixos-unstable"
 
-[inputs.home-manager]
-url = "github:nix-community/home-manager"
+[inputs.hjem]
+url = "github:feel-co/hjem"
 
 [inputs.disko]
 url = "github:nix-community/disko/latest"
 
-[inputs.impermanence]
-url = "github:nix-community/impermanence"
+[inputs.preservation]
+url = "github:nix-community/preservation"
 
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"
@@ -43,11 +43,8 @@ url = "github:Mic92/sops-nix"
 url = "git+ssh:MisterKartoffel/nix-secrets"
 type = "fetch"
 
-[inputs.stylix]
-url = "github:nix-community/stylix"
+[inputs.basix]
+url = "github:NotAShelf/Basix"
 
 [inputs.zen-browser]
-url = "github:0xc000022070/zen-browser-flake/beta"
-
-[inputs.nvf]
-url = "github:NotAShelf/nvf"
+url = "github:youwen5/zen-browser-flake"

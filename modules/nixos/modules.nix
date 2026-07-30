@@ -1,7 +1,7 @@
 { inputs, ... }: {
   imports = [
-    inputs.home-manager.nixosModules.default
-    inputs.impermanence.nixosModules.default
+    inputs.hjem.nixosModules.default
+    inputs.preservation.nixosModules.default
     inputs.disko.nixosModules.default
   ];
 }

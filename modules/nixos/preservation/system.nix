@@ -1,0 +1,38 @@
+{ config, lib, ... }:
+let
+  inherit (config.modules.services) sops;
+  inherit (config.services) qbittorrent;
+in
+{
+  preservation.preserveAt."/persist" = {
+    commonMountOptions = [
+      "x-gvfs-hide"
+      "x-gdu.hide"
+    ];
+
+    directories = [
+      {
+        directory = "/var/lib/nixos";
+        inInitrd = true;
+      }
+      "/var/lib/systemd/timers"
+      "/var/lib/systemd/rfkill"
+      "/var/log"
+    ]
+    ++ lib.optionals qbittorrent.enable [
+      {
+        directory = "${qbittorrent.profileDir}/qBittorrent";
+        inherit (qbittorrent) user group;
+      }
+    ];
+
+    files = lib.optionals sops.enable [
+      {
+        file = config.sops.age.keyFile;
+        inInitrd = true;
+        configureParent = true;
+        parent.mode = "0700";
+      }
+    ];
+  };
+}

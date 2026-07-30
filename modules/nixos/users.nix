@@ -1,5 +1,6 @@
 {
   inputs,
+  self,
   config,
   lib,
   ...
@@ -14,14 +15,12 @@ in
 
   users.mutableUsers = false;
   users.users =
-    (lib.mapAttrs (username: user: {
+    (builtins.mapAttrs (username: user: {
       isNormalUser = true;
       inherit (user) shell description extraGroups;
 
+      initialPassword = lib.mkIf (!sops.enable) "nixos";
       hashedPasswordFile = lib.mkIf sops.enable secrets."${username}/password".path;
-      initialHashedPassword = lib.mkIf (
-        !sops.enable
-      ) "$y$j9T$9lxUmIACkk7jFAU437ubP/$/dbwqUcskqwzxBC.Lg7WJx4uf/8jxLGcxRjM36U0q57";
 
       openssh.authorizedKeys.keys = [
         "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJRyJ3RdkVQsdZpnQ0+hPPwzI+lg9XprrK3ntSFPldhBsA4sywtAy4U2P+9DtdeON29opxsUyiDd2yprr2iwWG8= termius@s20fe"
@@ -31,21 +30,12 @@ in
       root.initialPassword = "!";
     };
 
-  home-manager.users = lib.mapAttrs (username: _: {
+  hjem.users = builtins.mapAttrs (username: _: {
     imports = lib.custom.importTree [
-      "home/${username}.nix"
-      "modules/home"
+      "users/${username}.nix"
+      "modules/hjem"
     ];
-    home = {
-      inherit username;
-      homeDirectory = "/home/${username}";
-      inherit (config.system) stateVersion;
-    };
   }) users;
 
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
-    extraSpecialArgs = { inherit inputs; };
-  };
+  hjem.specialArgs = { inherit self inputs; };
 }

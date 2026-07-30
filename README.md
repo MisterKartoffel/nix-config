@@ -3,6 +3,7 @@
 
 ## Directory Structure Reference
 - `flake.nix` - entrypoint for all host and user configurations.
+- `shell.nix` - development shell for this flake. Accessible via `nix develop` and `callPackage`-able.
 - `.tack` - uses [tack](https://github.com/manic-systems/tack) for input pinning.
 
 - `hosts/<hostname>/` - host-specific NixOS configuration.
@@ -10,21 +11,22 @@
   - `facter.json` - hardware configuration generated with [NixOS Facter](https://github.com/nix-community/nixos-facter).
   - `disko.nix` - declarative disk layout and formatting using [Disko](https://github.com/nix-community/disko).
 
-- `home/` - user-specific Home-Manager settings.
+- `users/` - user-specific settings. Sourced by `hjem` in `modules/nixos/users.nix`.
   - `<username>.nix` - user entrypoint and default options.
 
 - `modules/` - reusable modules shared across users and hosts.
-  - `home/` - Home-Manager modules.
+  - `hjem/` - hjem modules.
   - `hosts/` - NixOS modules.
   - notable modules:
     - [Impermanence](https://github.com/nix-community/impermanence), state persistence;
     - [sops-nix](https://github.com/mic92/sops-nix), declarative secret management;
 
 - `lib/` - custom functions to be used throughout the configuration. Accessible via `lib.custom`.
+- `pkgs/` - wrapped standalone packages.
+- `overlays/` - importable nixpkgs overlays.
 
 ## TODO
 - Install and configure:
-  - [just](https://github.com/casey/just).
   - [Newsboat](https://github.com/newsboat/newsboat).
 
 ## Acknowledgments

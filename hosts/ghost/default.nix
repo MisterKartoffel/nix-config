@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  imports = [ ./disko.nix ];
-
   modules = {
     users."mimikyu" = {
       description = "Felipe Duarte";
@@ -14,16 +12,11 @@
       ];
     };
 
-    services = {
-      sops.enable = true;
-      impermanence = {
-        enable = true;
-        path = "/persist";
-      };
-    };
+    services.sops.enable = true;
   };
 
   system.stateVersion = "26.05";
+  preservation.enable = true;
 
   time.timeZone = "America/Sao_Paulo";
   console.keyMap = "br-abnt2";
@@ -43,7 +36,12 @@
     };
   };
 
+  fonts.fontconfig.enable = true;
+  qt.enable = true;
+
   programs = {
+    direnv.enable = true;
+    git.enable = true;
     nh.enable = true;
     niri.enable = true;
     zsh.enable = true;
@@ -57,13 +55,14 @@
 
   services = {
     openssh.enable = true;
+    playerctld.enable = true;
     qbittorrent.enable = true;
     resolved.enable = true;
+    watt.enable = true;
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
   hardware.amdgpu.legacySupport.enable = true;
   hardware.facter.reportPath = ./facter.json;
-  powerManagement.cpuFreqGovernor = "performance";
-  zramSwap.enable = true;
+  boot.zswap.enable = true;
 }
