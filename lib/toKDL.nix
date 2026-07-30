@@ -24,6 +24,7 @@
   toKDL =
     {
       escapeBackslashes ? false,
+      escapeTabs ? false,
     }:
     let
       inherit (lib)
@@ -54,6 +55,7 @@
               ''"''
             ]
             ++ (lib.optional escapeBackslashes "\\")
+            ++ (lib.optional escapeTabs "\t")
           )
           (
             [
@@ -61,6 +63,7 @@
               ''\"''
             ]
             ++ (lib.optional escapeBackslashes "\\\\")
+            ++ (lib.optional escapeTabs "\\t")
           );
 
       # OneOf [Int Float String Bool Null] -> String
