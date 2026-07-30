@@ -8,13 +8,7 @@ in
     mutable = false;
   };
 
-  # GitHub issue workarounds:
-
-  /*
-    nixos-init: incompatibilities with both NixOS and Home Manager modules
-    https://github.com/nix-community/impermanence/issues/327
-  */
-  system.nixos-init.enable = false;
+  system.nixos-init.enable = true;
 
   /*
     system.etc.overlay doesn't create /etc/NIXOS file
