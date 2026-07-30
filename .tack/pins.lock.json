@@ -63,10 +63,10 @@
   },
   "zen-browser": {
     "type": "github",
-    "owner": "0xc000022070",
+    "owner": "youwen5",
     "repo": "zen-browser-flake",
-    "rev": "175926c1007114b9d0f8465f23a7d7ce9b26fe33",
-    "narHash": "sha256-LAz4EAdT56VSCSF0oFJNjpIYFVmWW81nM5+3Ieocx5I=",
-    "lastModified": 1783598313
+    "rev": "0d2fc291f34fce699b2a559f74189ecfe61e30e3",
+    "narHash": "sha256-W32Jxn9mnGEjDc5c7sC5YfNLzrh3n9Srkg5JbC1YYdY=",
+    "lastModified": 1785047627
   }
 }

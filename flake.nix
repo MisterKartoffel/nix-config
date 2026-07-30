@@ -27,6 +27,7 @@
 
       packages = forAllSystems (pkgs: {
         nvim = pkgs.callPackage ./pkgs/nvim { };
+        zen-browser = pkgs.callPackage ./pkgs/zen-browser { inherit inputs; };
       });
     };
 }
