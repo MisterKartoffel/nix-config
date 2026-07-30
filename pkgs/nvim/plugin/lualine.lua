@@ -16,12 +16,12 @@ local function diff_source()
 end
 
 local opts = {
-  options = { globalstatus = true, },
+  options = { globalstatus = true },
   sections = {
     lualine_b = {
-      { "b:gitsigns_head", icon = "", },
-      { "diff", source = diff_source, },
-      { "diagnostics", },
+      { "b:gitsigns_head", icon = "" },
+      { "diff", source = diff_source },
+      { "diagnostics" },
     },
     lualine_c = {
       {
@@ -35,12 +35,12 @@ local opts = {
       },
     },
     lualine_x = {
-      { "encoding", },
-      { "fileformat", },
+      { "encoding" },
+      { "fileformat" },
     },
     lualine_y = {
-      { "lsp_status", },
-      { "filetype", },
+      { "lsp_status" },
+      { "filetype" },
     },
   },
 }

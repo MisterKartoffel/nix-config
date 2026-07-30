@@ -15,10 +15,10 @@ local opts = {
   spec = {
     {
       mode = { "n" },
-      { "<leader>f", group = "pickers", },
-      { "<leader>g", group = "git commands", },
-      { "gr",        group = "LSP", },
-    }
+      { "<leader>f", group = "pickers" },
+      { "<leader>g", group = "git commands" },
+      { "gr", group = "LSP" },
+    },
   },
 }
 
@@ -28,4 +28,4 @@ which_key.setup(opts)
 local map = require("utils").map
 map("n", "<leader>?", function()
   which_key.show({ global = true })
-end, { desc = "Show keymaps", })
+end, { desc = "Show keymaps" })

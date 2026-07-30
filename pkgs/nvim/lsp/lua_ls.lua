@@ -13,24 +13,24 @@ local root_markers = {
 }
 
 return {
-  cmd = { "lua-language-server", },
+  cmd = { "lua-language-server" },
   root_markers = root_markers,
-  filetypes = { "lua", },
+  filetypes = { "lua" },
   settings = {
     Lua = {
       runtime = {
         version = "LuaJIT",
-        path = { "lua/?.lua", "lua/?/init.lua", },
+        path = { "lua/?.lua", "lua/?/init.lua" },
       },
       diagnostics = {
-        globals = { "vim", "Snacks", },
+        globals = { "vim", "Snacks" },
       },
       workspace = {
         checkThirdParty = false,
-        library = { vim.env.VIMRUNTIME, },
+        library = { vim.env.VIMRUNTIME },
       },
-      telemetry = { enable = false, },
-      hint = { enable = true, },
+      telemetry = { enable = false },
+      hint = { enable = true },
     },
   },
 }

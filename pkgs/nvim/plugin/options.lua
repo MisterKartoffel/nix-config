@@ -29,7 +29,6 @@ set.scrolloff = 8
 -- (default): vim.opt.sidescrolloff = 0
 set.sidescrolloff = 8
 
-
 -- Indentation
 
 -- Number of spaces equivalent to a <Tab> character.
@@ -52,7 +51,6 @@ set.expandtab = true
 -- (default): vim.opt.smartindent = false
 set.smartindent = true
 
-
 -- Search settings
 
 -- Turn search patterns, completions and other searches case-insensitive.
@@ -66,7 +64,6 @@ set.smartcase = true
 -- Highlight all matches for the previous search pattern.
 -- (default): vim.opt.hlsearch = true
 set.hlsearch = false
-
 
 -- Visual settings
 
@@ -120,7 +117,6 @@ set.list = true
 -- (default): vim.opt.listchars = { tab = ">", trail = "-", nbsp = "+" }
 set.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
-
 -- File handling
 
 -- Create backup when overwriting file.
@@ -139,7 +135,6 @@ if not vim.fn.isdirectory(undodir) then
   vim.fn.mkdir(undodir, "p")
 end
 set.undodir = undodir
-
 
 -- Behavior settings
 
@@ -172,7 +167,6 @@ set.inccommand = "split"
 -- Set automatic formatting behavior.
 -- (default): vim.opt.formatoptions = "tcqj"
 set.formatoptions:remove({ "c", "r", "o" })
-
 
 -- Folding settings
 

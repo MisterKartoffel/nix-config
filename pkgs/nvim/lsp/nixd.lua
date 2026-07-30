@@ -9,7 +9,7 @@ local root_markers = {
 }
 
 return {
-  cmd = { "nixd", },
-  filetypes = { "nix", },
+  cmd = { "nixd" },
+  filetypes = { "nix" },
   root_markers = root_markers,
 }

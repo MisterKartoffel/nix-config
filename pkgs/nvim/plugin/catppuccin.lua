@@ -13,8 +13,8 @@ local opts = {
 
 require("lz.n").load({
   "catppuccin-nvim",
-  colorscheme = { "catppuccin", },
+  colorscheme = { "catppuccin" },
   config = function()
     require("catppuccin").setup(opts)
-  end
+  end,
 })

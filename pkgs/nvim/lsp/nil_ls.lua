@@ -9,13 +9,13 @@ local root_markers = {
 }
 
 return {
-  cmd = { "nil", },
-  filetypes = { "nix", },
+  cmd = { "nil" },
+  filetypes = { "nix" },
   root_markers = root_markers,
   settings = {
     ["nil"] = {
       formatting = {
-        command = vim.fn.executable("nixfmt") == 1 and { "nixfmt", } or nil,
+        command = vim.fn.executable("nixfmt") == 1 and { "nixfmt" } or nil,
       },
       flake = {
         autoArchive = true,
