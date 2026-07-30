@@ -1,7 +1,5 @@
 { pkgs, ... }:
 {
-  imports = [ ./disko.nix ];
-
   modules = {
     users."mimikyu" = {
       description = "Felipe Duarte";
