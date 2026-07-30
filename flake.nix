@@ -29,5 +29,7 @@
         nvim = pkgs.callPackage ./pkgs/nvim { };
         zen-browser = pkgs.callPackage ./pkgs/zen-browser { inherit inputs; };
       });
+
+      formatter = forAllSystems (pkgs: pkgs.treefmt.withConfig (import ./treefmt.nix { inherit pkgs; }));
     };
 }
