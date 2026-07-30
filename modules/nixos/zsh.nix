@@ -1,0 +1,3 @@
+{
+  programs.zsh.enableGlobalCompInit = false;
+}
