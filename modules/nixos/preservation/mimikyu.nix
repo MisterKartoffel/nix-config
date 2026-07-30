@@ -14,7 +14,6 @@ in
       "Desktop"
       "Documents"
       "Downloads"
-      "Mail"
       "Music"
       "Pictures"
       "Projects"
@@ -22,7 +21,6 @@ in
       "Templates"
       "Videos"
 
-      ".local/share/offlineimap"
       ".config/vesktop"
       ".config/zen"
     ]
