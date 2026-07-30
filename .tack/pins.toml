@@ -10,7 +10,6 @@ nixpkgs = "https://channels.nixos.org/{path}/nixexprs.tar.xz"
 # opt out per-input with exclude_follow
 [all_follow]
 nixpkgs = "nixpkgs"
-home-manager = "home-manager"
 
 [tack]
 recomposable = true
