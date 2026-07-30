@@ -57,11 +57,11 @@
     openssh.enable = true;
     qbittorrent.enable = true;
     resolved.enable = true;
+    watt.enable = true;
   };
 
   environment.pathsToLink = [ "/share/zsh" ];
   hardware.amdgpu.legacySupport.enable = true;
   hardware.facter.reportPath = ./facter.json;
-  powerManagement.cpuFreqGovernor = "performance";
   boot.zswap.enable = true;
 }
