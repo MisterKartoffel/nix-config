@@ -18,7 +18,7 @@
   - `hjem/` - hjem modules.
   - `hosts/` - NixOS modules.
   - notable modules:
-    - [Impermanence](https://github.com/nix-community/impermanence), state persistence;
+    - [Preservation](https://github.com/nix-community/preservation), state persistence;
     - [sops-nix](https://github.com/mic92/sops-nix), declarative secret management;
 
 - `lib/` - custom functions to be used throughout the configuration. Accessible via `lib.custom`.
