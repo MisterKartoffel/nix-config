@@ -26,6 +26,7 @@ flake/
 ├── lib/
 ├── flake.nix
 ├── shell.nix
+├── treefmt.nix
 ├── LICENSE
 └── README.md
 ```
