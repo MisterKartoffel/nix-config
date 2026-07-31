@@ -24,6 +24,7 @@ flake/
 ├── overlays/
 │   └── default.nix
 ├── lib/
+├── default.nix
 ├── flake.nix
 ├── shell.nix
 ├── treefmt.nix
