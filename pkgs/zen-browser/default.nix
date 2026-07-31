@@ -17,7 +17,7 @@ let
   };
 
   extraPrefs = lib.generators.toKeyValue {
-    mkKeyValue = name: value: "lockPref(${builtins.toJSON name}, ${builtins.toJSON value});";
+    mkKeyValue = name: value: "pref(${builtins.toJSON name}, ${builtins.toJSON value});";
   } (import ./preferences.nix);
 in
 wrapFirefox zen-browser-unwrapped {

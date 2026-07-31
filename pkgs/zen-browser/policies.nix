@@ -1,4 +1,4 @@
-{
+rec {
   /*
     Firefox Policy Reference:
     https://firefox-admin-docs.mozilla.org/reference/policies/
@@ -20,8 +20,6 @@
     Locked = true;
   };
 
-  TranslateEnabled = false;
-
   # Device update settings
   DisableAppUpdate = true;
 
@@ -30,7 +28,15 @@
 
   # Local data storage
   DisableFormHistory = true;
-  SanitizeOnShutdown = true;
+  SanitizeOnShutdown = {
+    Cache = true;
+    Cookies = true;
+    FormData = true;
+    History = true;
+    Sessions = true;
+    SiteSettings = true;
+    Exceptions = Cookies.Allow;
+  };
 
   # Miscellaneous
   DisableFirefoxStudies = true;
@@ -44,22 +50,17 @@
     "https://github.com"
   ];
 
-  DNSOverHTTPS = {
-    Enabled = false; # Uses system DNS
-    Locked = true;
-  };
+  DNSOverHTTPS.Enabled = false; # Uses system DNS
 
   EnableTrackingProtection = {
     Value = true;
-    Locked = true;
     Cryptomining = true;
     Fingerprinting = true;
     EmailTracking = true;
     SuspectedFingerprinting = true;
-    Category = "strict";
   };
 
-  HTTPSOnlyMode = "force_enabled";
+  HTTPSOnlyMode = "enabled";
   PostQuantumKeyAgreementEnabled = true;
 
   # Password manager
