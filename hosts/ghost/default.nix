@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   modules = {
     users."mimikyu" = {
@@ -28,10 +28,10 @@
     nftables.enable = true;
     wireless = {
       enable = true;
-      secretsFile = "/run/secrets/wireless";
+      secretsFile = config.sops.templates."wireless.conf".path;
       networks = {
-        "JOSE LUIS".pskRaw = "ext:sala";
-        "FELIPE DUARTE".pskRaw = "ext:quarto";
+        "JOSE LUIS".pskRaw = "ext:living_room";
+        "FELIPE DUARTE".pskRaw = "ext:bedroom";
       };
     };
   };
