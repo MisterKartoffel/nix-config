@@ -1,9 +1,11 @@
-{ config, lib, ... }:
+{ inputs, config, lib, ... }:
 let
   inherit (config.modules.services) sops;
   inherit (config.services) qbittorrent;
 in
 {
+  imports = [ inputs.preservation.nixosModules.default ];
+
   preservation.preserveAt."/persist" = {
     commonMountOptions = [
       "x-gvfs-hide"

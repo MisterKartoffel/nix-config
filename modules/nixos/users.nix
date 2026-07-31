@@ -11,6 +11,8 @@ let
   inherit (config.sops) secrets;
 in
 {
+  imports = [ inputs.hjem.nixosModules.default ];
+
   services.userborn.enable = true;
 
   users.mutableUsers = false;

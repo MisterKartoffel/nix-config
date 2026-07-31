@@ -1,4 +1,6 @@
-{
+{ inputs, ... }: {
+  imports = [ inputs.disko.nixosModules.default ];
+
   fileSystems."/persist".neededForBoot = true;
 
   disko.devices.nodev."/" = {
