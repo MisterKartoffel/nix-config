@@ -1,14 +1,13 @@
 {
-  mkShell,
-  tack,
-  nil,
-  lua-language-server,
+  pkgs ? import <nixpkgs> { },
 }:
-mkShell {
-  packages = [
-    tack
+pkgs.mkShellNoCC {
+  packages = builtins.attrValues {
+    inherit (pkgs)
+      tack
 
-    nil
-    lua-language-server
-  ];
+      nil
+      lua-language-server
+      ;
+  };
 }
