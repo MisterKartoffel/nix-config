@@ -31,5 +31,9 @@ in
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
+
+    extraOptions = ''
+      !include ${config.sops.templates."nix-tokens.conf".path}
+    '';
   };
 }

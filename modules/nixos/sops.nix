@@ -22,6 +22,8 @@ in
       validateSopsFiles = true;
 
       secrets = {
+        "access-tokens/github".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
+
         "ssh_key" = lib.mkIf openssh.enable {
           mode = "0600";
           path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
@@ -64,6 +66,12 @@ in
       );
 
       templates = {
+        "nix-tokens.conf".content =
+          lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; }
+            {
+              access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
+            };
+
         "wireless.conf" = lib.mkIf wireless.enable {
           content = lib.generators.toKeyValue { } {
             living_room = config.sops.placeholder."wireless/living_room";
@@ -72,6 +80,7 @@ in
           owner = "wpa_supplicant";
           group = "wpa_supplicant";
         };
+
         "rclone.conf".content = lib.mkIf preservation.enable (
           lib.generators.toINI { } {
             mega = {
