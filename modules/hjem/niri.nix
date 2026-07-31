@@ -9,11 +9,14 @@ let
   inherit (osConfig.programs) niri;
   inherit (pkgs.stdenv.hostPlatform) system;
   inherit (self.packages.${system}) zen-browser;
+
+  # Defined in ../../lib/toKDL.nix
+  toKDL = import (self.outPath + "/lib/toKDL.nix") { inherit lib; };
 in
 {
   xdg.config.files."niri/config.kdl" = {
     inherit (niri) enable;
-    generator = lib.custom.toKDL { };
+    generator = toKDL { };
 
     value = {
       prefer-no-csd = { };

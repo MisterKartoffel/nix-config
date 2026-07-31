@@ -31,9 +31,8 @@ in
     };
 
   hjem.users = builtins.mapAttrs (username: _: {
-    imports = lib.custom.importTree [
-      "users/${username}.nix"
-      "modules/hjem"
+    imports = self.hjemModules.default ++ [
+      (self.outPath + "/users/${username}.nix")
     ];
   }) users;
 
