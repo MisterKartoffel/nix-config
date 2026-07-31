@@ -32,7 +32,7 @@ in
         "wireless/bedroom" = { };
       }
       // lib.optionalAttrs preservation.enable {
-        "rclone/config".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
+        "rclone/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
         "restic/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
       }
       // lib.mergeAttrsList (
@@ -72,6 +72,15 @@ in
           owner = "wpa_supplicant";
           group = "wpa_supplicant";
         };
+        "rclone.conf".content = lib.mkIf preservation.enable (
+          lib.generators.toINI { } {
+            mega = {
+              type = "mega";
+              user = "felipesdrs@hotmail.com";
+              pass = config.sops.placeholder."rclone/password";
+            };
+          }
+        );
       };
     };
 

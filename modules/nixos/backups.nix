@@ -7,7 +7,7 @@
 let
   inherit (config.networking) hostName;
   inherit (config.services) qbittorrent;
-  inherit (config.sops) secrets;
+  inherit (config.sops) secrets templates;
   inherit (config) preservation;
 
   baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
@@ -20,7 +20,7 @@ in
 
     repository = "rclone:mega:restic/${hostName}";
     passwordFile = secrets."restic/password".path;
-    rcloneConfigFile = secrets."rclone/config".path;
+    rcloneConfigFile = templates."rclone.conf".path;
 
     paths = [ snapshotPath ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];
