@@ -5,7 +5,10 @@ let
       bash
       editorconfig
       gitcommit
+      gitignore
+      git_config
       json
+      just
       lua
       luadoc
       markdown
