@@ -2,7 +2,6 @@
   stdenvNoCC,
   lib,
   vimPlugins,
-  vimUtils,
   neovim-unwrapped,
   wrapNeovimUnstable,
   ripgrep,
@@ -17,7 +16,7 @@ let
       ;
   };
 
-  plugins = import ./nix/plugins.nix { inherit vimPlugins vimUtils; };
+  plugins = import ./nix/plugins.nix { inherit vimPlugins; };
   treesitter = import ./nix/treesitter.nix { inherit vimPlugins; };
 
   extraPackages = [ ripgrep ];
