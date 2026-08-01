@@ -23,7 +23,6 @@ let
   customAppName = appName != "nvim" && appName != null && appName != "";
 
   runtimePaths = [
-    "after"
     "lsp"
     "lua"
     "plugin"
