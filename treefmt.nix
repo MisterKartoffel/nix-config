@@ -1,9 +1,6 @@
 { pkgs, lib, ... }: {
   settings = {
-    global = {
-      tree-root-file = "flake.nix";
-      verbose = 2;
-    };
+    global.tree-root-file = "flake.nix";
 
     formatter = {
       deadnix = {
