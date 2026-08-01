@@ -1,22 +1,11 @@
 { lib, ... }:
 let
-  overlays = {
-    # Custom packages.
-    additions = final: prev: { };
-
-    # Overlays exclusive to Linux systems.
-    linuxOverlays = final: prev: lib.optionalAttrs prev.stdenv.isLinux ({ });
-
-    # General overlays.
-    overlays = final: prev: { };
+  overlays = _final: prev: {
+    additions = { };
+    linuxOverlays = lib.optionalAttrs prev.stdenv.isLinux { };
+    overlays = { };
   };
 in
 {
-  default =
-    final: prev:
-    lib.pipe overlays [
-      (builtins.attrNames)
-      (map (name: (overlays.${name} final prev)))
-      (lib.mergeAttrsList)
-    ];
+  default = final: prev: lib.mergeAttrsList (builtins.attrValues (overlays final prev));
 }

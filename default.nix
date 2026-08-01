@@ -7,7 +7,7 @@
     };
 
     lock = builtins.fromJSON (builtins.readFile ./.tack/pins.lock.json);
-    pin = if lock ? flake-compat then lock.flake-compat else defaults;
+    pin = lock.flake-compat or defaults;
   in
   fetchTarball {
     inherit (pin) url;

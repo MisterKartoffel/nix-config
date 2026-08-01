@@ -1,22 +1,4 @@
-{
-  vimPlugins,
-  vimUtils,
-}:
-let
-  makeNvimPlugin =
-    src: pname:
-    vimUtils.buildVimPlugin {
-      inherit src pname;
-      version = src.lastModifiedDate;
-      doCheck = false;
-    };
-
-  patchNvimPlugin =
-    src: pname: patches:
-    (makeNvimPlugin src pname).overrideAttrs (_: {
-      inherit patches;
-    });
-in
+{ vimPlugins }:
 builtins.attrValues {
   inherit (vimPlugins)
     catppuccin-nvim
