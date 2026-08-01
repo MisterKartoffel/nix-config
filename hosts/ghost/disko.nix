@@ -2,6 +2,7 @@
   imports = [ inputs.disko.nixosModules.default ];
 
   fileSystems."/persist".neededForBoot = true;
+  boot.tmp.useTmpfs = true;
 
   disko.devices.nodev."/" = {
     fsType = "tmpfs";
