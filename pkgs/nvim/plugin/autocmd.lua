@@ -9,13 +9,7 @@ api.nvim_create_autocmd("FileType", {
   desc = "Enable treesitter for available parsers",
   group = api.nvim_create_augroup("enable_treesitter", { clear = true }),
   callback = function(args)
-    local bufnr = args.buf
-    local lang = vim.treesitter.language.get_lang(vim.bo[bufnr].filetype)
-    local has_parser, _ = pcall(vim.treesitter.language.add, lang)
-
-    if has_parser then
-      pcall(vim.treesitter.start, bufnr, lang)
-    end
+    pcall(vim.treesitter.start, args.buf)
   end,
 })
 
