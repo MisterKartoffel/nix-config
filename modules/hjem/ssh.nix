@@ -5,7 +5,7 @@ in
 {
   files.".ssh/config" = {
     inherit (openssh) enable;
-    text = ''
+    text = /* ssh_config */ ''
       Host *
         AddKeysToAgent yes
         IdentitiesOnly yes

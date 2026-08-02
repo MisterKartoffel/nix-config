@@ -20,7 +20,7 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = ''
+    text = /* zsh */ ''
       # XDG Base Directories
       export XDG_CACHE_HOME="${xdg.cache}"
       export XDG_CONFIG_HOME="${xdg.config}"

@@ -12,7 +12,7 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = ''
+    text = /* zsh */ ''
       alias ls="${lib.getExe pkgs.eza} --long --icons=always --color=always --git --group-directories-first"
     '';
   };

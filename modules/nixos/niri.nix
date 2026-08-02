@@ -11,9 +11,9 @@ in
     programs.niri.useNautilus = false;
     xdg.portal.xdgOpenUsePortal = true;
 
-    environment.loginShellInit = ''
+    environment.loginShellInit = /* bash */ ''
       if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
-      	exec niri-session -l
+        exec niri-session -l
       fi
     '';
   };

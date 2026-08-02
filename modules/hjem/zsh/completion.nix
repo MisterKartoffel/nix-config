@@ -12,7 +12,7 @@ in
     inherit (zsh) enable;
     executable = true;
 
-    text = ''
+    text = /* zsh */ ''
       zstyle ":completion:*" use-cache on
       zstyle ":completion:*" cache-path "${xdg.cache}/zsh/zcompcache"
       zstyle ":completion:*:functions" ignored-patterns "_*"
