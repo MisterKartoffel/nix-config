@@ -13,11 +13,13 @@ let
       luadoc
       markdown
       nix
+      ssh_config
       toml
       typst
       vim
       vimdoc
       yaml
+      zsh
       ;
   };
 
