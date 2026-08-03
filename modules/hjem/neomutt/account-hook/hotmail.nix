@@ -1,5 +1,5 @@
 { pkgs, lib, ... }: {
-  xdg.config.files."neomutt/account-hook/hotmail".text = ''
+  xdg.config.files."neomutt/account-hook/hotmail".text = /* muttrc */ ''
     set folder = "imaps://outlook.office365.com/"
     set imap_user = "felipesdrs@hotmail.com"
     set imap_authenticators = "xoauth2"

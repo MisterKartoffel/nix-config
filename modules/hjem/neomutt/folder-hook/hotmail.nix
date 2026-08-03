@@ -3,7 +3,7 @@ let
   xdg.cache = config.xdg.cache.directory;
 in
 {
-  xdg.config.files."neomutt/folder-hook/hotmail".text = ''
+  xdg.config.files."neomutt/folder-hook/hotmail".text = /* muttrc */ ''
     set folder = "imaps://outlook.office365.com/"
     set from = "felipesdrs@hotmail.com"
 

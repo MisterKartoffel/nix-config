@@ -10,7 +10,7 @@ in
 {
   packages = builtins.attrValues { inherit (pkgs) neomutt; };
 
-  xdg.config.files."neomutt/neomuttrc".text = ''
+  xdg.config.files."neomutt/neomuttrc".text = /* muttrc */ ''
     account-hook outlook.office365.com "source account-hook/hotmail"
     account-hook imap.ufrgs.br "source account-hook/ufrgs"
 

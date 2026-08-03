@@ -1,5 +1,5 @@
 {
-  xdg.config.files."neomutt/style".text = ''
+  xdg.config.files."neomutt/style".text = /* muttrc */ ''
     # In order: not addressed to me, addressed to me,
     # addressed to group, copied to me, sent by me, mailing list
     set to_chars = "󰫭󰭕󰭘󱉯 "

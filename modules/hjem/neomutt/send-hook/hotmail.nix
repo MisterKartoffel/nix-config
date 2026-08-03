@@ -1,5 +1,5 @@
 { pkgs, lib, ... }: {
-  xdg.config.files."neomutt/send-hook/hotmail".text = ''
+  xdg.config.files."neomutt/send-hook/hotmail".text = /* muttrc */ ''
     set real_name = "Felipe Duarte"
 
     set smtp_url = "smtp://smtp.office365.com/"
