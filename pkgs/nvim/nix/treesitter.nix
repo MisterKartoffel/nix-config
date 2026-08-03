@@ -1,7 +1,10 @@
-{ vimPlugins }:
-let
-  parsers = builtins.attrValues {
-    inherit (vimPlugins.nvim-treesitter-parsers)
+{
+  vimPlugins,
+}:
+vimPlugins.nvim-treesitter.withPlugins (
+  plugins:
+  builtins.attrValues {
+    inherit (plugins)
       bash
       editorconfig
       gitcommit
@@ -21,8 +24,5 @@ let
       yaml
       zsh
       ;
-  };
-
-  queries = map (parser: parser.associatedQuery) parsers;
-in
-parsers ++ queries
+  }
+)

@@ -7,7 +7,7 @@
 {
   appName ? "nvim",
   plugins ? [ ],
-  treesitter ? [ ],
+  treesitter ? null,
   extraPackages ? [ ],
   extraLuaPackages ? _: [ ],
   extraPython3Packages ? _: [ ],
@@ -58,7 +58,7 @@ let
       }
       // (if x ? plugin then x else { plugin = x; })
     ) plugins
-    ++ treesitter;
+    ++ [ treesitter ];
 
   initLua = ''
     ${initLuaPre}
