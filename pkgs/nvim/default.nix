@@ -4,6 +4,8 @@
   vimPlugins,
   neovim-unwrapped,
   wrapNeovimUnstable,
+  tree-sitter,
+  fetchFromGitHub,
   ripgrep,
 }:
 let
@@ -17,7 +19,7 @@ let
   };
 
   plugins = import ./nix/plugins.nix { inherit vimPlugins; };
-  treesitter = import ./nix/treesitter.nix { inherit vimPlugins; };
+  treesitter = import ./nix/treesitter.nix { inherit fetchFromGitHub tree-sitter vimPlugins; };
 
   extraPackages = [ ripgrep ];
 in
