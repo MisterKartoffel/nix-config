@@ -1,21 +1,13 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 let
-  inherit (lib) toSentenceCase;
-
-  theme = {
-    variant = "mocha";
-    accent = "mauve";
-    shade = "dark";
-  };
-
-  cursor = {
-    variant = "Modern";
-    style = "Ice";
-  };
-
   catppuccin = {
-    kvantum = pkgs.catppuccin-kvantum.override { inherit (theme) accent variant; };
-    gtk = pkgs.magnetic-catppuccin-gtk.override { accent = [ theme.accent ]; };
+    kvantum = pkgs.catppuccin-kvantum.override {
+      variant = "mocha";
+      accent = "mauve";
+    };
+    gtk = pkgs.magnetic-catppuccin-gtk.override {
+      accent = [ "mauve" ];
+    };
     zen = pkgs.fetchFromGitHub {
       owner = "catppuccin";
       repo = "zen-browser";
@@ -26,28 +18,26 @@ let
 in
 {
   xdg.config.files = {
-    "gtk-2.0".source =
-      "${catppuccin.gtk}/share/themes/Catppuccin-GTK-${toSentenceCase theme.accent}-${toSentenceCase theme.shade}/gtk-2.0";
-    "gtk-3.0".source =
-      "${catppuccin.gtk}/share/themes/Catppuccin-GTK-${toSentenceCase theme.accent}-${toSentenceCase theme.shade}/gtk-3.0";
-    "gtk-4.0".source =
-      "${catppuccin.gtk}/share/themes/Catppuccin-GTK-${toSentenceCase theme.accent}-${toSentenceCase theme.shade}/gtk-4.0";
+    "gtk-2.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-2.0";
+    "gtk-3.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-3.0";
+    "gtk-4.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-4.0";
 
-    "Kvantum/catppuccin-${theme.variant}-${theme.accent}".source =
-      "${catppuccin.kvantum}/share/Kvantum/catppuccin-${theme.variant}-${theme.accent}";
+    "Kvantum/catppuccin-mocha-mauve".source =
+      "${catppuccin.kvantum}/share/Kvantum/catppuccin-mocha-mauve";
     "Kvantum/kvantum.kvconfig" = {
       generator = (pkgs.formats.ini { }).generate "kvantum.kvconfig";
-      value.General.theme = "catppuccin-${theme.variant}-${theme.accent}";
+      value = {
+        General.theme = "catppuccin-mocha-mauve";
+      };
     };
 
-    "zen/default/chrome/userChrome.css".source =
-      "${catppuccin.zen}/themes/${toSentenceCase theme.variant}/${toSentenceCase theme.accent}/userChrome.css";
+    "zen/default/chrome/userChrome.css".source = "${catppuccin.zen}/themes/Mocha/Mauve/userChrome.css";
     "zen/default/chrome/userContent.css".source =
-      "${catppuccin.zen}/themes/${toSentenceCase theme.variant}/${toSentenceCase theme.accent}/userContent.css";
+      "${catppuccin.zen}/themes/Mocha/Mauve/userContent.css";
   };
 
-  xdg.data.files."icons/Bibata-${toSentenceCase cursor.variant}-${toSentenceCase cursor.style}".source =
-    "${pkgs.bibata-cursors}/share/icons/Bibata-${toSentenceCase cursor.variant}-${toSentenceCase cursor.style}";
+  xdg.data.files."icons/Bibata-Modern-Ice".source =
+    "${pkgs.bibata-cursors}/share/icons/Bibata-Modern-Ice";
 
   environment.sessionVariables.QT_STYLE_OVERRIDE = "kvantum";
 }
