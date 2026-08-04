@@ -40,6 +40,7 @@ pkgs.vimPlugins.nvim-treesitter.withPlugins (
         git_config
         json
         just
+        kdl
         lua
         luadoc
         markdown
