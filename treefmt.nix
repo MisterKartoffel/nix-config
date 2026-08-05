@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib }: {
   settings = {
     tree-root-file = "flake.nix";
 
