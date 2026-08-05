@@ -9,9 +9,6 @@
   plugins ? [ ],
   treesitter ? [ ],
   extraPackages ? [ ],
-  luaPackages ? neovim-unwrapped.lua.pkgs,
-  extraLuaPackages ? _: [ ],
-  extraPython3Packages ? _: [ ],
   withPython3 ? false,
   withRuby ? false,
   withNodeJs ? false,
@@ -29,9 +26,6 @@ let
       inherit path;
     }) runtimePaths
   );
-
-  resolvedExtraLuaPackages = extraLuaPackages luaPackages;
-  luaPath = lib.concatMapStringsSep ";" luaPackages.getLuaPath resolvedExtraLuaPackages;
 
   neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
     plugins =
@@ -54,14 +48,9 @@ let
     wrapperArgs = builtins.concatStringsSep " " (
       lib.optional customAppName ''--set NVIM_APPNAME "${appName}"''
       ++ lib.optional (extraPackages != [ ]) ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
-      ++ lib.optional (resolvedExtraLuaPackages != [ ]) ''
-        --suffix LUA_CPATH ";" "${luaPath}"
-        --suffix LUA_PATH ";" "${luaPath}"
-      ''
     );
 
     inherit
-      extraPython3Packages
       withPython3
       withRuby
       withNodeJs
