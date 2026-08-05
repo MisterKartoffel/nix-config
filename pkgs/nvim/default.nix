@@ -45,10 +45,18 @@ let
       (builtins.readFile ./init.lua)
     ];
 
-    wrapperArgs = builtins.concatStringsSep " " (
-      lib.optional customAppName ''--set NVIM_APPNAME "${appName}"''
-      ++ lib.optional (extraPackages != [ ]) ''--prefix PATH : "${lib.makeBinPath extraPackages}"''
-    );
+    wrapperArgs =
+      lib.optionals customAppName [
+        "--set"
+        "NVIM_APPNAME"
+        appName
+      ]
+      ++ lib.optionals (extraPackages != [ ]) [
+        "--prefix"
+        "PATH"
+        ":"
+        (lib.makeBinPath extraPackages)
+      ];
 
     inherit
       withPython3
