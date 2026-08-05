@@ -76,7 +76,9 @@ if customAppName then
       mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
     '';
 
-    meta.mainProgram = appName;
+    meta = (oldAttrs.meta or { }) // {
+      mainProgram = appName;
+    };
   })
 else
   neovim-wrapped
