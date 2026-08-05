@@ -10,8 +10,9 @@
   treesitter ? [ ],
   extraPackages ? [ ],
   withPython3 ? false,
-  withRuby ? false,
   withNodeJs ? false,
+  withPerl ? false,
+  withRuby ? false,
   viAlias ? appName == "nvim",
   vimAlias ? appName == "nvim",
   initLuaPre ? "",
@@ -60,8 +61,9 @@ let
 
     inherit
       withPython3
-      withRuby
       withNodeJs
+      withPerl
+      withRuby
       vimAlias
       viAlias
       wrapRc
