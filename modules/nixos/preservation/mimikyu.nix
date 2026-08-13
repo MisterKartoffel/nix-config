@@ -10,7 +10,6 @@ in
     ];
 
     directories = [
-      ".cache/nix"
       "Desktop"
       "Documents"
       "Downloads"
@@ -23,6 +22,8 @@ in
 
       ".config/legcord"
       ".config/zen"
+      ".cache/direnv/layouts"
+      ".cache/nix"
     ]
     ++ lib.optionals gnome-keyring.enable [
       {

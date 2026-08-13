@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+let
+  xdg.cache = config.xdg.cache.directory;
+in
+{
   packages = builtins.attrValues { inherit (pkgs) direnv nix-direnv; };
 
   xdg.config.files."direnv/direnv.toml" = {
@@ -17,6 +21,14 @@
       ];
     };
   };
+
+  xdg.config.files."direnv/direnvrc".text = /* bash */ ''
+    direnv_layout_dir() {
+      local HASH
+      HASH="$(printf '%s' "$PWD" | sha256sum)"
+      echo "${xdg.cache}/direnv/layouts/''${HASH:0:32}-$(basename "$PWD")"
+    }
+  '';
 
   xdg.config.files."direnv/lib/nix-direnv.sh".source = "${pkgs.nix-direnv}/share/nix-direnv/direnvrc";
 }
