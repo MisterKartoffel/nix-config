@@ -69,7 +69,7 @@ in
         "nix-tokens.conf".content =
           lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; }
             {
-              access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
+              extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
             };
 
         "wireless.conf" = lib.mkIf wireless.enable {
