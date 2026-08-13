@@ -25,7 +25,9 @@ local opts = {
 local which_key = require("which-key")
 which_key.setup(opts)
 
-local map = require("utils").map
-map("n", "<leader>?", function()
+local map_opts = { silent = true }
+
+map_opts.desc = "Show keymaps"
+vim.keymap.set("n", "<leader>?", function()
   which_key.show({ global = true })
-end, { desc = "Show keymaps" })
+end, map_opts)

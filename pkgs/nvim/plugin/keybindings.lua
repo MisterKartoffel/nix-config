@@ -3,13 +3,25 @@ if vim.g.did_load_keybindings_plugin then
 end
 vim.g.did_load_keybindings_plugin = true
 
-local map = require("utils").map
-map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected string down a line and autoindent" })
-map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected string up a line and autoindent" })
+local opts = { silent = true }
 
-map("v", "<", "<gv", { desc = "Remove indentation and maintain selection" })
-map("v", ">", ">gv", { desc = "Add indentation and maintain selection" })
+opts.desc = "Move selected line down and autoindent"
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", opts)
 
-map("n", "J", "V<Esc>Jgv<Esc>zz", { desc = "Append line below while keeping cursor still" })
-map("n", "<C-d>", "<C-d>zz", { desc = "Scroll half page down and center screen on cursor" })
-map("n", "<C-u>", "<C-u>zz", { desc = "Scroll half page up and center screen on cursor" })
+opts.desc = "Move selected line up and autoindent"
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", opts)
+
+opts.desc = "Remove one level of indentation and maintain selection"
+vim.keymap.set("v", "<", "<gv", opts)
+
+opts.desc = "Add one level of indentation and maintain selection"
+vim.keymap.set("v", ">", ">gv", opts)
+
+opts.desc = "Append line below keeping cursor still"
+vim.keymap.set("n", "J", "V<Esc>Jgv<Esc>zz", opts)
+
+opts.desc = "Scroll half page down and center cursor"
+vim.keymap.set("n", "<C-d>", "<C-d>zz", opts)
+
+opts.desc = "Scroll half page up and center cursor"
+vim.keymap.set("n", "<C-u>", "<C-u>zz", opts)

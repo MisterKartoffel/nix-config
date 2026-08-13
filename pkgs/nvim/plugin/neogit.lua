@@ -10,4 +10,7 @@ local map = require("lz.n").keymap({
   end,
 }).set
 
-map("n", "<leader>gg", ":Neogit<CR>", { desc = "Open Neogit", silent = true })
+local opts = { silent = true }
+
+opts.desc = "Open Neogit"
+map("n", "<leader>gg", ":Neogit<CR>", opts)

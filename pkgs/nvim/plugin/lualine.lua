@@ -16,7 +16,6 @@ local function diff_source()
 end
 
 local opts = {
-  options = { globalstatus = true },
   sections = {
     lualine_b = {
       { "b:gitsigns_head", icon = "" },

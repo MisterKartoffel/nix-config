@@ -3,8 +3,7 @@ if vim.g.did_load_snacks_plugin then
 end
 vim.g.did_load_snacks_plugin = true
 
-local snacks = require("snacks")
-snacks.setup({
+local opts = {
   dashboard = {
     preset = {
       header = [[
@@ -25,6 +24,7 @@ snacks.setup({
     },
   },
 
+  image = { enabled = true },
   notifier = { enabled = true },
   picker = { enabled = true },
 
@@ -34,17 +34,24 @@ snacks.setup({
       git_hl = true,
     },
   },
-})
+}
 
-local map = require("utils").map
-map("n", "<leader>ff", function()
+local snacks = require("snacks")
+snacks.setup(opts)
+
+local map_opts = { silent = true }
+
+map_opts.desc = "Find files among open buffers, recent files and files in $PWD"
+vim.keymap.set("n", "<leader>ff", function()
   Snacks.picker.smart()
-end, { desc = "Find files among open buffers, recent files and files in $PWD" })
+end, map_opts)
 
-map("n", "<leader>fg", function()
+map_opts.desc = "Grep for string in $PWD"
+vim.keymap.set("n", "<leader>fg", function()
   Snacks.picker.grep()
-end, { desc = "Grep for string in $PWD" })
+end, map_opts)
 
-map("n", "<leader>fp", function()
+map_opts.desc = "Pick a picker"
+vim.keymap.set("n", "<leader>fp", function()
   Snacks.picker()
-end, { desc = "Pick a picker" })
+end, map_opts)

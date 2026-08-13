@@ -26,4 +26,7 @@ local map = require("lz.n").keymap({
   end,
 }).set
 
-map("n", "-", ":Oil<CR>", { desc = "Open parent directory in Oil", silent = true })
+local map_opts = { silent = true }
+
+map_opts.desc = "Open parent directory in Oil"
+map("n", "-", ":Oil<CR>", map_opts)
