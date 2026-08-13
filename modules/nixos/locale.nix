@@ -1,11 +1,5 @@
 {
   i18n = {
-    inputMethod = {
-      enable = true;
-      type = "fcitx5";
-      fcitx5.waylandFrontend = true;
-    };
-
     extraLocaleSettings = {
       LC_ADDRESS = "pt_BR.UTF-8";
       LC_MEASUREMENT = "pt_BR.UTF-8";
@@ -17,8 +11,5 @@
     };
   };
 
-  environment.sessionVariables = {
-    QT_IM_MODULE = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-  };
+  environment.sessionVariables.GTK_IM_MODULE = "simple";
 }
