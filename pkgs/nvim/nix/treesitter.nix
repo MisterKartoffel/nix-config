@@ -1,15 +1,15 @@
-{ pkgs, lib }:
+{ tree-sitter, fetchFromGitHub, vimPlugins, lib }:
 let
   fallbackGrammars = {
     /*
       muttrc was dropped from nvim-treesitter:
       https://github.com/nvim-treesitter/nvim-treesitter/commit/78bebe
     */
-    muttrc = pkgs.tree-sitter.buildGrammar {
+    muttrc = tree-sitter.buildGrammar {
       language = "muttrc";
       version = "2026-07-26";
 
-      src = pkgs.fetchFromGitHub {
+      src = fetchFromGitHub {
         owner = "neomutt";
         repo = "tree-sitter-muttrc";
         rev = "da8af7ba87b1bbe6d9e1606dfdc5eceb0fccc2dc";
@@ -21,20 +21,21 @@ let
   resolvedFallbacks = lib.mapAttrs (
     grammar: fallback:
     let
-      available = pkgs.vimPlugins.nvim-treesitter-parsers ? ${grammar};
+      available = vimPlugins.nvim-treesitter-parsers ? ${grammar};
     in
     lib.warnIf available "${grammar} is available in nixpkgs, you may remove this fallback" (
-      if available then pkgs.vimPlugins.nvim-treesitter-parsers.${grammar} else fallback
+      if available then vimPlugins.nvim-treesitter-parsers.${grammar} else fallback
     )
   ) fallbackGrammars;
 in
-pkgs.vimPlugins.nvim-treesitter.withPlugins (
+vimPlugins.nvim-treesitter.withPlugins (
   plugins:
   builtins.attrValues (
     {
       inherit (plugins)
         bash
         editorconfig
+        fish
         gitcommit
         gitignore
         git_config

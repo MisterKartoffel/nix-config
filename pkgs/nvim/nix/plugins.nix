@@ -1,6 +1,6 @@
-{ pkgs }:
+{ vimPlugins }:
 builtins.attrValues {
-  inherit (pkgs.vimPlugins)
+  inherit (vimPlugins)
     catppuccin-nvim
     gitsigns-nvim
     lualine-nvim

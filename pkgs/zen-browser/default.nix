@@ -4,9 +4,9 @@
   stdenv,
   wrapFirefox,
 }:
-let
-  inherit (inputs.zen-browser.packages.${stdenv.hostPlatform.system}) zen-browser-unwrapped;
-
+wrapFirefox inputs.zen-browser.packages.${stdenv.hostPlatform.system}.zen-browser-unwrapped {
+  pname = "zen-browser";
+  
   extraPolicies = import ./policies.nix // {
     SearchEngines = import ./search.nix;
 
@@ -19,8 +19,4 @@ let
   extraPrefs = lib.generators.toKeyValue {
     mkKeyValue = name: value: "pref(${builtins.toJSON name}, ${builtins.toJSON value});";
   } (import ./preferences.nix);
-in
-wrapFirefox zen-browser-unwrapped {
-  pname = "zen-browser";
-  inherit extraPolicies extraPrefs;
 }

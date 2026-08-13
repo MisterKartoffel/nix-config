@@ -2,13 +2,21 @@
   lib,
   neovim-unwrapped,
   wrapNeovimUnstable,
+  neovimUtils,
+  vimPlugins,
+  tree-sitter,
+  fetchFromGitHub,
   linkFarm,
 
+  fd,
+  imagemagick,
+  ripgrep,
+
   appName ? "nvim",
-  runtimePaths ? [ ],
-  plugins ? [ ],
-  treesitter ? [ ],
-  extraPackages ? [ ],
+  treesitter ? import ./nix/treesitter.nix { inherit tree-sitter fetchFromGitHub vimPlugins lib; },
+  runtimePaths ? import ./nix/runtime.nix { inherit lib; },
+  plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
+  extraPackages ? [ fd imagemagick ripgrep ],
   withPython3 ? false,
   withNodeJs ? false,
   withPerl ? false,
@@ -29,16 +37,7 @@ let
   );
 
   neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
-    plugins =
-      map (
-        x:
-        {
-          config = null;
-          optional = false;
-        }
-        // (if x ? plugin then x else { plugin = x; })
-      ) plugins
-      ++ [ treesitter ];
+    plugins = (neovimUtils.normalizePlugins plugins) ++ [ treesitter ];
 
     luaRcContent = builtins.concatStringsSep "\n" [
       initLuaPre
@@ -72,7 +71,7 @@ let
 in
 if customAppName then
   neovim-wrapped.overrideAttrs (oldAttrs: {
-    postInstall = oldAttrs.postInstall + ''
+    buildPhase = oldAttrs.buildPhase + ''
       mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
     '';
 
