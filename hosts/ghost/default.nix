@@ -1,10 +1,9 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 {
   modules = {
     users."mimikyu" = {
       description = "Felipe Duarte";
       autologin = true;
-      shell = pkgs.zsh;
       extraGroups = [
         "wheel"
         "qbt"
@@ -40,7 +39,6 @@
   qt.enable = true;
 
   programs = {
-    direnv.enable = true;
     git.enable = true;
     nh.enable = true;
     niri.enable = true;

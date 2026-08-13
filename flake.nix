@@ -33,6 +33,7 @@
 
       packages = forAllSystems (pkgs: {
         nvim = pkgs.callPackage ./pkgs/nvim (import ./pkgs/nvim/nix/config.nix { inherit pkgs lib; });
+        fish = pkgs.callPackage ./pkgs/fish { };
         zen-browser = pkgs.callPackage ./pkgs/zen-browser { inherit inputs; };
       });
 

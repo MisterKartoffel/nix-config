@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  self,
+  pkgs,
+  lib,
+  ...
+}:
 let
   packages = builtins.attrValues { inherit (pkgs) ghostty; };
 in
@@ -9,6 +14,7 @@ in
   xdg.config.files."ghostty/config" = {
     generator = lib.generators.toKeyValue { listsAsDuplicateKeys = true; };
     value = {
+      command = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fish;
       theme = "Catppuccin Mocha";
       font-family = "Monospace";
       font-size = 16;
