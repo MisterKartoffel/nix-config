@@ -3,9 +3,9 @@
     "type": "github",
     "owner": "NotAShelf",
     "repo": "Basix",
-    "rev": "a3e196467d54b71a8f064809cddee1d0433e0337",
-    "narHash": "sha256-uAwADh3bJ4IZG6xeer8JIEJH/MF0dgz1ZMIbeHu6Nxk=",
-    "lastModified": 1784958475
+    "rev": "82509615c56e4ae199aa07d34144a62969c48015",
+    "narHash": "sha256-72lBqsiPItS65vJhCUjFAcQmDzjWaGSGbyMaxtWa5yk=",
+    "lastModified": 1786028337
   },
   "disko": {
     "type": "github",
@@ -19,23 +19,23 @@
     "type": "github",
     "owner": "feel-co",
     "repo": "hjem",
-    "rev": "a0bfffc389b1cf1742ed75bef361395146c3f966",
-    "narHash": "sha256-7pu4iFZMGMdOYFaV+ezdF6XKmcdGOMGzeYkw69nXfe0=",
-    "lastModified": 1785346857
+    "rev": "b610953d0c56da6b28fd39c21bd193b88e91341c",
+    "narHash": "sha256-qwppDYdtxqtDpI1iSp7bs8prOJ0KQSvhJchfROD04f0=",
+    "lastModified": 1785929776
   },
   "nix-secrets": {
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
     "ref": "HEAD",
-    "rev": "a8f5e6e2d04de8e80947dc41a508db7861e4e247",
-    "narHash": "sha256-97gWiyEGp/d+bJ7BB4dKrfS9va+A2WARuHIOXPA4xnI=",
-    "lastModified": 1785518229
+    "rev": "6224726fd5c600707864156aeac045e8aa0e9249",
+    "narHash": "sha256-VCWk5yFsphflbiao1WC6iWSo+BFsXq155IiZxIEzgdM=",
+    "lastModified": 1785610589
   },
   "nixpkgs": {
     "type": "tarball",
-    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1043649.0954f7ee2f6b/nixexprs.tar.xz",
-    "rev": "0954f7ee2f6bb3dc7d4e3d0d8bcb8fd4bde4cfc5",
-    "narHash": "sha256-JfsUqyQ4MGL0SvJNPFikXYlUdXg0xMzBdjwTPawZSl4="
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1053317.0e251e24a4f2/nixexprs.tar.xz",
+    "rev": "0e251e24a4f24e036a084b6b4b2d2491af4167f4",
+    "narHash": "sha256-yjGG65gA1jORt0hWxjzrnw3AYkIn8EWolp8vezwXZ3I="
   },
   "preservation": {
     "type": "github",
@@ -49,16 +49,16 @@
     "type": "github",
     "owner": "Mic92",
     "repo": "sops-nix",
-    "rev": "f1406619a3884cd5c47992a70b8b35c9c0fcb4c9",
-    "narHash": "sha256-aCWC8ngycU7OdJrU2+Je3qf+1a2ykuBvpPhZT/9tXMc=",
-    "lastModified": 1783174389
+    "rev": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
+    "narHash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck=",
+    "lastModified": 1786629091
   },
   "zen-browser": {
     "type": "github",
     "owner": "youwen5",
     "repo": "zen-browser-flake",
-    "rev": "0d2fc291f34fce699b2a559f74189ecfe61e30e3",
-    "narHash": "sha256-W32Jxn9mnGEjDc5c7sC5YfNLzrh3n9Srkg5JbC1YYdY=",
-    "lastModified": 1785047627
+    "rev": "64791844717b786a93dde8f76c8a35222e53cf53",
+    "narHash": "sha256-cyMeyF4QCZF7YL5+ynYZMDIA2LChF3L51ZLP6BvJ1L4=",
+    "lastModified": 1786424696
   }
 }
