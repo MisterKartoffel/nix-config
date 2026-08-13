@@ -6,7 +6,7 @@
 }:
 wrapFirefox inputs.zen-browser.packages.${stdenv.hostPlatform.system}.zen-browser-unwrapped {
   pname = "zen-browser";
-  
+
   extraPolicies = import ./policies.nix // {
     SearchEngines = import ./search.nix;
 

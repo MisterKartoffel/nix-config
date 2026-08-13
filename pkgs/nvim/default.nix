@@ -13,10 +13,21 @@
   ripgrep,
 
   appName ? "nvim",
-  treesitter ? import ./nix/treesitter.nix { inherit tree-sitter fetchFromGitHub vimPlugins lib; },
+  treesitter ? import ./nix/treesitter.nix {
+    inherit
+      tree-sitter
+      fetchFromGitHub
+      vimPlugins
+      lib
+      ;
+  },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
   plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
-  extraPackages ? [ fd imagemagick ripgrep ],
+  extraPackages ? [
+    fd
+    imagemagick
+    ripgrep
+  ],
   withPython3 ? false,
   withNodeJs ? false,
   withPerl ? false,

@@ -1,4 +1,9 @@
-{ tree-sitter, fetchFromGitHub, vimPlugins, lib }:
+{
+  tree-sitter,
+  fetchFromGitHub,
+  vimPlugins,
+  lib,
+}:
 let
   fallbackGrammars = {
     /*
