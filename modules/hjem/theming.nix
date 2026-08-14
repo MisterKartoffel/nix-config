@@ -18,7 +18,6 @@ let
 in
 {
   xdg.config.files = {
-    "gtk-2.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-2.0";
     "gtk-3.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-3.0";
     "gtk-4.0".source = "${catppuccin.gtk}/share/themes/Catppuccin-GTK-Mauve-Dark/gtk-4.0";
 
