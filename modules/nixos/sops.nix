@@ -66,11 +66,14 @@ in
       );
 
       templates = {
-        "nix-tokens.conf".content =
-          lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; }
+        "nix-tokens.conf" = {
+          content = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; }
             {
               extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
             };
+          group = "wheel";
+          mode = "0440";
+        };
 
         "wireless.conf" = lib.mkIf wireless.enable {
           content = lib.generators.toKeyValue { } {
