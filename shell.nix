@@ -10,4 +10,8 @@ pkgs.mkShellNoCC {
       lua-language-server
       ;
   };
+
+  env = {
+    TACK_NIX_CONF_TOKENS = "1";
+  };
 }
