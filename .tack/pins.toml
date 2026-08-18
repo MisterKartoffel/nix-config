@@ -3,7 +3,7 @@
 
 # shorturl schemes. scheme:rest expands rest into {path}
 [shorturls]
-nixpkgs = "https://channels.nixos.org/{path}/nixexprs.tar.xz"
+nixpkgs = "https://channels.nixos.org/{path}/nixexprs.tar.zst"
 "git+ssh" = "git+ssh://git@github.com/{path}"
 
 # all_follow: input name -> top-level pin it follows wherever it appears
