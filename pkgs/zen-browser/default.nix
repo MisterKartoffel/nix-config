@@ -1,10 +1,9 @@
 {
-  inputs,
   lib,
-  stdenv,
   wrapFirefox,
+  zen-browser-unwrapped,
 }:
-wrapFirefox inputs.zen-browser.packages.${stdenv.hostPlatform.system}.zen-browser-unwrapped {
+wrapFirefox zen-browser-unwrapped {
   pname = "zen-browser";
 
   extraPolicies = import ./policies.nix // {
