@@ -10,25 +10,25 @@
     {
       Name = "NixOS Options";
       URLTemplate = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
-      IconURL = "https://brand.nixos.org/logos/nixos-logo-default-gradient-black-regular-horizontal-recommended.svg";
+      IconURL = "https://search.nixos.org/images/nixos-logomark-default-gradient-none.svg";
       Alias = "@no";
     }
     {
       Name = "NixOS Packages";
       URLTemplate = "https://search.nixos.org/packages?channel=unstable&query={searchTerms}";
-      IconURL = "https://brand.nixos.org/logos/nixos-logo-default-gradient-black-regular-horizontal-recommended.svg";
+      IconURL = "https://search.nixos.org/images/nixos-logomark-default-gradient-none.svg";
       Alias = "@np";
     }
     {
       Name = "Noogle";
-      URLTemplate = "https://noogle.dev/q/?term={searchTerms}";
-      IconURL = "https://brand.nixos.org/logos/nixos-logo-default-gradient-black-regular-horizontal-recommended.svg";
+      URLTemplate = "https://www.noogle.dev/q/?term={searchTerms}";
+      IconURL = "https://search.nixos.org/images/nixos-logomark-default-gradient-none.svg";
       Alias = "@ng";
     }
     {
       Name = "GitHub Search";
-      URLTemplate = "https://github.com/search?q={searchTerms}";
-      IconURL = "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg";
+      URLTemplate = "https://www.github.com/search?q={searchTerms}";
+      IconURL = "https://github.githubassets.com/favicons/favicon.svg";
       Alias = "@gh";
     }
   ];
