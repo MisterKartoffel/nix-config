@@ -37,9 +37,10 @@
   initLuaPre ? "",
   wrapRc ? true,
 }:
-let
-  customAppName = appName != "nvim" && appName != null && appName != "";
+assert appName == "" -> throw "Neovim appName cannot be set to an empty string.";
+assert appName == null -> throw "Neovim appName cannot be set to null.";
 
+let
   nvimRtp = linkFarm "nvim-rtp" (
     map (path: {
       name = baseNameOf (toString path);
@@ -57,7 +58,7 @@ let
     ];
 
     wrapperArgs =
-      lib.optionals customAppName [
+      lib.optionals (appName != "nvim") [
         "--set"
         "NVIM_APPNAME"
         appName
@@ -80,7 +81,7 @@ let
       ;
   };
 in
-if customAppName then
+if appName != "nvim" then
   neovim-wrapped.overrideAttrs (oldAttrs: {
     buildPhase = oldAttrs.buildPhase + ''
       mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
