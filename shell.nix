@@ -14,4 +14,14 @@ pkgs.mkShellNoCC {
   env = {
     TACK_NIX_CONF_TOKENS = "1";
   };
+
+  shellHook = /* bash */ ''
+    if [[ ! -f .envrc ]]; then
+    cat << 'EOF' > .envrc
+    watch_file shell.nix
+    use flake
+    export NH_FLAKE=''${PWD}
+    EOF
+    fi
+  '';
 }
