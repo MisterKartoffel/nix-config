@@ -31,13 +31,15 @@
         default = pkgs.callPackage ./shell.nix { };
       });
 
-      packages = forAllSystems (pkgs: {
-        fish = pkgs.callPackage ./pkgs/fish { };
-        nvim = pkgs.callPackage ./pkgs/nvim { };
-        zen-browser = pkgs.callPackage ./pkgs/zen-browser {
-          inherit (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}) zen-browser-unwrapped;
-        };
-      });
+      packages = forAllSystems (
+        pkgs:
+        lib.packagesFromDirectoryRecursive {
+          callPackage = pkgs.newScope {
+            inherit (inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}) zen-browser-unwrapped;
+          };
+          directory = ./pkgs;
+        }
+      );
 
       formatter = forAllSystems (
         pkgs: pkgs.treefmt.withConfig (import ./treefmt.nix { inherit pkgs lib; })
