@@ -2,6 +2,12 @@
   Default = "google";
   Add = [
     {
+      Name = "Google Maps";
+      URLTemplate = "https://www.google.com/maps/search/{searchTerms}";
+      IconURL = "https://www.google.com/images/branding/product/ico/maps_32dp.ico";
+      Alias = "@gm";
+    }
+    {
       Name = "NixOS Options";
       URLTemplate = "https://search.nixos.org/options?channel=unstable&query={searchTerms}";
       IconURL = "https://brand.nixos.org/logos/nixos-logo-default-gradient-black-regular-horizontal-recommended.svg";
