@@ -67,10 +67,9 @@ in
 
       templates = {
         "nix-tokens.conf" = {
-          content = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; }
-            {
-              extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
-            };
+          content = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; } {
+            extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
+          };
           group = "wheel";
           mode = "0440";
         };
