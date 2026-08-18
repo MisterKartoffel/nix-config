@@ -83,7 +83,7 @@ let
 in
 if appName != "nvim" then
   neovim-wrapped.overrideAttrs (oldAttrs: {
-    buildPhase = oldAttrs.buildPhase + ''
+    postBuild = oldAttrs.postBuild + ''
       mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
     '';
 
