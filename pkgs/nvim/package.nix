@@ -4,6 +4,7 @@
   wrapNeovimUnstable,
   neovimUtils,
   vimPlugins,
+  vimUtils,
   tree-sitter,
   fetchFromGitHub,
   linkFarm,
@@ -22,7 +23,7 @@
       ;
   },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
-  plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
+  plugins ? import ./nix/plugins.nix { inherit vimPlugins vimUtils fetchFromGitHub; },
   extraPackages ? [
     fd
     imagemagick
