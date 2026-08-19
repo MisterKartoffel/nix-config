@@ -3,7 +3,6 @@
   modules = {
     users."mimikyu" = {
       description = "Felipe Duarte";
-      autologin = true;
       extraGroups = [
         "wheel"
         "qbt"
