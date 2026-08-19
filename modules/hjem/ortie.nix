@@ -1,4 +1,10 @@
-{ pkgs, ... }: {
+{ inputs, pkgs, ... }:
+let
+  ortie = inputs.ortie.packages.${pkgs.stdenv.hostPlatform.system}.default;
+in
+{
+  packages = builtins.attrValues { inherit ortie; };
+
   xdg.config.files."ortie/config.toml" = {
     generator = (pkgs.formats.toml { }).generate "ortie-config.toml";
 
