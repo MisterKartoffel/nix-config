@@ -19,18 +19,18 @@ in
                     "Hotmail/Lixeira" "imaps://outlook.office365.com/Deleted" \
                     "Hotmail/Rascunhos" "imaps://outlook.office365.com/Drafts" \
                     "Hotmail/Enviados" "imaps://outlook.office365.com/Sent" \
-                    "Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk"
-                    # "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX" \
-                    # "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto" \
-                    # "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash" \
-                    # "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts" \
-                    # "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent" \
-                    # "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
+                    "Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk" \
+                    "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX" \
+                    "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto" \
+                    "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash" \
+                    "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts" \
+                    "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent" \
+                    "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
 
-    folder-hook outlook.office365.com "source folder-hook/hotmail"
-    # folder-hook imap.ufrgs.br "source folder-hook/ufrgs"
+    folder-hook outlook.office365.com "source folder-hook/hotmail ; set my_host = hotmail"
+    folder-hook imap.ufrgs.br "source folder-hook/ufrgs ; set my_host = ufrgs"
 
-    send-hook ~P "source send-hook/hotmail"
+    send-hook ~P "source send-hook/$my_host"
 
     set mailcap_path = "${xdg.config}/neomutt/mailcap"
     set new_mail_command = "${lib.getExe' pkgs.libnotify "notify-send"} \"New e-mail\!\" \"New: %n.\nUnread: %u.\" --app-name=\"NeoMutt\""
