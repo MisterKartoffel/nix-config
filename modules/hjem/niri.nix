@@ -6,9 +6,8 @@
   ...
 }:
 let
+  inherit (self.packages.${pkgs.stdenv.hostPlatform.system}) zen-browser;
   inherit (osConfig.programs) niri;
-  inherit (pkgs.stdenv.hostPlatform) system;
-  inherit (self.packages.${system}) zen-browser;
 in
 {
   xdg.config.files."niri/config.kdl" = {
