@@ -37,6 +37,14 @@
     "rev": "e5bdc4a41d4c072fe1e3787eaa0320a384741d44",
     "narHash": "sha256-kSR/jfpR4cE26YRZ8exQkoRbEA30vyWimajwZANYYaE="
   },
+  "ortie": {
+    "type": "github",
+    "owner": "pimalaya",
+    "repo": "ortie",
+    "rev": "274bd4c6e5ab50ecafd71ae52c051ffd596156af",
+    "narHash": "sha256-M5+aICRAbcYKfP/LXPMPlSBAKTa+Vcqlcp56lwLrEDY=",
+    "lastModified": 1786790130
+  },
   "preservation": {
     "type": "github",
     "owner": "nix-community",
