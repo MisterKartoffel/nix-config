@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  inherit (config.services.gnome) gnome-keyring;
+  inherit (config.services) oo7;
 in
 {
   preservation.preserveAt."/persist".users.mimikyu = {
@@ -25,7 +25,7 @@ in
       ".cache/direnv/layouts"
       ".cache/nix"
     ]
-    ++ lib.optionals gnome-keyring.enable [
+    ++ lib.optionals oo7.enable [
       {
         directory = ".local/share/keyrings";
         mode = "0700";

@@ -51,6 +51,7 @@
   };
 
   services = {
+    oo7.enable = true;
     openssh.enable = true;
     playerctld.enable = true;
     qbittorrent.enable = true;
