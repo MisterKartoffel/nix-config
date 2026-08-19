@@ -4,9 +4,6 @@
   lib,
   ...
 }:
-let
-  inherit (config.programs) nh;
-in
 {
   nix = {
     registry = lib.pipe inputs [
@@ -24,12 +21,6 @@ in
 
       auto-optimise-store = true;
       use-xdg-base-directories = true;
-    };
-
-    gc = {
-      automatic = !nh.clean.enable;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
     };
 
     extraOptions = ''
