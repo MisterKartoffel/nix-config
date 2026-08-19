@@ -15,8 +15,5 @@ in
     set imap_oauth_refresh_command = "${lib.getExe ortie} token show --account hotmail"
 
     set spool_file = +Inbox
-    set record = +Sent
-    set postponed = +Drafts
-    set trash = +Deleted
   '';
 }

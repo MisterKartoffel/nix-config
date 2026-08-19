@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, ... }:
 let
   xdg.config = config.xdg.config.directory;
 in
@@ -33,7 +28,6 @@ in
     send-hook ~P "source send-hook/$my_host"
 
     set mailcap_path = "${xdg.config}/neomutt/mailcap"
-    set new_mail_command = "${lib.getExe' pkgs.libnotify "notify-send"} \"New e-mail\!\" \"New: %n.\nUnread: %u.\" --app-name=\"NeoMutt\""
 
     ignore *
     unignore subject: from: to: cc: date:

@@ -1,6 +1,6 @@
 {
   xdg.config.files."neomutt/keybinds".text = /* muttrc */ ''
-    macro index c "<change-folder>?" "Change to folder overview"
+    macro index - "<change-folder>?" "Change to folder overview"
 
     bind attach,browser,index,pager g noop
     bind attach,browser,index gg first-entry
