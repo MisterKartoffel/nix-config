@@ -6,7 +6,7 @@ in
   packages = builtins.attrValues { inherit (pkgs) direnv nix-direnv; };
 
   xdg.config.files."direnv/direnv.toml" = {
-    generator = (pkgs.formats.toml { }).generate "direnv.toml";
+    generator = (pkgs.formats.toml { }).generate "direnv-direnv.toml";
 
     value = {
       global = {
