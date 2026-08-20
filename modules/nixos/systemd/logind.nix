@@ -1,7 +1,7 @@
 {
   services.logind.settings.Login = {
     IdleAction = "sleep";
-    IdleActionSec = "5m";
+    IdleActionSec = "0s";
     HandlePowerKey = "sleep";
     HandlePowerKeyLongPress = "poweroff";
   };

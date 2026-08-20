@@ -8,8 +8,8 @@
 
     unitConfig.ConditionEnvironment = "WAYLAND_DISPLAY";
     serviceConfig = {
-      ExecStart = "${lib.getExe pkgs.swayidle} -w idlehint 300";
       Type = "exec";
+      ExecStart = "${lib.getExe pkgs.swayidle} -w idlehint 600";
       Restart = "on-failure";
     };
   };
