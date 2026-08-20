@@ -6,8 +6,8 @@
   ...
 }:
 let
-  inherit (inputs.vellum.packages.${pkgs.stdenv.hostPlatform.system}) vellum;
   inherit (inputs.basix.schemeData.base24.catppuccin-mocha) palette;
+  inherit (inputs.vellum.packages.${pkgs.stdenv.hostPlatform.system}) vellum;
 in
 {
   xdg.config.files."vellum/config.toml" = {

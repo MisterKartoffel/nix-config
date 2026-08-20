@@ -1,12 +1,12 @@
 { pkgs, ... }:
 let
   catppuccin = {
+    gtk = pkgs.magnetic-catppuccin-gtk.override {
+      accent = [ "mauve" ];
+    };
     kvantum = pkgs.catppuccin-kvantum.override {
       variant = "mocha";
       accent = "mauve";
-    };
-    gtk = pkgs.magnetic-catppuccin-gtk.override {
-      accent = [ "mauve" ];
     };
     zen = pkgs.fetchFromGitHub {
       owner = "catppuccin";
