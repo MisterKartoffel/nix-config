@@ -1,4 +1,13 @@
-{ pkgs, ... }: {
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
+let
+  ortie = inputs.ortie.packages.${pkgs.stdenv.hostPlatform.system}.default;
+in
+{
   xdg.config.files."himalaya/config.toml" = {
     enable = false;
     generator = (pkgs.formats.toml { }).generate "himalaya-config.toml";
@@ -9,7 +18,7 @@
           sasl.xoauth2 = {
             username = "felipesdrs@hotmail.com";
             token.command = [
-              "ortie"
+              (lib.getExe ortie)
               "token"
               "show"
               "--account"
