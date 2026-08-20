@@ -97,7 +97,7 @@
     color body color2 default '[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+'
 
     # URLs
-    color body color4 default  '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
+    color body color4 default '(https?|ftp)://[-\.,/%~_:?&=\#a-zA-Z0-9\+]+'
 
     # mailto
     color body color2 default '<mailto:[\-\.+_a-zA-Z0-9]+@[\-\.a-zA-Z0-9]+>'
