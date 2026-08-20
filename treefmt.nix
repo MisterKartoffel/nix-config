@@ -28,6 +28,11 @@
         command = lib.getExe pkgs.stylua;
         includes = [ "*.lua" ];
       };
+
+      keep-sorted = {
+        command = lib.getExe pkgs.keep-sorted;
+        includes = [ "TODO.txt" ];
+      };
     };
   };
 }
