@@ -23,6 +23,7 @@ in
       ".config/legcord"
       ".config/zen"
       ".cache/direnv/layouts"
+      ".cache/neomutt"
       ".cache/nix"
     ]
     ++ lib.optionals oo7.enable [
