@@ -38,6 +38,7 @@ in
     restartTriggers = [ config.xdg.config.files."vellum/config.toml".source ];
 
     serviceConfig = {
+      Type = "exec";
       ExecStart = lib.getExe' vellum "vellum";
       Restart = "on-failure";
     };
