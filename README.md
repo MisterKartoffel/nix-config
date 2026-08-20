@@ -42,8 +42,6 @@ flake/
 #### [6] [mic92/sops-nix](https://github.com/mic92/sops-nix) - declarative secret management.
 #### [7] [youwen5/zen-browser-flake](https://github.com/youwen5/zen-browser-flake) - flake for Zen Browser.
 
-## TODO
-
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
 - [EmergentMind](https://github.com/EmergentMind), for being a great reference both on YouTube and on GitHub when it comes to learning Nix and for showing the configuration structure from which I ultimately stole.

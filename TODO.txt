@@ -1,0 +1,2 @@
+This file follows the structure linked below:
+https://github.com/todotxt/todo.txt
