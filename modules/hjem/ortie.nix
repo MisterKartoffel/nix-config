@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   ortie = inputs.ortie.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in
@@ -26,16 +31,17 @@ in
           "https://outlook.office.com/SMTP.Send"
           "offline_access"
         ];
+
         storage = {
           read.command = [
-            "oo7-cli"
+            (lib.getExe pkgs.oo7)
             "lookup"
             "application=ortie"
             "email=felipesdrs@hotmail.com"
             "--secret-only"
           ];
           write.command = [
-            "oo7-cli"
+            (lib.getExe pkgs.oo7)
             "store"
             "Hotmail OAUTH2 token"
             "application=ortie"
