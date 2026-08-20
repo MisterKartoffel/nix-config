@@ -9,9 +9,6 @@ let
   inherit (config.services) qbittorrent;
   inherit (config.sops) secrets templates;
   inherit (config) preservation;
-
-  baseCommand = "${lib.getExe pkgs.btrfs-progs} subvolume";
-  snapshotPath = "/persist/.snapshot";
 in
 {
   services.restic.backups.impermanence = lib.mkIf preservation.enable {
@@ -22,11 +19,11 @@ in
     passwordFile = secrets."restic/password".path;
     rcloneConfigFile = templates."rclone.conf".path;
 
-    paths = [ snapshotPath ];
+    paths = [ "/persist/.snapshot" ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];
 
-    backupPrepareCommand = baseCommand + " snapshot -r /persist " + snapshotPath;
-    backupCleanupCommand = baseCommand + " delete " + snapshotPath;
+    backupPrepareCommand = "${lib.getExe pkgs.btrfs-progs} subvolume snapshot -r /persist /persist/.snapshot";
+    backupCleanupCommand = "${lib.getExe pkgs.btrfs-progs} subvolume delete /persist/.snapshot";
 
     timerConfig = {
       OnCalendar = "daily";
@@ -36,8 +33,7 @@ in
 
     pruneOpts = [
       "--keep-daily 1"
-      "--keep-weekly 1"
-      "--keep-monthly 1"
+      "--keep-monthly 3"
     ];
   };
 }

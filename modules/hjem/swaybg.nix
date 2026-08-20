@@ -17,7 +17,7 @@ in
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStart = "${lib.getExe pkgs.swaybg} -i ${wallpaper}";
+      ExecStart = "${lib.getExe pkgs.swaybg} --image ${wallpaper}";
     };
   };
 }
