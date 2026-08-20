@@ -1,4 +1,3 @@
-{ config, ... }:
 {
   modules = {
     users."mimikyu" = {
@@ -24,14 +23,7 @@
 
     useNetworkd = true;
     nftables.enable = true;
-    wireless = {
-      enable = true;
-      secretsFile = config.sops.templates."wireless.conf".path;
-      networks = {
-        "JOSE LUIS".pskRaw = "ext:living_room";
-        "FELIPE DUARTE".pskRaw = "ext:bedroom";
-      };
-    };
+    wireless.iwd.enable = true;
   };
 
   fonts.fontconfig.enable = true;

@@ -7,7 +7,7 @@
 let
   inherit (config.modules.services) sops;
   inherit (config.modules) users;
-  inherit (config.networking) hostName wireless;
+  inherit (config.networking) hostName;
   inherit (config.services) openssh;
   inherit (config.system) etc;
   inherit (config) preservation;
@@ -28,10 +28,6 @@ in
           mode = "0600";
           path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
         };
-      }
-      // lib.optionalAttrs wireless.enable {
-        "wireless/living_room" = { };
-        "wireless/bedroom" = { };
       }
       // lib.optionalAttrs preservation.enable {
         "rclone/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
@@ -72,15 +68,6 @@ in
           };
           group = "wheel";
           mode = "0440";
-        };
-
-        "wireless.conf" = lib.mkIf wireless.enable {
-          content = lib.generators.toKeyValue { } {
-            living_room = config.sops.placeholder."wireless/living_room";
-            bedroom = config.sops.placeholder."wireless/bedroom";
-          };
-          owner = "wpa_supplicant";
-          group = "wpa_supplicant";
         };
 
         "rclone.conf".content = lib.mkIf preservation.enable (

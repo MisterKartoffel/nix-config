@@ -6,6 +6,7 @@
 }:
 let
   inherit (config.modules.services) sops;
+  inherit (config.networking.wireless) iwd;
   inherit (config.services) qbittorrent;
 in
 {
@@ -26,6 +27,7 @@ in
       "/var/lib/systemd/rfkill"
       "/var/log"
     ]
+    ++ lib.optionals iwd.enable [ "/var/lib/iwd" ]
     ++ lib.optionals qbittorrent.enable [
       {
         directory = "${qbittorrent.profileDir}/qBittorrent";
