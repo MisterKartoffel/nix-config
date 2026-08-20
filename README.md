@@ -43,8 +43,6 @@ flake/
 #### [7] [youwen5/zen-browser-flake](https://github.com/youwen5/zen-browser-flake) - flake for Zen Browser.
 
 ## TODO
-- Install and configure:
-  - [Newsboat](https://github.com/newsboat/newsboat).
 
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
