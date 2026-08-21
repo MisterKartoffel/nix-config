@@ -17,7 +17,7 @@ in
 
     repository = "rclone:mega:restic/${hostName}";
     passwordFile = secrets."restic/password".path;
-    rcloneConfigFile = templates."rclone.conf".path;
+    rcloneConfigFile = templates."restic-rclone.ini".path;
 
     paths = [ "/persist/.snapshot" ];
     exclude = lib.optionals qbittorrent.enable [ "qBittorrent/Torrents" ];

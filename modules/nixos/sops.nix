@@ -83,7 +83,7 @@ in
           mode = "0440";
         };
 
-        "rclone.conf".content = lib.mkIf preservation.enable (
+        "restic-rclone.ini".content = lib.mkIf preservation.enable (
           lib.generators.toINI { } {
             mega = {
               type = "mega";
