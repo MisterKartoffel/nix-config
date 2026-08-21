@@ -38,5 +38,8 @@ in
     ];
   }) users;
 
-  hjem.specialArgs = { inherit self inputs; };
+  hjem = {
+    specialArgs = { inherit self inputs; };
+    clobberByDefault = true;
+  };
 }
