@@ -36,6 +36,14 @@ in
 
     files = [
       ".local/share/fish/fish_history"
+      {
+        /*
+          This will be here until nh can read tokens from nix.conf:
+          https://github.com/nix-community/nh/issues/720
+        */
+        file = ".local/state/nh/github-token";
+        mode = "0600";
+      }
     ];
   };
 }
