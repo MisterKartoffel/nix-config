@@ -12,7 +12,6 @@ in
 
   xdg.config.files."ortie/config.toml" = {
     generator = (pkgs.formats.toml { }).generate "ortie-config.toml";
-
     value = {
       accounts.hotmail = {
         default = true;

@@ -7,7 +7,6 @@ in
 
   xdg.config.files."direnv/direnv.toml" = {
     generator = (pkgs.formats.toml { }).generate "direnv-direnv.toml";
-
     value = {
       global = {
         hide_env_diff = true;

@@ -7,6 +7,7 @@ in
 
   files.".ssh/config" = {
     inherit (openssh) enable;
+
     text = /* ssh_config */ ''
       Host *
         AddKeysToAgent yes

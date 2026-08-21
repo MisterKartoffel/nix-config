@@ -10,8 +10,8 @@ in
 {
   xdg.config.files."himalaya/config.toml" = {
     enable = false;
-    generator = (pkgs.formats.toml { }).generate "himalaya-config.toml";
 
+    generator = (pkgs.formats.toml { }).generate "himalaya-config.toml";
     value = {
       accounts.hotmail =
         let

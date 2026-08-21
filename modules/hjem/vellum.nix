@@ -12,7 +12,6 @@ in
 {
   xdg.config.files."vellum/config.toml" = {
     generator = (pkgs.formats.toml { }).generate "vellum-config.toml";
-
     value = {
       remember_last_tool = false;
       palette = builtins.attrValues {
