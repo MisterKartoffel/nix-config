@@ -56,6 +56,14 @@ in
             group = "users";
             mode = "0600";
           };
+
+          "${username}/spotify/client_id" = {
+            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
+            key = "spotify/client_id";
+            owner = username;
+            group = "users";
+            mode = "0600";
+          };
         }) (builtins.attrNames users)
       );
 
