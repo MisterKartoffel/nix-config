@@ -47,7 +47,6 @@ in
             owner = username;
             group = "users";
             mode = "0600";
-            path = "/home/${username}/.config/sops/age/keys.txt";
           };
 
           "${username}/ssh_key" = lib.mkIf openssh.enable {
@@ -56,7 +55,6 @@ in
             owner = username;
             group = "users";
             mode = "0600";
-            path = "/home/${username}/.ssh/id_ed25519";
           };
         }) (builtins.attrNames users)
       );
@@ -81,29 +79,5 @@ in
         );
       };
     };
-
-    /*
-      Workaround for incorrect permissions in directories
-      under $HOME causing hjem activation to fail
-    */
-    systemd.tmpfiles.settings.sops =
-      let
-        paths = [
-          ".ssh"
-          ".config/sops"
-          ".config/sops/age"
-        ];
-      in
-      lib.concatMapAttrs (
-        username: _:
-        lib.genAttrs' paths (path: {
-          name = "/home/${username}/${path}";
-          value.d = {
-            user = username;
-            group = "users";
-            mode = "0700";
-          };
-        })
-      ) users;
   };
 }

@@ -1,8 +1,10 @@
-{ osConfig, ... }:
+{ osConfig, config, ... }:
 let
   inherit (osConfig.services) openssh;
 in
 {
+  files.".ssh/id_ed25519".source = osConfig.sops.secrets."${config.user}/ssh_key".path;
+
   files.".ssh/config" = {
     inherit (openssh) enable;
     text = /* ssh_config */ ''
