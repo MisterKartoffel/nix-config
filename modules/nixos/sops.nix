@@ -16,15 +16,13 @@ in
 {
   imports = [ inputs.sops-nix.nixosModules.sops ];
 
-  config = lib.mkIf sops.enable {
-    sops = {
-      age.keyFile = "/var/lib/sops-nix/key.txt";
-      defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
-      validateSopsFiles = true;
+  sops = {
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
+    validateSopsFiles = true;
 
-      secrets = {
-        "access-tokens/github".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
-
+    secrets = lib.mkIf sops.enable (
+      {
         "ssh_key" = lib.mkIf openssh.enable {
           mode = "0600";
           path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
@@ -66,42 +64,42 @@ in
             mode = "0600";
           };
         }) (builtins.attrNames users)
+      )
+    );
+
+    templates = {
+      "nix-tokens.conf" = {
+        file =
+          (pkgs.formats.nixConf {
+            inherit (config.nix) package;
+            inherit (config.nix.package.out) version;
+          }).generate
+            "nix-tokens.conf"
+            {
+              extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
+            };
+        group = "wheel";
+        mode = "0440";
+      };
+
+      "restic-rclone.ini".content = lib.mkIf preservation.enable (
+        lib.generators.toINI { } {
+          mega = {
+            type = "mega";
+            user = "felipesdrs@hotmail.com";
+            pass = config.sops.placeholder."rclone/password";
+          };
+        }
       );
 
-      templates = {
-        "nix-tokens.conf" = {
-          file =
-            (pkgs.formats.nixConf {
-              inherit (config.nix) package;
-              inherit (config.nix.package.out) version;
-            }).generate
-              "nix-tokens.conf"
-              {
-                extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
-              };
-          group = "wheel";
-          mode = "0440";
+      "myx-config.toml" = {
+        file = (pkgs.formats.toml { }).generate "myx-config.toml" {
+          client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}";
+          protocol = "kitty";
         };
-
-        "restic-rclone.ini".content = lib.mkIf preservation.enable (
-          lib.generators.toINI { } {
-            mega = {
-              type = "mega";
-              user = "felipesdrs@hotmail.com";
-              pass = config.sops.placeholder."rclone/password";
-            };
-          }
-        );
-
-        "myx-config.toml" = {
-          file = (pkgs.formats.toml { }).generate "myx-config.toml" {
-            client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}";
-            protocol = "kitty";
-          };
-          owner = "mimikyu";
-          group = "users";
-          mode = "0600";
-        };
+        owner = "mimikyu";
+        group = "users";
+        mode = "0600";
       };
     };
   };
