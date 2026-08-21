@@ -85,6 +85,16 @@ in
             };
           }
         );
+
+        "myx-config.toml" = {
+          content = ''
+            client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}"
+            protocol = "kitty"
+          '';
+          owner = "mimikyu";
+          group = "users";
+          mode = "0600";
+        };
       };
     };
   };
