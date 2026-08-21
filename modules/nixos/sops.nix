@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -69,9 +70,15 @@ in
 
       templates = {
         "nix-tokens.conf" = {
-          content = lib.generators.toKeyValue { mkKeyValue = lib.generators.mkKeyValueDefault { } " = "; } {
-            extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
-          };
+          file =
+            (pkgs.formats.nixConf {
+              inherit (config.nix) package;
+              inherit (config.nix.package.out) version;
+            }).generate
+              "nix-tokens.conf"
+              {
+                extra-access-tokens = "github.com=${config.sops.placeholder."access-tokens/github"}";
+              };
           group = "wheel";
           mode = "0440";
         };
@@ -87,10 +94,10 @@ in
         );
 
         "myx-config.toml" = {
-          content = ''
-            client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}"
-            protocol = "kitty"
-          '';
+          file = (pkgs.formats.toml { }).generate "myx-config.toml" {
+            client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}";
+            protocol = "kitty";
+          };
           owner = "mimikyu";
           group = "users";
           mode = "0600";
