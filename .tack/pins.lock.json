@@ -23,6 +23,14 @@
     "narHash": "sha256-qwppDYdtxqtDpI1iSp7bs8prOJ0KQSvhJchfROD04f0=",
     "lastModified": 1785929776
   },
+  "myx": {
+    "type": "github",
+    "owner": "HaseebKhalid1507",
+    "repo": "Myx",
+    "rev": "dd20fcf442b786d0398c957c7c4188f37f703f6d",
+    "narHash": "sha256-9TVHlaqISU3JtIXKbVgHpIoi41nBA/rc3OrcB3LVdnc=",
+    "lastModified": 1786588739
+  },
   "nix-secrets": {
     "type": "git",
     "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
