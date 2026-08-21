@@ -23,6 +23,7 @@ in
       ".config/legcord"
       ".config/zen"
       ".cache/direnv/layouts"
+      ".cache/myx"
       ".cache/neomutt"
       ".cache/nix"
     ]
