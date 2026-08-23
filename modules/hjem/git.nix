@@ -1,16 +1,18 @@
 {
   osConfig,
+  config,
   pkgs,
   lib,
   ...
 }:
 let
   inherit (osConfig.programs) git;
-  sshKey = "~/.ssh/id_ed25519";
+  sshKey = osConfig.sops.secrets."${config.user}/ssh_key".path;
 in
 {
   xdg.config.files."git/config" = {
     inherit (git) enable;
+
     generator = lib.generators.toGitINI;
     value = {
       user = {

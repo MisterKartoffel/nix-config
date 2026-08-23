@@ -37,6 +37,4 @@ in
 
   xdg.data.files."icons/Bibata-Modern-Ice".source =
     "${pkgs.bibata-cursors}/share/icons/Bibata-Modern-Ice";
-
-  environment.sessionVariables.QT_STYLE_OVERRIDE = "kvantum";
 }

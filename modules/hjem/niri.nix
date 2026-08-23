@@ -15,7 +15,7 @@ in
 
     source = pkgs.writeTextFile {
       name = "niri-config.kdl";
-      checkPhase = "${lib.getExe pkgs.niri} validate -c $out";
+      checkPhase = "${lib.getExe pkgs.niri} validate --config $out";
       text = /* kdl */ ''
         prefer-no-csd
         screenshot-path null

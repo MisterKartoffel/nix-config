@@ -25,8 +25,7 @@ in
       {
         "access-tokens/github" = { };
       }
-      //
-      lib.optionalAttrs openssh.enable {
+      // lib.optionalAttrs openssh.enable {
         "ssh_key" = {
           sopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
           mode = "0600";

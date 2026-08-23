@@ -9,18 +9,18 @@ in
     account-hook outlook.office365.com "source account-hook/hotmail"
     account-hook imap.ufrgs.br "source account-hook/ufrgs"
 
-    named-mailboxes "Hotmail/Caixa de Entrada" "imaps://outlook.office365.com/Inbox" \
-                    "Hotmail/Arquivo Morto" "imaps://outlook.office365.com/Arquivo Morto" \
-                    "Hotmail/Lixeira" "imaps://outlook.office365.com/Deleted" \
-                    "Hotmail/Rascunhos" "imaps://outlook.office365.com/Drafts" \
-                    "Hotmail/Enviados" "imaps://outlook.office365.com/Sent" \
-                    "Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk" \
-                    "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX" \
-                    "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto" \
-                    "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash" \
-                    "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts" \
-                    "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent" \
-                    "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
+    named-mailboxes "Hotmail/Caixa de Entrada" "imaps://outlook.office365.com/Inbox"
+    named-mailboxes "Hotmail/Arquivo Morto" "imaps://outlook.office365.com/Arquivo Morto"
+    named-mailboxes "Hotmail/Lixeira" "imaps://outlook.office365.com/Deleted"
+    named-mailboxes "Hotmail/Rascunhos" "imaps://outlook.office365.com/Drafts"
+    named-mailboxes "Hotmail/Enviados" "imaps://outlook.office365.com/Sent"
+    named-mailboxes "Hotmail/Lixo Eletrônico" "imaps://outlook.office365.com/Junk"
+    named-mailboxes "UFRGS/Caixa de Entrada" "imaps://imap.ufrgs.br/INBOX"
+    named-mailboxes "UFRGS/Arquivo Morto" "imaps://imap.ufrgs.br/Arquivo Morto"
+    named-mailboxes "UFRGS/Lixeira" "imaps://imap.ufrgs.br/Trash"
+    named-mailboxes "UFRGS/Rascunhos" "imaps://imap.ufrgs.br/Drafts"
+    named-mailboxes "UFRGS/Enviados" "imaps://imap.ufrgs.br/Sent"
+    named-mailboxes "UFRGS/Lixo Eletrônico" "imaps://imap.ufrgs.br/Spam"
 
     folder-hook outlook.office365.com "source folder-hook/hotmail ; set my_host = hotmail"
     folder-hook imap.ufrgs.br "source folder-hook/ufrgs ; set my_host = ufrgs"

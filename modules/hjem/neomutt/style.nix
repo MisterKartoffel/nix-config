@@ -38,36 +38,36 @@
     color status color255 color8  '󰲶( [0-9]+)?'
 
     # Index Colors -------------------------------------------------
-    color index         default  default
-    color index_author  color147 default
-    color index_date    color245 default
-    color index_flags   blue     default
-    color index_subject color245 default
+    color index         default   default
+    color index_author  color147  default
+    color index_date    color245  default
+    color index_flags   blue      default
+    color index_subject color245  default
 
-    color index_flags   green    default ~U
-    color index_subject color252 default ~U
+    color index_flags   green     default ~U
+    color index_subject color252  default ~U
 
-    color index_author  color229 default ~F
-    color index_date    color229 default ~F
-    color index_flags   color229 default ~F
-    color index_subject color229 default ~F
+    color index_author  color229  default ~F
+    color index_date    color229  default ~F
+    color index_flags   color229  default ~F
+    color index_subject color229  default ~F
 
-    color index_author  color216 default ~T
-    color index_date    color216 default ~T
-    color index_flags   color216 default ~T
-    color index_subject color216 default ~T
+    color index_author  color216  default ~T
+    color index_date    color216  default ~T
+    color index_flags   color216  default ~T
+    color index_subject color216  default ~T
 
-    color index_author  color210 default ~D
-    color index_date    color210 default ~D
-    color index_flags   color210 default ~D
-    color index_subject color210 default ~D
+    color index_author  color210  default ~D
+    color index_date    color210  default ~D
+    color index_flags   color210  default ~D
+    color index_subject color210  default ~D
 
-    color normal    color15  default
-    color indicator	white		 default 
-    color error     color210 default
-    color status    color15  default
-    color tree      color15  default
-    color tilde     color15  default
+    color normal    color15   default
+    color indicator white     default
+    color error     color210  default
+    color status    color15   default
+    color tree      color15   default
+    color tilde     color15   default
 
     color quoted  color15 default
     color quoted1 color7  default
@@ -77,9 +77,9 @@
     color quoted5 color0  default
 
     # Message Headers ----------------------------------------------
-    color hdrdefault color245 default
-    color header     color189 default '^From:'
-    color header     color189 default '^Subject:'
+    color hdrdefault  color245 default
+    color header      color189 default '^From:'
+    color header      color189 default '^Subject:'
 
     # Message Body -------------------------------------------------
     # Text formatting (bold, underline, italic)
