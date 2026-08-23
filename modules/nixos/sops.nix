@@ -18,52 +18,63 @@ in
 
   sops = {
     age.keyFile = "/var/lib/sops-nix/key.txt";
-    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
+    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
     validateSopsFiles = true;
 
     secrets = lib.mkIf sops.enable (
       {
-        "ssh_key" = lib.mkIf openssh.enable {
+        "access-tokens/github" = { };
+      }
+      //
+      lib.optionalAttrs openssh.enable {
+        "ssh_key" = {
+          sopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
           mode = "0600";
           path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
         };
       }
       // lib.optionalAttrs preservation.enable {
-        "rclone/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
-        "restic/password".sopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
+        "rclone/password" = { };
+        "restic/password" = { };
       }
       // lib.mergeAttrsList (
-        map (username: {
-          "${username}/password" = {
+        map (
+          username:
+          let
             sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
-            key = "password";
-            neededForUsers = true;
-          };
+          in
+          {
+            "${username}/password" = {
+              inherit sopsFile;
+              key = "password";
+              neededForUsers = true;
+            };
 
-          "${username}/age_key" = {
-            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
-            key = "age_key";
-            owner = username;
-            group = "users";
-            mode = "0600";
-          };
+            "${username}/age_key" = {
+              inherit sopsFile;
+              key = "age_key";
+              owner = username;
+              group = "users";
+              mode = "0600";
+            };
 
-          "${username}/ssh_key" = lib.mkIf openssh.enable {
-            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
-            key = "ssh_key";
-            owner = username;
-            group = "users";
-            mode = "0600";
-          };
+            "${username}/ssh_key" = lib.mkIf openssh.enable {
+              inherit sopsFile;
+              key = "ssh_key";
+              owner = username;
+              group = "users";
+              mode = "0600";
+            };
 
-          "${username}/spotify/client_id" = {
-            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
-            key = "spotify/client_id";
-            owner = username;
-            group = "users";
-            mode = "0600";
-          };
-        }) (builtins.attrNames users)
+            "${username}/spotify/client_id" = {
+              inherit sopsFile;
+              key = "spotify/client_id";
+              owner = username;
+              group = "users";
+              mode = "0600";
+            };
+          }
+        ) (builtins.attrNames users)
       )
     );
 
@@ -94,7 +105,7 @@ in
 
       "myx-config.toml" = {
         file = (pkgs.formats.toml { }).generate "myx-config.toml" {
-          client_id = "${config.sops.placeholder."mimikyu/spotify/client_id"}";
+          client_id = config.sops.placeholder."mimikyu/spotify/client_id";
           protocol = "kitty";
         };
         owner = "mimikyu";
