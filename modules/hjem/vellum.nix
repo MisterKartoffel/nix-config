@@ -7,13 +7,15 @@
 }:
 let
   inherit (inputs.basix.schemeData.base24.catppuccin-mocha) palette;
-  inherit (inputs.vellum.packages.${pkgs.stdenv.hostPlatform.system}) vellum;
 in
 {
+  packages = builtins.attrValues { inherit (pkgs) vellum; };
+
   xdg.config.files."vellum/config.toml" = {
     generator = (pkgs.formats.toml { }).generate "vellum-config.toml";
     value = {
       remember_last_tool = false;
+      clear_on_escape = true;
       palette = builtins.attrValues {
         inherit (palette)
           base08
@@ -34,11 +36,11 @@ in
     partOf = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
     wantedBy = [ "graphical-session.target" ];
-    restartTriggers = [ config.xdg.config.files."vellum/config.toml".source ];
+    restartTriggers = [ (config.xdg.config.files."vellum/config.toml".source or null) ];
 
     serviceConfig = {
       Type = "exec";
-      ExecStart = lib.getExe' vellum "vellum";
+      ExecStart = lib.getExe pkgs.vellum;
       Restart = "on-failure";
     };
   };

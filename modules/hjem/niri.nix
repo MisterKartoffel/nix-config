@@ -1,5 +1,4 @@
 {
-  inputs,
   self,
   osConfig,
   pkgs,
@@ -7,7 +6,6 @@
   ...
 }:
 let
-  inherit (inputs.vellum.packages.${pkgs.stdenv.hostPlatform.system}) vellum;
   inherit (self.packages.${pkgs.stdenv.hostPlatform.system}) zen-browser;
   inherit (osConfig.programs) niri;
 in
@@ -127,7 +125,7 @@ in
           // Screencapture
           Mod+Print { screenshot; }
           Mod+Shift+Print { screenshot-window; }
-          Mod+A { spawn "${lib.getExe' vellum "vellum"}" "toggle"; }
+          Mod+A { spawn "${lib.getExe pkgs.vellum}" "toggle"; }
 
           // Window and workspace movement
             // Switch workspaces with Mod + [1-9]

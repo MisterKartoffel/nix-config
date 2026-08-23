@@ -48,11 +48,6 @@ url = "github:NotAShelf/Basix"
 url = "github:youwen5/zen-browser-flake"
 
 # Waiting on:
-# https://github.com/NixOS/nixpkgs/pull/552415
-[inputs.vellum]
-url = "github:greyxp1/vellum"
-
-# Waiting on:
 # https://github.com/NixOS/nixpkgs/pull/551635
 [inputs.ortie]
 url = "github:pimalaya/ortie"
