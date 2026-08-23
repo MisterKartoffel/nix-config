@@ -39,8 +39,7 @@ url = "github:nix-community/preservation"
 url = "github:Mic92/sops-nix"
 
 [inputs.nix-secrets]
-url = "git+ssh:MisterKartoffel/nix-secrets"
-type = "fetch"
+url = "github:MisterKartoffel/nix-secrets"
 
 [inputs.basix]
 url = "github:NotAShelf/Basix"
