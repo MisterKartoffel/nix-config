@@ -1,0 +1,34 @@
+name: "Upload nixosConfigurations to Cachix"
+on:
+  pull_request:
+  push:
+jobs:
+  build:
+    name: "Check flake and build NixOS configurations"
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+    - uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: '${{ secrets.GH_ACCESS_TOKEN }}'
+
+    - uses: cachix/cachix-action@v17
+      with:
+        name: misterkartoffel
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+    - name: Check flake
+      run: nix flake check
+
+    - run: nix develop .#default
+
+    - name: Build NixOS configurations
+      run: |
+        set -euo pipefail
+
+        while read -r host; do
+          echo "::group::Building $host"
+          nix build ".#nixosConfigurations.$host.config.system.build.toplevel"
+          echo "::endgroup::"
+        done < <(nix eval --json ".#nixosConfigurations" --apply builtins.attrNames | jq -r ".[]")
