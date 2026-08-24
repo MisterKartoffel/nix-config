@@ -32,12 +32,12 @@
     "lastModified": 1786588739
   },
   "nix-secrets": {
-    "type": "git",
-    "url": "ssh://git@github.com/MisterKartoffel/nix-secrets",
-    "ref": "HEAD",
-    "rev": "ba45043f3dd4a604b66aa11275bf6c4bb8fd2ef4",
-    "narHash": "sha256-xOoDyEyYob5uZAiwr5ouJj2J2QAMSMn8dxTgsWO7zZk=",
-    "lastModified": 1787266244
+    "type": "github",
+    "owner": "MisterKartoffel",
+    "repo": "nix-secrets",
+    "rev": "b17e8b0e99cd09089e842c6993bed02808199b68",
+    "narHash": "sha256-opXFc3BHFh0Hiyfr1Puz6zXU/8gRwrH1EeVmb5rwSKk=",
+    "lastModified": 1787608326
   },
   "nixpkgs": {
     "type": "tarball",
