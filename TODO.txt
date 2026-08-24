@@ -3,6 +3,9 @@ https://github.com/todotxt/todo.txt
 
 keep-sorted start
 
+(A) 2026-08-24 Set up binary cache +repo @cache
+(B) 2026-08-24 Set up GHA +repo @cache @actions
+2026-08-24 Consider using blocks in keep-sorted to document solutions as part of TODO resolutions +todo
 x 2026-08-21 2026-08-20 Investigate https://github.com/HaseebKhalid1507/Myx/ +tack +hjem @inputs @packages
 x 2026-08-21 2026-08-21 Change format-specific files in SOPS to use the template's `file` attribute instead of plaintext `content` in order to use `pkgs.formats` generators +nixos @sops
 
