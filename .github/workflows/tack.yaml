@@ -1,4 +1,5 @@
 name: "Update tack pins"
+
 on:
   schedule:
     - cron: "0 0 * * 0"
@@ -27,6 +28,9 @@ jobs:
       uses: cachix/install-nix-action@v31
       with:
         github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+        extra_nix_config: |
+          extra-substituters = https://misterkartoffel.cachix.org/
+          extra-trusted-public-keys = misterkartoffel.cachix.org-1:hSj2uihi9MyLtzjS56ALG9tIIRlQXZfVnPeIIFGG/E4=
 
     - name: Get tack look output
       id: tack-look
@@ -50,7 +54,13 @@ jobs:
         commit-message: "tack: update inputs"
         title: "tack: update inputs"
         body: |
-          ### tack look output:
-          ```
+          ## tack update summary:
+
+          <details>
+          <summary>Click to view <code>tack look --verbose</code> output</summary>
+
+          ```text
           ${{ steps.tack-look.outputs.result }}
           ```
+
+          </details>
