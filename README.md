@@ -1,5 +1,5 @@
 # MisterKartoffel's Nix Flake
-![it_aint_much](assets/it_aint_much.jpg)
+![it_aint_much](.github/assets/it_aint_much.jpg)
 
 ## Directory Structure Reference
 ```
