@@ -1,4 +1,4 @@
-name: "Build and cache NixOS configurations"
+name: "Build and cache NixOS Configurations"
 on:
   pull_request:
   push:
@@ -10,9 +10,13 @@ on:
       - "hosts/**/facter.json"
       - "**/*.nix"
       - "**/*.lua"
+
+permissions:
+  contents: read
+
 jobs:
-  build-nix-configurations:
-    name: "Build NixOS configurations and push to Cachix"
+  discover-hosts:
+    name: "Discover NixOS Configurations"
     runs-on: ubuntu-latest
 
     steps:
@@ -22,26 +26,45 @@ jobs:
     - name: Install Nix
       uses: cachix/install-nix-action@v31
       with:
-        github_access_token: '${{ secrets.GH_ACCESS_TOKEN }}'
+        github_access_token: '${{ secrets.GH_PAT_SECRETS_RO }}'
+
+    - name: Discover hosts
+      id: discover
+      run: |
+        hosts=$(nix eval --json ".#nixosConfigurations" --apply builtins.attrNames)
+        echo "hosts=$hosts" >> $GITHUB_OUTPUT
+
+    outputs:
+      hosts: ${{ steps.discover.outputs.hosts }}
+
+
+  build-nix-configurations:
+    name: "Build and cache ${{ matrix.host }}"
+    needs: discover-hosts
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        host: ${{ fromJSON(needs.discover-hosts.outputs.hosts) }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: '${{ secrets.GH_PAT_SECRETS_RO }}'
 
     - name: Configure Cachix
       uses: cachix/cachix-action@v17
       with:
         name: misterkartoffel
-        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        authToken: ${{ github.event_name == 'push' && secrets.CACHIX_AUTH_TOKEN || '' }}
 
     - name: Check flake
       run: nix flake check
 
-    - name: Enter default devShell
-      run: nix develop .#default
-
-    - name: Build NixOS configurations
-      run: |
-        set -euo pipefail
-
-        while read -r host; do
-          echo "::group::Building $host"
-          nix build ".#nixosConfigurations.$host.config.system.build.toplevel"
-          echo "::endgroup::"
-        done < <(nix eval --json ".#nixosConfigurations" --apply builtins.attrNames | jq -r ".[]")
+    - name: Build NixOS Configuration
+      run: nix build --print-build-logs ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel"

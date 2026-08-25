@@ -1,0 +1,56 @@
+name: "Update tack pins"
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: tack-update
+  cancel-in-progress: false
+
+jobs:
+  tack-update:
+    name: "Update tack pins"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
+      with:
+        github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+
+    - name: Get tack look output
+      id: tack-look
+      run: |
+        echo "result<<EOF" >> $GITHUB_OUTPUT
+        nix develop .#default --command tack look --verbose >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Run tack update
+      run: nix develop .#default --command tack update
+
+    - name: Check flake
+      run: nix flake check
+
+    - name: Create pull request
+      uses: peter-evans/create-pull-request@v8
+      with:
+        token: ${{ secrets.GH_PAT_CONFIG_PR }}
+        branch: tack/update-inputs
+        delete-branch: true
+        commit-message: "tack: update inputs"
+        title: "tack: update inputs"
+        body: |
+          ### tack look output:
+          ```
+          ${{ steps.tack-look.outputs.result }}
+          ```
