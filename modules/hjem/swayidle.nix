@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   systemd.services.swayidle = {
     description = "Idle manager for Wayland";
     documentation = [ "man:swayidle(1)" ];

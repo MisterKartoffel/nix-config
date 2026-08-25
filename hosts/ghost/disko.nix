@@ -1,4 +1,5 @@
-{ inputs, ... }: {
+{ inputs, ... }:
+{
   imports = [ inputs.disko.nixosModules.default ];
 
   fileSystems."/persist".neededForBoot = true;

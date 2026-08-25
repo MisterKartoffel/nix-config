@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   xdg.config.files."neomutt/account-hook/ufrgs".text = /* muttrc */ ''
     set folder = "imaps://imap.ufrgs.br/"
     set imap_user = "00288910@ufrgs.br"

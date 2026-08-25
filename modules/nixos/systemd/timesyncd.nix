@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   services.timesyncd = {
     servers = config.networking.timeServers;
 

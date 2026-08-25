@@ -1,2 +1,1 @@
-{ fishPlugins }:
-builtins.attrValues { inherit (fishPlugins) pure; }
+{ fishPlugins }: builtins.attrValues { inherit (fishPlugins) pure; }
