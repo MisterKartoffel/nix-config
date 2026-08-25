@@ -1,4 +1,5 @@
-{ pkgs, lib }: {
+{ pkgs, lib }:
+{
   settings = {
     tree-root-file = "flake.nix";
 
@@ -19,7 +20,7 @@
       };
 
       nixfmt = {
-        command = lib.getExe pkgs.nixfmt;
+        command = lib.getExe pkgs.nixfmt-rs;
         includes = [ "*.nix" ];
         priority = 3;
       };
