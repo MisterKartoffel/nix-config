@@ -22,8 +22,8 @@
       auto-optimise-store = true;
       use-xdg-base-directories = true;
 
-      substituters = [ "https://misterkartoffel.cachix.org/" ];
-      trusted-public-keys = [ "misterkartoffel.cachix.org-1:hSj2uihi9MyLtzjS56ALG9tIIRlQXZfVnPeIIFGG/E4=" ];
+      extra-substituters = [ "https://misterkartoffel.cachix.org/" ];
+      extra-trusted-public-keys = [ "misterkartoffel.cachix.org-1:hSj2uihi9MyLtzjS56ALG9tIIRlQXZfVnPeIIFGG/E4=" ];
     };
 
     extraOptions = ''
