@@ -1,49 +1,40 @@
-name: "Update tack pins"
+name: Update tack pins
 
 on:
   schedule:
     - cron: "0 0 * * 0"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: tack-update
   cancel-in-progress: false
 
 jobs:
-  tack-update:
-    name: "Update tack pins"
+  update:
+    name: Update tack pins
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v7
+    - name: Setup Nix
+      uses: ./.github/actions/setup-nix
       with:
-        fetch-depth: 0
+        github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
+        use_cachix: true
 
-    - name: Install Nix
-      uses: cachix/install-nix-action@v31
-      with:
-        github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
-        extra_nix_config: |
-          extra-substituters = https://misterkartoffel.cachix.org/
-          extra-trusted-public-keys = misterkartoffel.cachix.org-1:hSj2uihi9MyLtzjS56ALG9tIIRlQXZfVnPeIIFGG/E4=
-
-    - name: Get tack look output
-      id: tack-look
+    - name: Get update summary
+      id: summary
       run: |
-        echo "result<<EOF" >> $GITHUB_OUTPUT
-        nix develop .#default --command tack look --verbose >> $GITHUB_OUTPUT
-        echo "EOF" >> $GITHUB_OUTPUT
+        summary="$(nix develop .#tack --command tack look --verbose)"
+        echo "summary=$summary" >> "${GITHUB_OUTPUT}"
 
     - name: Run tack update
-      run: nix develop .#default --command tack update
-
-    - name: Check flake
-      run: nix flake check
+      run: nix develop .#tack --command tack update
 
     - name: Create pull request
       uses: peter-evans/create-pull-request@v8
@@ -60,7 +51,7 @@ jobs:
           <summary>Click to view <code>tack look --verbose</code> output</summary>
 
           ```text
-          ${{ steps.tack-look.outputs.result }}
+          ${{ steps.summary.outputs.summary }}
           ```
 
           </details>

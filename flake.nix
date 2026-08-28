@@ -13,7 +13,9 @@
 
       forAllSystems =
         apply:
-        lib.genAttrs lib.systems.flakeExposed (system: apply inputs.nixpkgs.legacyPackages.${system});
+        lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
+          system: apply inputs.nixpkgs.legacyPackages.${system}
+        );
     in
     {
       nixosConfigurations = builtins.mapAttrs (
@@ -29,6 +31,7 @@
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
+        tack = pkgs.callPackage ./ci/shell.nix { };
       });
 
       packages = forAllSystems (
