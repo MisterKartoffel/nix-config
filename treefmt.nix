@@ -34,6 +34,14 @@
         command = lib.getExe pkgs.keep-sorted;
         includes = [ "TODO.txt" ];
       };
+
+      yamlfmt = {
+        command = lib.getExe pkgs.yamlfmt;
+        includes = [
+          "*.yaml"
+          "*.yml"
+        ];
+      };
     };
   };
 }
