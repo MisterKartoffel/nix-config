@@ -21,7 +21,7 @@ runs:
   using: composite
   steps:
     - name: Install Nix
-      uses: cachix/install-nix-action@v31
+      uses: cachix/install-nix-action@v31.11.1
       if: inputs.use_cachix == 'false'
       with:
         extra_nix_config: |
@@ -30,7 +30,7 @@ runs:
           cores = 0
 
     - name: Install Nix
-      uses: cachix/install-nix-action@v31
+      uses: cachix/install-nix-action@v31.11.1
       if: inputs.use_cachix == 'true'
       with:
         github_access_token: ${{ inputs.github_pat }}

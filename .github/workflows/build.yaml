@@ -1,14 +1,15 @@
 name: Build NixOS Configurations
 
 on:
+  workflow_dispatch:
   push:
     paths: &workflow-paths
-    - ".github/workflows/build.yaml"
-    - ".github/actions/setup-nix/**"
-    - ".tack/pins.lock.json"
-    - "hosts/**/facter.json"
-    - "**/*.nix"
-    - "**/*.lua"
+      - ".github/workflows/build.yaml"
+      - ".github/actions/setup-nix/**"
+      - ".tack/pins.lock.json"
+      - "hosts/**/facter.json"
+      - "**/*.nix"
+      - "**/*.lua"
   pull_request:
     paths: *workflow-paths
 
@@ -20,50 +21,61 @@ jobs:
   treefmt:
     name: Check formatting
     runs-on: ubuntu-slim
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-    - name: Run formatter
-      run: |
-        if ! nix fmt -- --ci; then
-          echo "Incorrect formatting, run 'nix fmt' at the root of the repository."
-          exit 1
-        fi
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+
+      - name: Run formatter
+        run: |
+          if ! nix fmt -- --ci; then
+            echo "Incorrect formatting, run 'nix fmt' at the root of the repository."
+            exit 1
+          fi
 
   check:
     name: Check flake
     runs-on: ubuntu-slim
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-    - run: nix flake check --all-systems
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+
+      - name: Check flake
+        run: nix flake check --all-systems
 
   matrix:
     name: Create builder matrix
     runs-on: ubuntu-slim
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+
+      - name: Discover matrix
+        id: discover
+        run: |
+          matrix=$(nix eval --impure --json --file ./ci/matrix.nix)
+          echo "matrix=$matrix" >> "${GITHUB_OUTPUT}"
+
     outputs:
       matrix: ${{ steps.discover.outputs.matrix }}
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-    - name: Discover matrix
-      id: discover
-      run: |
-        matrix=$(nix eval --impure --json --file ./ci/matrix.nix)
-        echo "matrix=$matrix" >> "${GITHUB_OUTPUT}"
 
   shells:
     name: Build ${{ matrix.system }} devShell
-    needs:
-    - matrix
-    - check
     runs-on: ${{ matrix.runner }}
+    needs:
+      - matrix
+      - check
 
     strategy:
       fail-fast: false
@@ -71,23 +83,24 @@ jobs:
         include: ${{ fromJSON(needs.matrix.outputs.matrix) }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-      with:
-        use_cachix: ${{ github.event_name == 'push' }}
-        cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
 
-    - name: Build devShell
-      run: nix build ".#devShells.${{ matrix.system }}.default" --print-build-logs
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+        with:
+          use_cachix: ${{ github.event_name == 'push' }}
+          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build devShell
+        run: nix build ".#devShells.${{ matrix.system }}.default" --print-build-logs
 
   systems:
     name: Build ${{ matrix.hostname }}
-    needs:
-    - matrix
-    - check
     runs-on: ${{ matrix.runner }}
+    needs:
+      - matrix
+      - check
 
     strategy:
       fail-fast: false
@@ -95,14 +108,15 @@ jobs:
         include: ${{ fromJSON(needs.matrix.outputs.matrix) }}
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-      with:
-        github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
-        use_cachix: ${{ github.event_name == 'push' }}
-        cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
 
-    - name: Build NixOS Configuration
-      run: nix build ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+        with:
+          github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
+          use_cachix: ${{ github.event_name == 'push' }}
+          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build NixOS Configuration
+        run: nix build ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs

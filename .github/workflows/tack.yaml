@@ -1,9 +1,9 @@
 name: Update tack pins
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
-  workflow_dispatch:
 
 concurrency:
   group: tack-update
@@ -19,39 +19,40 @@ jobs:
       pull-requests: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v7
-    - name: Setup Nix
-      uses: ./.github/actions/setup-nix
-      with:
-        github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
-        use_cachix: true
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
 
-    - name: Get update summary
-      id: summary
-      run: |
-        summary="$(nix develop .#tack --command tack look --verbose)"
-        echo "summary=$summary" >> "${GITHUB_OUTPUT}"
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+        with:
+          github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
+          use_cachix: true
 
-    - name: Run tack update
-      run: nix develop .#tack --command tack update
+      - name: Get update summary
+        id: summary
+        run: |
+          summary="$(nix develop .#tack --command tack look --verbose)"
+          echo "summary=$summary" >> "${GITHUB_OUTPUT}"
 
-    - name: Create pull request
-      uses: peter-evans/create-pull-request@v8
-      with:
-        token: ${{ secrets.GH_PAT_CONFIG_PR }}
-        branch: tack/update-inputs
-        delete-branch: true
-        commit-message: "tack: update inputs"
-        title: "tack: update inputs"
-        body: |
-          ## tack update summary:
+      - name: Run tack update
+        run: nix develop .#tack --command tack update
 
-          <details>
-          <summary>Click to view <code>tack look --verbose</code> output</summary>
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ secrets.GH_PAT_CONFIG_PR }}
+          branch: tack/update-inputs
+          delete-branch: true
+          commit-message: "tack: update inputs"
+          title: "tack: update inputs"
+          body: |
+            ## tack update summary:
 
-          ```text
-          ${{ steps.summary.outputs.summary }}
-          ```
+            <details>
+            <summary>Click to view <code>tack look --verbose</code> output</summary>
 
-          </details>
+            ```text
+            ${{ steps.summary.outputs.summary }}
+            ```
+
+            </details>
