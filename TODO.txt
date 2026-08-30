@@ -4,6 +4,7 @@ https://github.com/todotxt/todo.txt
 keep-sorted start
 
 (A) 2026-08-24 Set up binary cache +repo @cache
+(A) 2026-08-30 Fix build workflow failing on pull request +repo @actions
 (B) 2026-08-24 Set up GHA +repo @cache @actions
 2026-08-24 Consider using blocks in keep-sorted to document solutions as part of TODO resolutions +todo
 x 2026-08-21 2026-08-20 Investigate https://github.com/HaseebKhalid1507/Myx/ +tack +hjem @inputs @packages
