@@ -32,7 +32,12 @@ jobs:
         id: summary
         run: |
           summary="$(nix develop .#tack --command tack look --verbose)"
-          echo "summary=$summary" >> "${GITHUB_OUTPUT}"
+
+          {
+            echo "summary<<EOF"
+            echo "${summary}"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
 
       - name: Run tack update
         run: nix develop .#tack --command tack update
