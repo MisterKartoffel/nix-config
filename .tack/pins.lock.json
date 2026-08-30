@@ -3,9 +3,9 @@
     "type": "github",
     "owner": "NotAShelf",
     "repo": "Basix",
-    "rev": "5dccb6cf7834e3e08cb786a1cf9b059676df05ff",
-    "narHash": "sha256-5xiduJ1DAS+NkFyc5KjA3vwlj3Slyd27XdICl7LjuxA=",
-    "lastModified": 1786765483
+    "rev": "d33452bd7bef970cf02fd201826ef3cbcd5ba4ef",
+    "narHash": "sha256-LehGnOQOp3ZdaY+0askr/VmHkN9OpAU7StY8Ywi7ZYc=",
+    "lastModified": 1787763677
   },
   "disko": {
     "type": "github",
@@ -41,17 +41,17 @@
   },
   "nixpkgs": {
     "type": "tarball",
-    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1060451.56c02bc00adc/nixexprs.tar.zst",
-    "rev": "56c02bc00adcf003215cc4bd996d6efaf4cff188",
-    "narHash": "sha256-FoOSoBG7tEvOlGRTpWnVdY506Ner4y7r7UYO3OGgmE8="
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1063296.83199d0d373d/nixexprs.tar.zst",
+    "rev": "83199d0d373dd3ac2b9a1996b1d0263f76ab7a4c",
+    "narHash": "sha256-5GWj0FI2uOwKNpXkmpWrSFDe1rCaNBCUQ8d+HDtFQPI="
   },
   "ortie": {
     "type": "github",
     "owner": "pimalaya",
     "repo": "ortie",
-    "rev": "274bd4c6e5ab50ecafd71ae52c051ffd596156af",
-    "narHash": "sha256-M5+aICRAbcYKfP/LXPMPlSBAKTa+Vcqlcp56lwLrEDY=",
-    "lastModified": 1786790130
+    "rev": "a7f954ad8a1b832298bfd08f1d47e59515d6256a",
+    "narHash": "sha256-/f+DaXbTMxnKERngAp6XzzUywDs2TFwrOcoznLE5lWE=",
+    "lastModified": 1788005710
   },
   "preservation": {
     "type": "github",
