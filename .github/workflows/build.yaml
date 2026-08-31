@@ -1,122 +1,169 @@
-name: Build NixOS Configurations
+name: "Build flake outputs"
 
 on:
-  workflow_dispatch:
   push:
-    paths: &workflow-paths
+    paths:
       - ".github/workflows/build.yaml"
-      - ".github/actions/setup-nix/**"
       - ".tack/pins.lock.json"
       - "hosts/**/facter.json"
       - "**/*.nix"
       - "**/*.lua"
   pull_request:
-    paths: *workflow-paths
+    paths:
+      - ".github/workflows/build.yaml"
+      - ".tack/pins.lock.json"
+      - "hosts/**/facter.json"
+      - "**/*.nix"
+      - "**/*.lua"
+
+permissions: {}
 
 concurrency:
-  group: nixos-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  treefmt:
-    name: Check formatting
-    runs-on: ubuntu-slim
+  lint:
+    name: "Lint"
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
 
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+      - parallel:
+          - name: "Run formatter"
+            run: nix fmt -- --ci
 
-      - name: Run formatter
-        run: |
-          if ! nix fmt -- --ci; then
-            echo "Incorrect formatting, run 'nix fmt' at the root of the repository."
-            exit 1
-          fi
-
-  check:
-    name: Check flake
-    runs-on: ubuntu-slim
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
-
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
-
-      - name: Check flake
-        run: nix flake check --all-systems
+          - name: "Check flake"
+            run: nix flake check --all-systems
 
   matrix:
-    name: Create builder matrix
+    name: "Create builder matrix"
     runs-on: ubuntu-slim
+    if: ${{ github.event_name != 'pull_request' }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
 
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+      - parallel:
+          - name: "Discover shell matrix"
+            id: shells
+            run: |
+              SHELLS="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.shells')"
+              echo "matrix=$SHELLS" >> "${GITHUB_OUTPUT}"
 
-      - name: Discover matrix
-        id: discover
-        run: |
-          matrix=$(nix eval --impure --json --file ./ci/matrix.nix)
-          echo "matrix=$matrix" >> "${GITHUB_OUTPUT}"
+          - name: "Discover package matrix"
+            id: packages
+            run: |
+              PACKAGES="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.packages')"
+              echo "matrix=$PACKAGES" >> "${GITHUB_OUTPUT}"
+
+          - name: "Discover host matrix"
+            id: hosts
+            run: |
+              HOSTS="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.hosts')"
+              echo "matrix=$HOSTS" >> "${GITHUB_OUTPUT}"
 
     outputs:
-      matrix: ${{ steps.discover.outputs.matrix }}
+      shells: ${{ steps.shells.outputs.matrix }}
+      packages: ${{ steps.packages.outputs.matrix }}
+      hosts: ${{ steps.hosts.outputs.matrix }}
 
   shells:
-    name: Build ${{ matrix.system }} devShell
+    name: "Build devShell: ${{ matrix.shell }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
-      - check
+      - lint
 
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+        include: ${{ fromJSON(needs.matrix.outputs.shells) }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
 
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+      - uses: cachix/cachix-action@v17
+        continue-on-error: true
         with:
-          use_cachix: ${{ github.event_name == 'push' }}
-          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          name: misterkartoffel
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build devShell
-        run: nix build ".#devShells.${{ matrix.system }}.default" --print-build-logs
+      - name: "Build devShell"
+        run: nix build ".#devShells.${{ matrix.system }}.${{ matrix.shell }}" --print-build-logs
 
-  systems:
-    name: Build ${{ matrix.hostname }}
+  packages:
+    name: "Build package: ${{ matrix.package }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
-      - check
+      - lint
 
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+        include: ${{ fromJSON(needs.matrix.outputs.packages) }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
 
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+      - uses: cachix/cachix-action@v17
+        continue-on-error: true
         with:
-          github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
-          use_cachix: ${{ github.event_name == 'push' }}
-          cachix_auth_token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          name: misterkartoffel
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build NixOS Configuration
+      - name: "Build package"
+        run: nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" --print-build-logs
+
+  hosts:
+    name: "Build host: ${{ matrix.hostname }} (${{ matrix.system }})"
+    runs-on: ${{ matrix.runner }}
+    needs:
+      - matrix
+      - lint
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
+
+    steps:
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
+
+      - uses: cachix/cachix-action@v17
+        continue-on-error: true
+        with:
+          name: misterkartoffel
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: "Build NixOS Configuration"
         run: nix build ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs

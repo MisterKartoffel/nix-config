@@ -1,9 +1,11 @@
-name: Update tack pins
+name: "Update inputs"
 
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * 0"
+
+permissions: {}
 
 concurrency:
   group: tack-update
@@ -11,7 +13,43 @@ concurrency:
 
 jobs:
   update:
-    name: Update tack pins
+    name: "Update tack pins"
+    runs-on: ubuntu-latest
+
+    steps:
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
+
+      - name: "Get update summary"
+        id: summary
+        run: |
+          SUMMARY="$(nix develop .#tack --command tack look --verbose)"
+
+          {
+            echo "SUMMARY<<EOF"
+            echo "${SUMMARY}"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: "Run tack update"
+        run: nix develop .#tack --command tack update
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./.tack
+
+    outputs:
+      summary: ${{ steps.summary.outputs.summary }}
+
+  pull-request:
+    name: "Create pull request"
+    needs: update
     runs-on: ubuntu-latest
 
     permissions:
@@ -19,45 +57,20 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7.0.1
-
-      - name: Setup Nix
-        uses: ./.github/actions/setup-nix
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/download-artifact@v8.0.1
+      - uses: peter-evans/create-pull-request@v8
         with:
-          github_pat: ${{ secrets.GH_PAT_SECRETS_RO }}
-          use_cachix: true
-
-      - name: Get update summary
-        id: summary
-        run: |
-          summary="$(nix develop .#tack --command tack look --verbose)"
-
-          {
-            echo "summary<<EOF"
-            echo "${summary}"
-            echo "EOF"
-          } >> "${GITHUB_OUTPUT}"
-
-      - name: Run tack update
-        run: nix develop .#tack --command tack update
-
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v8
-        with:
-          token: ${{ secrets.GH_PAT_CONFIG_PR }}
           branch: tack/update-inputs
           delete-branch: true
           commit-message: "tack: update inputs"
+          sign-commits: true
+          assignees: ${{ github.repository_owner }}
+          reviewers: ${{ github.repository_owner }}
           title: "tack: update inputs"
           body: |
             ## tack update summary:
 
-            <details>
-            <summary>Click to view <code>tack look --verbose</code> output</summary>
-
             ```text
-            ${{ steps.summary.outputs.summary }}
+            ${{ needs.update.outputs.summary }}
             ```
-
-            </details>
