@@ -69,29 +69,19 @@ jobs:
                 keep-going = true
                 cores = 0
 
-      - parallel:
-          - name: "Discover shell matrix"
-            id: shells
-            run: |
-              SHELLS="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.shells')"
-              echo "matrix=$SHELLS" >> "${GITHUB_OUTPUT}"
-
-          - name: "Discover package matrix"
-            id: packages
-            run: |
-              PACKAGES="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.packages')"
-              echo "matrix=$PACKAGES" >> "${GITHUB_OUTPUT}"
-
-          - name: "Discover host matrix"
-            id: hosts
-            run: |
-              HOSTS="$(nix eval --impure --json --file ./ci/matrix.nix --apply 'x: x.hosts')"
-              echo "matrix=$HOSTS" >> "${GITHUB_OUTPUT}"
+      - name: "Discover matrices"
+        id: matrix
+        run: |
+          for OUTPUT in shells packages hosts; do
+            echo "::group::Evaluating ${OUTPUT}"
+            echo "${OUTPUT}=$(nix eval --json --file ./ci/matrix.nix --apply "x: x.$OUTPUT")" >> "${GITHUB_OUTPUT}"
+            echo "::endgroup::"
+          done
 
     outputs:
-      shells: ${{ steps.shells.outputs.matrix }}
-      packages: ${{ steps.packages.outputs.matrix }}
-      hosts: ${{ steps.hosts.outputs.matrix }}
+      shells: ${{ steps.matrix.outputs.shells }}
+      packages: ${{ steps.matrix.outputs.packages }}
+      hosts: ${{ steps.matrix.outputs.hosts }}
 
   shells:
     name: "Build devShell: ${{ matrix.shell }} (${{ matrix.system }})"
