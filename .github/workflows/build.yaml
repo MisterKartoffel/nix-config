@@ -84,7 +84,7 @@ jobs:
       hosts: ${{ steps.matrix.outputs.hosts }}
 
   shells:
-    name: "Build devShell: ${{ matrix.shell }} (${{ matrix.system }})"
+    name: "${{ matrix.shell }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
@@ -114,7 +114,7 @@ jobs:
         run: nix build ".#devShells.${{ matrix.system }}.${{ matrix.shell }}" --print-build-logs
 
   packages:
-    name: "Build package: ${{ matrix.package }} (${{ matrix.system }})"
+    name: "${{ matrix.package }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
@@ -144,7 +144,7 @@ jobs:
         run: nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" --print-build-logs
 
   hosts:
-    name: "Build host: ${{ matrix.hostname }} (${{ matrix.system }})"
+    name: "${{ matrix.hostname }} (${{ matrix.platform }})"
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
