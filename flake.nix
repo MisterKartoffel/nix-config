@@ -13,7 +13,7 @@
 
       forAllSystems =
         apply:
-        lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
+        lib.genAttrs [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ] (
           system: apply inputs.nixpkgs.legacyPackages.${system}
         );
     in
