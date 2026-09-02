@@ -40,7 +40,7 @@ jobs:
       - name: "Run tack update"
         run: nix develop .#tack --command tack update
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           path: ./.tack
 
