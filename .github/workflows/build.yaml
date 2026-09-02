@@ -165,5 +165,5 @@ jobs:
           name: misterkartoffel
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: "Build NixOS Configuration"
-        run: nix build ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs
+      - name: "Build configuration"
+        run: nix build ".#${{ matrix.platform }}Configurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs
