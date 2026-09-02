@@ -23,8 +23,8 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  lint:
-    name: "Lint"
+  treefmt:
+    name: "Check formatting"
     runs-on: ubuntu-latest
 
     steps:
@@ -36,22 +36,38 @@ jobs:
                 keep-going = true
                 cores = 0
 
-      - parallel:
-          - name: "Run formatter"
-            run: nix fmt -- --ci
+      - name: "Run formatter"
+        run: nix fmt -- --ci
 
-          - name: "Check flake"
-            run: nix flake check --all-systems
+  check:
+    name: "Check flake"
+    runs-on: ubuntu-latest
+
+    steps:
+      - parallel:
+          - uses: actions/checkout@v7.0.1
+          - uses: cachix/install-nix-action@v31.11.1
+            with:
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
+
+      - name: "Check flake"
+        run: nix flake check --all-systems
 
   matrix:
     name: "Create builder matrix"
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
 
     steps:
       - parallel:
           - uses: actions/checkout@v7.0.1
           - uses: cachix/install-nix-action@v31.11.1
+            with:
+              extra_nix_config: |
+                keep-going = true
+                cores = 0
 
       - parallel:
           - name: "Discover shell matrix"
@@ -82,7 +98,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
-      - lint
+      - check
 
     strategy:
       fail-fast: false
@@ -112,7 +128,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
-      - lint
+      - check
 
     strategy:
       fail-fast: false
@@ -142,7 +158,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     needs:
       - matrix
-      - lint
+      - check
 
     strategy:
       fail-fast: false
