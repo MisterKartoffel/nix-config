@@ -21,8 +21,13 @@ jobs:
 
     steps:
     - parallel:
-      - uses: actions/checkout@v7.0.1
-      - uses: cachix/install-nix-action@v31.11.1
+      - name: "Checkout tack directory"
+        uses: actions/checkout@v7.0.1
+        with:
+          sparse-checkout: ./.tack
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
         with:
           github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
@@ -43,7 +48,8 @@ jobs:
     - name: "Run tack update"
       run: nix run nixpkgs#tack -- update
 
-    - uses: actions/upload-artifact@v7
+    - name: "Upload changes"
+      uses: actions/upload-artifact@v7
       with:
         path: ./.tack
 
@@ -60,9 +66,14 @@ jobs:
       pull-requests: write
 
     steps:
-    - uses: actions/checkout@v7.0.1
-    - uses: actions/download-artifact@v8.0.1
-    - uses: peter-evans/create-pull-request@v8
+    - name: "Checkout repository"
+      uses: actions/checkout@v7.0.1
+
+    - name: "Download changes"
+      uses: actions/download-artifact@v8.0.1
+
+    - name: "Create pull request"
+      uses: peter-evans/create-pull-request@v8
       with:
         branch: tack/update-inputs
         delete-branch: true
