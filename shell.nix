@@ -11,7 +11,7 @@ pkgs.mkShellNoCC {
   };
 
   env = {
-    TACK_NIX_CONF_TOKENS = "1";
+    TACK_NIX_CONF_TOKENS = 1;
   };
 
   shellHook = /* bash */ ''

@@ -31,7 +31,6 @@
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
-        tack = pkgs.callPackage ./ci/shell.nix { };
       });
 
       packages = forAllSystems (
