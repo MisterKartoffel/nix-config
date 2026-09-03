@@ -37,6 +37,10 @@
 
       yamlfmt = {
         command = lib.getExe pkgs.yamlfmt;
+        options = [
+          "-conf"
+          "./ci/.yamlfmt"
+        ];
         includes = [
           "*.yaml"
           "*.yml"

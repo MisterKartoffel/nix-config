@@ -1,9 +1,10 @@
+---
 name: "Update inputs"
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * 0"
+  - cron: "0 0 * * 0"
 
 permissions: {}
 
@@ -15,34 +16,36 @@ jobs:
   update:
     name: "Update tack pins"
     runs-on: ubuntu-latest
+    env:
+      TACK_NIX_CONF_TOKENS: 1
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
-
-      - name: "Get update summary"
-        id: summary
-        run: |
-          SUMMARY="$(nix develop .#tack --command tack look --verbose)"
-
-          {
-            echo "SUMMARY<<EOF"
-            echo "${SUMMARY}"
-            echo "EOF"
-          } >> "${GITHUB_OUTPUT}"
-
-      - name: "Run tack update"
-        run: nix develop .#tack --command tack update
-
-      - uses: actions/upload-artifact@v7
+    - parallel:
+      - uses: actions/checkout@v7.0.1
+      - uses: cachix/install-nix-action@v31.11.1
         with:
-          path: ./.tack
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Get update summary"
+      id: summary
+      run: |
+        SUMMARY="$(nix run nixpkgs#tack -- look --verbose)"
+
+        {
+          echo "SUMMARY<<EOF"
+          echo "${SUMMARY}"
+          echo "EOF"
+        } >> "${GITHUB_OUTPUT}"
+
+    - name: "Run tack update"
+      run: nix run nixpkgs#tack -- update
+
+    - uses: actions/upload-artifact@v7
+      with:
+        path: ./.tack
 
     outputs:
       summary: ${{ steps.summary.outputs.summary }}
@@ -57,20 +60,20 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v7.0.1
-      - uses: actions/download-artifact@v8.0.1
-      - uses: peter-evans/create-pull-request@v8
-        with:
-          branch: tack/update-inputs
-          delete-branch: true
-          commit-message: "tack: update inputs"
-          sign-commits: true
-          assignees: ${{ github.repository_owner }}
-          reviewers: ${{ github.repository_owner }}
-          title: "tack: update inputs"
-          body: |
-            ## tack update summary:
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/download-artifact@v8.0.1
+    - uses: peter-evans/create-pull-request@v8
+      with:
+        branch: tack/update-inputs
+        delete-branch: true
+        commit-message: "tack: update inputs"
+        sign-commits: true
+        assignees: ${{ github.repository_owner }}
+        reviewers: ${{ github.repository_owner }}
+        title: "tack: update inputs"
+        body: |
+          ## tack update summary:
 
-            ```text
-            ${{ needs.update.outputs.summary }}
-            ```
+          ```text
+          ${{ needs.update.outputs.summary }}
+          ```

@@ -1,0 +1,10 @@
+# vim: set ft=yaml:
+formatter:
+  type: basic
+  include_document_start: true
+  line_ending: lf
+  retain_line_breaks_single: true
+  scan_folded_as_literal: true
+  indentless_arrays: true
+  force_array_style: block
+  force_quote_style: double
