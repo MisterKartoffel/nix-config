@@ -1,20 +1,23 @@
+---
 name: "Build flake outputs"
 
 on:
   push:
     paths:
-      - ".github/workflows/build.yaml"
-      - ".tack/pins.lock.json"
-      - "hosts/**/facter.json"
-      - "**/*.nix"
-      - "**/*.lua"
+    - ".github/workflows/build.yaml"
+    - ".github/actions/nix/action.yaml"
+    - ".tack/pins.lock.json"
+    - "hosts/**/facter.json"
+    - "**/*.nix"
+    - "**/*.lua"
   pull_request:
     paths:
-      - ".github/workflows/build.yaml"
-      - ".tack/pins.lock.json"
-      - "hosts/**/facter.json"
-      - "**/*.nix"
-      - "**/*.lua"
+    - ".github/workflows/build.yaml"
+    - ".github/actions/nix/action.yaml"
+    - ".tack/pins.lock.json"
+    - "hosts/**/facter.json"
+    - "**/*.nix"
+    - "**/*.lua"
 
 permissions: {}
 
@@ -28,32 +31,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
 
-      - name: "Run formatter"
-        run: nix fmt -- --ci
+    - name: "Run formatter"
+      run: nix fmt -- --ci
 
   check:
     name: "Check flake"
     runs-on: ubuntu-latest
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
 
-      - name: "Check flake"
-        run: nix flake check --all-systems
+    - name: "Run flake check"
+      run: nix flake check --all-systems
 
   matrix:
     name: "Create builder matrix"
@@ -61,22 +54,17 @@ jobs:
     if: ${{ github.event_name != 'pull_request' }}
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
 
-      - name: "Discover matrices"
-        id: matrix
-        run: |
-          for OUTPUT in shells packages hosts; do
-            echo "::group::Evaluating ${OUTPUT}"
-            echo "${OUTPUT}=$(nix eval --json --file ./ci/matrix.nix --apply "x: x.$OUTPUT")" >> "${GITHUB_OUTPUT}"
-            echo "::endgroup::"
-          done
+    - name: "Discover matrices"
+      id: matrix
+      run: |
+        for OUTPUT in shells packages hosts; do
+          echo "::group::Evaluating ${OUTPUT}"
+          echo "${OUTPUT}=$(nix eval --json --file ./ci/matrix.nix --apply "x: x.$OUTPUT")" >> "${GITHUB_OUTPUT}"
+          echo "::endgroup::"
+        done
 
     outputs:
       shells: ${{ steps.matrix.outputs.shells }}
@@ -87,8 +75,8 @@ jobs:
     name: "${{ matrix.shell }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
-      - matrix
-      - check
+    - matrix
+    - check
 
     strategy:
       fail-fast: false
@@ -96,29 +84,23 @@ jobs:
         include: ${{ fromJSON(needs.matrix.outputs.shells) }}
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Setup Nix"
+      uses: $/.github/actions/nix
+      with:
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - uses: cachix/cachix-action@v17
-        continue-on-error: true
-        with:
-          name: misterkartoffel
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: "Build devShell"
-        run: nix build ".#devShells.${{ matrix.system }}.${{ matrix.shell }}" --print-build-logs
+    - name: "Build devShell"
+      run: >-
+        nix build
+        ".#devShells.${{ matrix.system }}.${{ matrix.shell }}"
+        --print-build-logs
 
   packages:
     name: "${{ matrix.package }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
     needs:
-      - matrix
-      - check
+    - matrix
+    - check
 
     strategy:
       fail-fast: false
@@ -126,29 +108,23 @@ jobs:
         include: ${{ fromJSON(needs.matrix.outputs.packages) }}
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+      with:
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - uses: cachix/cachix-action@v17
-        continue-on-error: true
-        with:
-          name: misterkartoffel
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: "Build package"
-        run: nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" --print-build-logs
+    - name: "Build package"
+      run: >-
+        nix build
+        ".#packages.${{ matrix.system }}.${{ matrix.package }}"
+        --print-build-logs
 
   hosts:
     name: "${{ matrix.hostname }} (${{ matrix.platform }})"
     runs-on: ${{ matrix.runner }}
     needs:
-      - matrix
-      - check
+    - matrix
+    - check
 
     strategy:
       fail-fast: false
@@ -156,20 +132,14 @@ jobs:
         include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
 
     steps:
-      - parallel:
-          - uses: actions/checkout@v7.0.1
-          - uses: cachix/install-nix-action@v31.11.1
-            with:
-              github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
-              extra_nix_config: |
-                keep-going = true
-                cores = 0
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+      with:
+        github-token: ${{ secrets.GH_PAT_SECRETS_RO }}
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - uses: cachix/cachix-action@v17
-        continue-on-error: true
-        with:
-          name: misterkartoffel
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-      - name: "Build configuration"
-        run: nix build ".#${{ matrix.platform }}Configurations.${{ matrix.hostname }}.config.system.build.toplevel" --print-build-logs
+    - name: "Build configuration"
+      run: >-
+        nix build
+        ".#${{ matrix.platform }}Configurations.${{ matrix.hostname }}.config.system.build.toplevel"
+        --print-build-logs
