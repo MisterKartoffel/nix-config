@@ -9,15 +9,15 @@ flake/
 │   └── <hostname>/
 │       ├── default.nix
 │       ├── disko.nix     ◄ [2]
-│       ├── facter.json   ◄ [3]
-│       └── ...
+│       └── facter.json   ◄ [3]
 ├── users/
-│   └── <username>.nix
+│   └── <username>.nix    ◄ [4]
 ├── modules/
 │   ├── hjem/             ◄ [4]
 │   └── nixos/
 │       ├── preservation/ ◄ [5]
-│       └── sops.nix      ◄ [6]
+│       ├── sops.nix      ◄ [6]
+│       └── ...
 ├── pkgs/
 │   ├── fish/
 │   ├── nvim/
@@ -25,12 +25,17 @@ flake/
 ├── overlays/
 │   └── default.nix
 ├── lib/
-├── default.nix
+│   └── default.nix
+├── ci/
+│   ├── matrix.nix        ◄ [8]
+│   └── ...
+├── default.nix           ◄ [8]
 ├── flake.nix
 ├── shell.nix
 ├── treefmt.nix
 ├── LICENSE
-└── README.md
+├── README.md
+└── TODO.txt
 ```
 
 ## Notable modules and dependencies
@@ -41,6 +46,7 @@ flake/
 #### [5] [nix-community/preservation](https://github.com/nix-community/preservation) - state persistence.
 #### [6] [mic92/sops-nix](https://github.com/mic92/sops-nix) - declarative secret management.
 #### [7] [youwen5/zen-browser-flake](https://github.com/youwen5/zen-browser-flake) - flake for Zen Browser.
+#### [8] [NixOS/flake-compat](https://github.com/NixOS/flake-compat) - shim for flakeless consumers.
 
 ## Acknowledgments
 - [Bvngee](https://github.com/bvngee) and [Soi](https://github.com/soulsoiledit), for being a part of TMC and indirectly exposing me to their Nix flakes.
