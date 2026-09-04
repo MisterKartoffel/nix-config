@@ -2,22 +2,9 @@
 name: "Build flake outputs"
 
 on:
-  push:
-    paths:
-    - ".github/workflows/build.yaml"
-    - ".github/actions/nix/action.yaml"
-    - ".tack/pins.lock.json"
-    - "hosts/**/facter.json"
-    - "**/*.nix"
-    - "**/*.lua"
   pull_request:
-    paths:
-    - ".github/workflows/build.yaml"
-    - ".github/actions/nix/action.yaml"
-    - ".tack/pins.lock.json"
-    - "hosts/**/facter.json"
-    - "**/*.nix"
-    - "**/*.lua"
+  push:
+  workflow_dispatch:
 
 permissions: {}
 
