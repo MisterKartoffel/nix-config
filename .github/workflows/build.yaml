@@ -51,18 +51,55 @@ jobs:
   matrix:
     name: "Create builder matrix"
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
 
     steps:
     - name: "Set up Nix"
       uses: $/.github/actions/nix
 
+    - name: "Create filter"
+      uses: dorny/paths-filter@v4.0.3
+      id: filter
+      with:
+        filters: |
+          tree: &tree
+            - "ci/**"
+            - ".github/**"
+            - ".tack/**"
+            - "flake.nix"
+
+          shells:
+            - *tree
+            - "shell.nix"
+
+          packages: &packages
+            - *tree
+            - "pkgs/**"
+
+          hosts:
+            - *packages
+            - "hosts/**"
+            - "modules/**"
+            - "users/**"
+
     - name: "Discover matrices"
       id: matrix
+      env:
+        SHELLS: ${{ steps.filter.outputs.shells }}
+        PACKAGES: ${{ steps.filter.outputs.packages }}
+        HOSTS: ${{ steps.filter.outputs.hosts }}
       run: |
         for OUTPUT in shells packages hosts; do
           echo "::group::Evaluating ${OUTPUT}"
-          echo "${OUTPUT}=$(nix eval --json --file ./ci/matrix.nix --apply "x: x.$OUTPUT")" >> "${GITHUB_OUTPUT}"
+          declare -n CHANGED="${OUTPUT^^}"
+
+          if [[ "${CHANGED}" == "true" ]]; then
+            VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
+          else
+            VALUE="[]"
+            echo "${OUTPUT} skipped, no changes."
+          fi
+
+          echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
           echo "::endgroup::"
         done
 
@@ -122,6 +159,7 @@ jobs:
   hosts:
     name: "${{ matrix.hostname }} (${{ matrix.platform }})"
     runs-on: ${{ matrix.runner }}
+    if: github.event_name != 'pull_request'
     needs:
     - matrix
     - check
