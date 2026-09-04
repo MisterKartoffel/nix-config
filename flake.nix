@@ -45,7 +45,7 @@
       );
 
       formatter = forAllSystems (
-        pkgs: pkgs.treefmt.withConfig (import ./treefmt.nix { inherit pkgs lib; })
+        pkgs: pkgs.treefmt.withConfig (import ./ci/treefmt.nix { inherit pkgs lib; })
       );
     };
 }
