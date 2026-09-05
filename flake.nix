@@ -47,5 +47,11 @@
       formatter = forAllSystems (
         pkgs: pkgs.treefmt.withConfig (import ./ci/treefmt.nix { inherit pkgs lib; })
       );
+
+      hydraJobs = {
+        nixosConfigurations = builtins.mapAttrs (_: hostname: hostname.config.system.build.toplevel) self.nixosConfigurations;
+
+        inherit (self) packages devShells;
+      };
     };
 }

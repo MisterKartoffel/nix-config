@@ -1,0 +1,170 @@
+---
+name: "Build flake outputs"
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  treefmt:
+    name: "Check formatting"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+
+    - name: "Run formatter"
+      run: nix fmt -- --ci
+
+  check:
+    name: "Check flake"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+
+    - name: "Run flake check"
+      run: nix flake check --all-systems
+
+  matrix:
+    name: "Create builder matrix"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+
+    - name: "Create filter"
+      uses: dorny/paths-filter@v4.0.3
+      id: filter
+      with:
+        filters: |
+          tree: &tree
+            - "ci/**"
+            - ".github/**"
+            - ".tack/**"
+            - "flake.nix"
+
+          shells:
+            - *tree
+            - "shell.nix"
+
+          packages: &packages
+            - *tree
+            - "pkgs/**"
+
+          hosts:
+            - *packages
+            - "hosts/**"
+            - "modules/**"
+            - "users/**"
+
+    - name: "Discover matrices"
+      id: matrix
+      env:
+        SHELLS: ${{ steps.filter.outputs.shells }}
+        PACKAGES: ${{ steps.filter.outputs.packages }}
+        HOSTS: ${{ steps.filter.outputs.hosts }}
+      run: |
+        for OUTPUT in shells packages hosts; do
+          echo "::group::Evaluating ${OUTPUT}"
+          declare -n CHANGED="${OUTPUT^^}"
+
+          if [[ "${CHANGED}" == "true" ]]; then
+            VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
+          else
+            VALUE="[]"
+            echo "${OUTPUT} skipped, no changes."
+          fi
+
+          echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
+          echo "::endgroup::"
+        done
+
+    outputs:
+      shells: ${{ steps.matrix.outputs.shells }}
+      packages: ${{ steps.matrix.outputs.packages }}
+      hosts: ${{ steps.matrix.outputs.hosts }}
+
+  shells:
+    name: "${{ matrix.shell }} (${{ matrix.system }})"
+    runs-on: ${{ matrix.runner }}
+    needs:
+    - matrix
+    - check
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.shells) }}
+
+    steps:
+    - name: "Setup Nix"
+      uses: $/.github/actions/nix
+      with:
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+    - name: "Build devShell"
+      run: >-
+        nix build
+        ".#devShells.${{ matrix.system }}.${{ matrix.shell }}"
+        --print-build-logs
+
+  packages:
+    name: "${{ matrix.package }} (${{ matrix.system }})"
+    runs-on: ${{ matrix.runner }}
+    needs:
+    - matrix
+    - check
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.packages) }}
+
+    steps:
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+      with:
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+    - name: "Build package"
+      run: >-
+        nix build
+        ".#packages.${{ matrix.system }}.${{ matrix.package }}"
+        --print-build-logs
+
+  hosts:
+    name: "${{ matrix.hostname }} (${{ matrix.platform }})"
+    runs-on: ${{ matrix.runner }}
+    if: github.event_name != 'pull_request'
+    needs:
+    - matrix
+    - check
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
+
+    steps:
+    - name: "Set up Nix"
+      uses: $/.github/actions/nix
+      with:
+        github-token: ${{ secrets.GH_PAT_SECRETS_RO }}
+        cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+    - name: "Build configuration"
+      run: >-
+        nix build
+        ".#${{ matrix.platform }}Configurations.${{ matrix.hostname }}.config.system.build.toplevel"
+        --print-build-logs
