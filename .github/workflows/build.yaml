@@ -92,7 +92,7 @@ jobs:
         wait-manifest-version: ${{ needs.matrix.outputs.manifest-version }}
 
     - name: "Prefetch drv closure"
-      run: ${HESTIA_BIN} prefetch ${{ matrix.installables }}
+      run: "$HESTIA_BIN" prefetch ${{ matrix.installables }}
 
     - name: "Build ${{ matrix.name }}"
       run: >-
