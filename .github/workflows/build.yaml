@@ -29,12 +29,11 @@ jobs:
     steps:
     - name: "Set up Nix"
       uses: $/.github/actions/nix
+      with:
+        github-token: ${{ secrets.GH_PAT_SECRETS_RO }}
 
     - name: "Run flake check"
-      run: >-
-        nix flake check
-        --all-systems
-        --option allow-import-from-derivation true
+      run: nix flake check --all-systems
 
   matrix:
     name: "Create builder matrix"
@@ -55,6 +54,11 @@ jobs:
       with:
         flake: ".#hydraJobs"
         nix-eval-jobs: "nix run nixpkgs#nix-eval-jobs -- --force-recurse"
+
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+      any-jobs: ${{ steps.matrix.outputs.any-jobs }}
+      manifest-version: ${{ steps.matrix.outputs.manifest-version }}
 
   build:
     name: "${{ matrix.name }} (${{ matrix.system }})"
