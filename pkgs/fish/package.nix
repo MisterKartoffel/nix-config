@@ -8,9 +8,9 @@
   fd,
   fzf,
 
-  completionDirs ? [ "/run/current-system/sw/share/fish/vendor_completions.d/" ],
-  functionDirs ? [ "/run/current-system/sw/share/fish/vendor_functions.d/" ],
-  confDirs ? [ "/run/current-system/sw/share/fish/vendor_conf.d/" ] ++ [ ./config ],
+  completionDirs ? [ ],
+  functionDirs ? [ ],
+  confDirs ? [ ./config ],
   pluginPkgs ? import ./plugins.nix { inherit fishPlugins; },
   shellAliases ? import ./aliases.nix,
   runtimeInputs ? [
