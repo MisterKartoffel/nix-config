@@ -2,7 +2,9 @@
 name: "Build flake outputs"
 
 on:
+  pull_request:
   push:
+  workflow_dispatch:
 
 permissions: {}
 
@@ -12,90 +14,52 @@ concurrency:
 
 jobs:
   treefmt:
-    name: "Check formatting"
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: "Set up Nix"
-      uses: $/.github/actions/nix
-
-    - name: "Run formatter"
-      run: nix fmt -- --ci
+    uses: $/.github/workflows/treefmt.yaml
+    permissions:
+      actions: read
+    secrets: inherit
 
   check:
-    name: "Check flake"
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: "Set up Nix"
-      uses: $/.github/actions/nix
-      with:
-        github-token: ${{ secrets.GH_PAT_SECRETS_RO }}
-
-    - name: "Run flake check"
-      run: nix flake check --all-systems
+    uses: $/.github/workflows/check.yaml
+    permissions:
+      actions: read
+    secrets: inherit
 
   matrix:
-    name: "Create builder matrix"
-    runs-on: ubuntu-latest
+    uses: $/.github/workflows/matrix.yaml
+    permissions:
+      pull-requests: read
 
-    steps:
-    - name: "Set up Nix"
-      uses: $/.github/actions/nix
-      with:
-        github-token: ${{ secrets.GH_PAT_SECRETS_RO }}
+  shells:
+    uses: $/.github/workflows/shells.yaml
+    needs:
+    - matrix
+    - check
+    with:
+      matrix: ${{ needs.matrix.outputs.shells }}
+    permissions:
+      actions: read
+    secrets: inherit
 
-    - name: "Set up hestia"
-      uses: Mic92/hestia@v3.0.1
+  packages:
+    uses: $/.github/workflows/packages.yaml
+    needs:
+    - matrix
+    - check
+    with:
+      matrix: ${{ needs.matrix.outputs.packages }}
+    permissions:
+      actions: read
+    secrets: inherit
 
-    - name: "Discover matrix"
-      id: matrix
-      uses: Mic92/hestia/matrix@v3.0.1
-      with:
-        flake: ".#hydraJobs"
-        nix-eval-jobs: "nix run nixpkgs#nix-eval-jobs -- --force-recurse"
-
-    outputs:
-      matrix: ${{ steps.matrix.outputs.matrix }}
-      any-jobs: ${{ steps.matrix.outputs.any-jobs }}
-      manifest-version: ${{ steps.matrix.outputs.manifest-version }}
-
-  build:
-    name: "${{ matrix.name }} (${{ matrix.system }})"
-    needs: matrix
-    if: needs.matrix.outputs.any-jobs == 'true'
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
-
-    steps:
-    - name: "Install Nix"
-      uses: cachix/install-nix-action@v31.11.1
-      with:
-        github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
-        extra_nix_config: |
-          keep-going = true
-          cores = 0
-
-    - name: "Setup Cachix"
-      uses: cachix/cachix-action@v17
-      continue-on-error: true
-      with:
-        name: misterkartoffel
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-
-    - name: "Set up hestia"
-      uses: Mic92/hestia@v3.0.1
-      with:
-        wait-manifest-version: ${{ needs.matrix.outputs.manifest-version }}
-
-    - name: "Prefetch drv closure"
-      run: "$HESTIA_BIN" prefetch ${{ matrix.installables }}
-
-    - name: "Build ${{ matrix.name }}"
-      run: >-
-        nix build
-        ${{ matrix.installables }}
-        --print-build-logs
+  hosts:
+    uses: $/.github/workflows/hosts.yaml
+    if: github.event_name != 'pull_request'
+    needs:
+    - matrix
+    - check
+    with:
+      matrix: ${{ needs.matrix.outputs.hosts }}
+    permissions:
+      actions: read
+    secrets: inherit

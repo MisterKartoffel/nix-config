@@ -1,0 +1,82 @@
+---
+name: "Matrix"
+
+on:
+  workflow_call:
+    outputs:
+      shells:
+        value: ${{ jobs.matrix.outputs.shells }}
+      packages:
+        value: ${{ jobs.matrix.outputs.packages }}
+      hosts:
+        value: ${{ jobs.matrix.outputs.hosts }}
+
+jobs:
+  matrix:
+    name: "Create builder matrix"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout repository"
+      if: github.event_name != 'pull_request'
+      uses: actions/checkout@v7.0.1
+
+    - parallel:
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+      - name: "Create filter"
+        uses: dorny/paths-filter@v4.0.3
+        id: filter
+        with:
+          filters: |
+            tree: &tree
+              - "ci/**"
+              - ".github/**"
+              - ".tack/**"
+              - "flake.nix"
+
+            shells:
+              - *tree
+              - "shell.nix"
+
+            packages: &packages
+              - *tree
+              - "pkgs/**"
+
+            hosts:
+              - *packages
+              - "hosts/**"
+              - "modules/**"
+              - "users/**"
+
+    - name: "Discover matrices"
+      id: matrix
+      env:
+        SHELLS: ${{ steps.filter.outputs.shells }}
+        PACKAGES: ${{ steps.filter.outputs.packages }}
+        HOSTS: ${{ steps.filter.outputs.hosts }}
+      run: |
+        for OUTPUT in shells packages hosts; do
+          echo "::group::Evaluating ${OUTPUT}"
+          declare -n CHANGED="${OUTPUT^^}"
+
+          if [[ "${CHANGED}" == "true" ]]; then
+            VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
+          else
+            VALUE="[]"
+            echo "${OUTPUT} skipped, no changes."
+          fi
+
+          echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
+          echo "::endgroup::"
+        done
+
+    outputs:
+      shells: ${{ steps.matrix.outputs.shells }}
+      packages: ${{ steps.matrix.outputs.packages }}
+      hosts: ${{ steps.matrix.outputs.hosts }}

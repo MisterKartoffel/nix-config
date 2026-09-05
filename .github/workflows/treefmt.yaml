@@ -1,0 +1,44 @@
+---
+name: "Treefmt"
+
+on:
+  workflow_call:
+
+jobs:
+  treefmt:
+    name: "Check formatting"
+    runs-on: ubuntu-latest
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+        with:
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - parallel:
+      - name: "Setup Cachix"
+        uses: cachix/cachix-action@v17
+        continue-on-error: true
+        with:
+          name: misterkartoffel
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: "Setup Hestia"
+        uses: Mic92/hestia@v3.0.1
+        continue-on-error: true
+        with:
+          # read-only: ${{ github.event_name == 'pull_request' }}
+          upstream-cache-filter: true
+          upstream-cache-key-names: >
+            cache.nixos.org-1
+            misterkartoffel.cachix.org-1
+
+    - name: "Run formatter"
+      run: nix fmt -- --ci
