@@ -75,7 +75,7 @@ jobs:
       uses: actions/download-artifact@v8.0.1
       with:
         name: tack
-        path: .
+        path: .tack
 
     - name: "Create pull request"
       uses: peter-evans/create-pull-request@v8
