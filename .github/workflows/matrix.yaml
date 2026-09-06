@@ -18,7 +18,6 @@ jobs:
 
     steps:
     - name: "Checkout repository"
-      if: github.event_name != 'pull_request'
       uses: actions/checkout@v7.0.1
 
     - parallel:
