@@ -4,6 +4,8 @@ name: "Build flake outputs"
 on:
   pull_request:
   push:
+    branches:
+    - main
   workflow_dispatch:
 
 permissions: {}
