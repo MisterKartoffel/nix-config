@@ -1,0 +1,45 @@
+---
+name: "Hestia cache GC"
+
+on:
+  schedule:
+  - cron: "23 3 * * *"
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: >-
+          "Plan only; do not repack,
+          touch, or delete anything."
+
+permissions: {}
+
+concurrency:
+  group: hestia-gc
+  cancel-in-progress: false
+
+jobs:
+  gc:
+    name: "Garbage collect"
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+      contents: read
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+
+    - name: "Set up Hestia"
+      uses: Mic92/hestia@v3.0.1
+
+    - name: "Run garbage collection"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        "${HESTIA_BIN:-./hestia-bin/bin/hestia}" gc
+        ${{ inputs.dry-run && '--dry-run' || '' }}
