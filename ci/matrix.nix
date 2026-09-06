@@ -29,7 +29,8 @@ let
   hosts = builtins.concatMap (
     platform:
     map (hostname: {
-      inherit hostname platform;
+      installable = hostname;
+      inherit platform;
       inherit (flake."${platform}Configurations".${hostname}.pkgs.stdenv.hostPlatform) system;
     }) (builtins.attrNames (flake."${platform}Configurations" or { }))
   ) platforms;
@@ -44,11 +45,9 @@ let
 in
 /*
   All these outputs are composed by the common attributes:
+  - installable: the derivation in question (package, shell, or hostname)
   - system: architecture + kernel string, used for outputs keyed by system.
   - runner: GitHub Actions runner, used in 'runs-on' for each of the matrix's jobs.
-
-  devShells, packages and hosts have unique "shell", "package", and "hostname"
-  attributes, respectively, for identifying the flake output when built.
 
   Hosts have the unique attribute "platform", for composing the build command
   in the runner's build job.
@@ -56,14 +55,14 @@ in
 {
   shells = builtins.concatMap (
     system:
-    map (shell: (matrix system) // { inherit shell; }) (
+    map (shell: (matrix system) // { installable = shell; }) (
       builtins.attrNames (flake.devShells.${system} or { })
     )
   ) (builtins.attrNames systems);
 
   packages = builtins.concatMap (
     system:
-    map (package: (matrix system) // { inherit package; }) (
+    map (package: (matrix system) // { installable = package; }) (
       builtins.attrNames (flake.packages.${system} or { })
     )
   ) (builtins.attrNames systems);
@@ -74,7 +73,7 @@ in
       host:
       (matrix system)
       // {
-        inherit (host) hostname platform;
+        inherit (host) installable platform;
       }
     ) systems.${system}
   ) (builtins.attrNames systems);

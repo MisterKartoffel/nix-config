@@ -1,0 +1,68 @@
+---
+name: "Build flake outputs"
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  treefmt:
+    uses: $/.github/workflows/treefmt.yaml
+    permissions:
+      actions: read
+    secrets: inherit
+
+  check:
+    uses: $/.github/workflows/check.yaml
+    permissions:
+      actions: read
+    secrets: inherit
+
+  matrix:
+    uses: $/.github/workflows/matrix.yaml
+    permissions:
+      pull-requests: read
+
+  shells:
+    uses: $/.github/workflows/build.yaml
+    needs:
+    - matrix
+    - check
+    with:
+      target: "shell"
+      matrix: ${{ needs.matrix.outputs.shells }}
+    permissions:
+      actions: read
+    secrets: inherit
+
+  packages:
+    uses: $/.github/workflows/build.yaml
+    needs:
+    - matrix
+    - check
+    with:
+      target: "package"
+      matrix: ${{ needs.matrix.outputs.packages }}
+    permissions:
+      actions: read
+    secrets: inherit
+
+  hosts:
+    uses: $/.github/workflows/build.yaml
+    if: github.event_name != 'pull_request'
+    needs:
+    - matrix
+    - check
+    with:
+      target: "host"
+      matrix: ${{ needs.matrix.outputs.hosts }}
+    permissions:
+      actions: read
+    secrets: inherit

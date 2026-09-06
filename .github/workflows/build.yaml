@@ -1,65 +1,78 @@
 ---
-name: "Build flake outputs"
+name: "Hosts"
 
 on:
-  pull_request:
-  push:
-  workflow_dispatch:
-
-permissions: {}
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  workflow_call:
+    inputs:
+      target:
+        description: "Derivation kind"
+        required: true
+        type: string
+      matrix:
+        description: "Build matrix"
+        required: true
+        type: string
 
 jobs:
-  treefmt:
-    uses: $/.github/workflows/treefmt.yaml
-    permissions:
-      actions: read
-    secrets: inherit
+  build:
+    name: "${{ matrix.installable }} (${{ matrix.system }})"
+    runs-on: ${{ matrix.runner }}
 
-  check:
-    uses: $/.github/workflows/check.yaml
-    permissions:
-      actions: read
-    secrets: inherit
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(inputs.matrix) }}
 
-  matrix:
-    uses: $/.github/workflows/matrix.yaml
-    permissions:
-      pull-requests: read
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
 
-  shells:
-    uses: $/.github/workflows/shells.yaml
-    needs:
-    - matrix
-    - check
-    with:
-      matrix: ${{ needs.matrix.outputs.shells }}
-    permissions:
-      actions: read
-    secrets: inherit
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+        with:
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
 
-  packages:
-    uses: $/.github/workflows/packages.yaml
-    needs:
-    - matrix
-    - check
-    with:
-      matrix: ${{ needs.matrix.outputs.packages }}
-    permissions:
-      actions: read
-    secrets: inherit
+    - parallel:
+      - name: "Setup Cachix"
+        uses: cachix/cachix-action@v17
+        continue-on-error: true
+        with:
+          name: misterkartoffel
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-  hosts:
-    uses: $/.github/workflows/hosts.yaml
-    if: github.event_name != 'pull_request'
-    needs:
-    - matrix
-    - check
-    with:
-      matrix: ${{ needs.matrix.outputs.hosts }}
-    permissions:
-      actions: read
-    secrets: inherit
+      - name: "Setup Hestia"
+        uses: Mic92/hestia@v3.0.1
+        continue-on-error: true
+        with:
+          upstream-cache-filter: true
+          upstream-cache-key-names: >
+            cache.nixos.org-1
+            misterkartoffel.cachix.org-1
+
+    - name: "Build ${{ inputs.target }}"
+      env:
+        TARGET: ${{ inputs.target }}
+      run: |
+        case "${TARGET}" in
+          host)
+            nix build \
+            ".#${{ matrix.platform }}Configurations.${{ matrix.installable }}.config.system.build.toplevel" \
+            --print-build-logs
+            ;;
+
+          package)
+            nix build \
+            ".#packages.${{ matrix.system }}.${{ matrix.installable }}" \
+            --print-build-logs
+            ;;
+
+          shell)
+            nix build \
+            ".#devShells.${{ matrix.system }}.${{ matrix.installable }}" \
+            --print-build-logs
+            ;;
+        esac
