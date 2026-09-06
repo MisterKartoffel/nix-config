@@ -51,7 +51,9 @@ jobs:
     - name: "Upload changes"
       uses: actions/upload-artifact@v7
       with:
-        path: ./.tack
+        name: tack
+        path: .tack
+        include-hidden-files: true
 
     outputs:
       summary: ${{ steps.summary.outputs.summary }}
@@ -71,6 +73,9 @@ jobs:
 
     - name: "Download changes"
       uses: actions/download-artifact@v8.0.1
+      with:
+        name: tack
+        path: .
 
     - name: "Create pull request"
       uses: peter-evans/create-pull-request@v8
