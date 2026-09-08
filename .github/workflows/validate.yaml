@@ -60,7 +60,6 @@ jobs:
       uses: dorny/paths-filter@v4.0.3
       id: filter
       with:
-        list-files: json
         filters: |
           flake: &flake
             - ".github/workflows/flake.yaml"
