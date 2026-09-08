@@ -30,6 +30,7 @@ jobs:
         sparse-checkout: |
           .github
           .tack
+          ci
 
     - parallel:
       - name: "Actionlint"
