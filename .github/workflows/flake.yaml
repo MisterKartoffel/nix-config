@@ -6,11 +6,13 @@ on:
   pull_request:
     paths-ignore:
     - ".github/workflows/**"
+    - "ci/**"
   push:
     branches:
     - main
     paths-ignore:
     - ".github/workflows/**"
+    - "ci/**"
   workflow_dispatch:
   workflow_call:
     inputs:

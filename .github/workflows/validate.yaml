@@ -6,9 +6,11 @@ on:
   push:
     paths:
     - ".github/workflows/**"
+    - "ci/**"
   pull_request:
     paths:
     - ".github/workflows/**"
+    - "ci/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -27,8 +29,19 @@ jobs:
       with:
         sparse-checkout: .github
 
-    - name: "Actionlint"
-      uses: kjanat/actionlint@v1.15.1
+    - parallel:
+      - name: "Actionlint"
+        uses: kjanat/actionlint@v1.15.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Run formatter on CI"
+      run: nix fmt -- --ci ./ci
 
   filter:
     name: "Filter modified jobs"

@@ -26,16 +26,16 @@ let
     "darwin"
   ];
 
-  hosts = builtins.concatMap (
-    platform:
-    map (hostname: {
-      installable = hostname;
-      inherit platform;
-      inherit (flake."${platform}Configurations".${hostname}.pkgs.stdenv.hostPlatform) system;
-    }) (builtins.attrNames (flake."${platform}Configurations" or { }))
-  ) platforms;
-
-  systems = builtins.groupBy (host: host.system) hosts;
+  systems = builtins.groupBy (host: host.system) (
+    builtins.concatMap (
+      platform:
+      map (hostname: {
+        installable = hostname;
+        inherit platform;
+        inherit (flake."${platform}Configurations".${hostname}.pkgs.stdenv.hostPlatform) system;
+      }) (builtins.attrNames (flake."${platform}Configurations" or { }))
+    ) platforms
+  );
 
   # Helper for merging information common to all jobs into each output.
   matrix = system: {
