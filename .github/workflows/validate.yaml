@@ -39,10 +39,10 @@ jobs:
           build: &build
             - *matrix
             - ".github/workflows/build.yaml"
-          check:
+          check: &check
             - *build
             - ".github/workflows/check.yaml"
-          treefmt:
+          treefmt: &treefmt
             - *flake
             - ".github/workflows/treefmt.yaml"
           ci:
