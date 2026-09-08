@@ -20,13 +20,6 @@ on:
         required: false
         default: "[\"formatter\",\"check\",\"matrix\",\"build\"]"
         type: string
-  workflow_call:
-    inputs:
-      jobs:
-        description: "JSON list of jobs to run"
-        required: false
-        default: "[\"formatter\",\"check\",\"matrix\",\"build\"]"
-        type: string
 
 permissions: {}
 

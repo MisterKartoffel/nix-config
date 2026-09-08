@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
-      called:
+      validate:
         required: false
         default: false
         type: boolean
@@ -87,7 +87,7 @@ jobs:
         path: .tack
 
     - name: "Create pull request"
-      if: ${{ !inputs.called }}
+      if: ${{ !inputs.validate }}
       uses: peter-evans/create-pull-request@v8
       with:
         branch: tack/update-inputs
