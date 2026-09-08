@@ -20,22 +20,32 @@ concurrency:
 permissions: {}
 
 jobs:
-  lint:
-    name: "Lint workflows"
+  actionlint:
+    name: "Lint actions"
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Checkout repository"
+    - name: "Checkout .github"
       uses: actions/checkout@v7.0.1
       with:
         sparse-checkout: |
           .github
-          .tack
-          ci
 
+    - name: "Actionlint"
+      uses: kjanat/actionlint@v1.15.1
+
+  formatter:
+    name: "Treefmt CI"
+    runs-on: ubuntu-latest
+
+    steps:
     - parallel:
-      - name: "Actionlint"
-        uses: kjanat/actionlint@v1.15.1
+      - name: "Checkout inputs and CI"
+        uses: actions/checkout@v7.0.1
+        with:
+          sparse-checkout: |
+            .tack
+            ci
 
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.1
