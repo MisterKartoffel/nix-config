@@ -17,6 +17,19 @@ concurrency:
 permissions: {}
 
 jobs:
+  lint:
+    name: "Lint workflows"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v7.0.1
+      with:
+        sparse-checkout: .github
+
+    - name: "Actionlint"
+      uses: kjanat/actionlint@v1.15.1
+
   filter:
     name: "Filter modified jobs"
     runs-on: ubuntu-latest
