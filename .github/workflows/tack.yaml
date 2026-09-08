@@ -6,6 +6,7 @@ on:
   schedule:
   - cron: "0 0 * * 0"
   workflow_dispatch:
+  workflow_call:
 
 permissions: {}
 
@@ -80,6 +81,7 @@ jobs:
 
     - name: "Create pull request"
       uses: peter-evans/create-pull-request@v8
+      if: github.event_name != 'workflow_call'
       with:
         branch: tack/update-inputs
         delete-branch: true

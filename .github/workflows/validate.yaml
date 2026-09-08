@@ -86,6 +86,9 @@ jobs:
           gc:
             - ".github/workflows/gc.yaml"
 
+          tack:
+            - ".github/workflows/tack.yaml"
+
     outputs:
       changes: ${{ steps.filter.outputs.changes }}
 
@@ -99,6 +102,15 @@ jobs:
     permissions:
       actions: read
       pull-requests: read
+
+  tack:
+    name: "Validate updater"
+    needs: filter
+    if: contains(fromJSON(needs.filter.outputs.changes), 'tack')
+    uses: $/.github/workflows/tack.yaml
+    permissions:
+      contents: write
+      pull-requests: write
 
   gc:
     name: "Validate GC"
