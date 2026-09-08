@@ -65,6 +65,9 @@ jobs:
     uses: $/.github/workflows/flake.yaml
     with:
       jobs: ${{ needs.filter.outputs.changes }}
+    permissions:
+      actions: read
+      pull-requests: read
 
   gc:
     name: "Validate GC"
@@ -73,3 +76,6 @@ jobs:
     uses: $/.github/workflows/gc.yaml
     with:
       dry-run: true
+    permissions:
+      actions: write
+      contents: read
