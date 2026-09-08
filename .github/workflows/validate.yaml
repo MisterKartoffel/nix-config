@@ -27,7 +27,9 @@ jobs:
     - name: "Checkout repository"
       uses: actions/checkout@v7.0.1
       with:
-        sparse-checkout: .github
+        sparse-checkout: |
+          .github
+          .tack
 
     - parallel:
       - name: "Actionlint"
