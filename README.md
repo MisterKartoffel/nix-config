@@ -28,11 +28,11 @@ flake/
 │   └── default.nix
 ├── ci/
 │   ├── matrix.nix        ◄ [8]
+│   ├── treefmt.nix
 │   └── ...
 ├── default.nix           ◄ [8]
 ├── flake.nix
 ├── shell.nix
-├── treefmt.nix
 ├── LICENSE
 ├── README.md
 └── TODO.txt
