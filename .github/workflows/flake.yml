@@ -1,5 +1,5 @@
 ---
-name: "Flake CI"
+name: "Build Outputs"
 run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
@@ -13,6 +13,7 @@ on:
     paths-ignore:
     - ".github/workflows/**"
     - "ci/**"
+  workflow_dispatch:
 
 permissions: {}
 

@@ -11,6 +11,7 @@ on:
     paths:
     - ".github/workflows/**"
     - "ci/**"
+  workflow_dispatch:
 
 concurrency:
   group: "validate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
