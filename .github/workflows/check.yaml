@@ -1,6 +1,5 @@
 ---
 name: "Check"
-run-name: "Run checks: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   workflow_call:

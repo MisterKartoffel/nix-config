@@ -1,6 +1,5 @@
 ---
 name: "Matrix"
-run-name: "Generate build matrix: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   workflow_call:
@@ -35,9 +34,9 @@ jobs:
         with:
           filters: |
             tree: &tree
-              - "ci/**"
-              - ".github/**"
+              - ".github/workflows/flake.yaml"
               - ".tack/**"
+              - "ci/**"
               - "flake.nix"
 
             shells:

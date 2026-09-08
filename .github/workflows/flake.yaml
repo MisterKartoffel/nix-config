@@ -1,6 +1,6 @@
 ---
 name: "Flake CI"
-run-name: "Flake CI: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   pull_request:
