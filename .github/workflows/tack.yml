@@ -85,6 +85,9 @@ jobs:
         name: tack
         path: .tack
 
+    - name: "Debug"
+      run: echo "github.event_name=${{ github.event_name }}"
+
     - name: "Create pull request"
       uses: peter-evans/create-pull-request@v8
       if: github.event_name != 'workflow_call'
