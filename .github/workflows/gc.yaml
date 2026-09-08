@@ -8,9 +8,19 @@ on:
   workflow_dispatch:
     inputs:
       dry-run:
-        description: >-
+        description: >
           "Plan only; do not repack,
           touch, or delete anything."
+        required: false
+        type: boolean
+  workflow_call:
+    inputs:
+      dry-run:
+        description: >
+          "Plan only; do not repack,
+          touch, or delete anything."
+        required: false
+        type: boolean
 
 permissions: {}
 
@@ -41,6 +51,6 @@ jobs:
     - name: "Run garbage collection"
       env:
         GITHUB_TOKEN: ${{ github.token }}
-      run: >-
+      run: >
         "${HESTIA_BIN:-./hestia-bin/bin/hestia}" gc
         ${{ inputs.dry-run && '--dry-run' || '' }}

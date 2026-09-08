@@ -1,0 +1,75 @@
+---
+name: "Validate Workflows"
+run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+
+on:
+  push:
+    paths:
+    - ".github/workflows/**"
+  pull_request:
+    paths:
+    - ".github/workflows/**"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions: {}
+
+jobs:
+  filter:
+    name: "Filter modified jobs"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v7.0.1
+
+    - name: "Create filter"
+      uses: dorny/paths-filter@v4.0.3
+      id: filter
+      with:
+        list-files: json
+        filters: |
+          flake: &flake
+            - ".github/workflows/flake.yaml"
+          matrix: &matrix
+            - *flake
+            - ".github/workflows/matrix.yaml"
+          build: &build
+            - *matrix
+            - ".github/workflows/build.yaml"
+          check:
+            - *build
+            - ".github/workflows/check.yaml"
+          treefmt:
+            - *flake
+            - ".github/workflows/treefmt.yaml"
+          ci:
+            - *flake
+            - *matrix
+            - *build
+            - *check
+            - *treefmt
+
+          gc:
+            - ".github/workflows/gc.yaml"
+
+    outputs:
+      changes: ${{ steps.filter.outputs.changes }}
+
+  flake:
+    name: "Validate CI"
+    needs: filter
+    if: contains(fromJSON(needs.filter.outputs.changes), 'ci')
+    uses: $/.github/workflows/flake.yaml
+    with:
+      jobs: ${{ needs.filter.outputs.changes }}
+
+  gc:
+    name: "Validate GC"
+    needs: filter
+    if: contains(fromJSON(needs.filter.outputs.changes), 'gc')
+    uses: $/.github/workflows/gc.yaml
+    with:
+      dry-run: true

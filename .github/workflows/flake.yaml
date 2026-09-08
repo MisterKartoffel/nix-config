@@ -4,10 +4,20 @@ run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github
 
 on:
   pull_request:
+    paths-ignore:
+    - ".github/workflows/**"
   push:
     branches:
     - main
+    paths-ignore:
+    - ".github/workflows/**"
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      jobs:
+        description: "JSON list of jobs to run"
+        required: true
+        type: string
 
 permissions: {}
 
@@ -18,23 +28,35 @@ concurrency:
 jobs:
   treefmt:
     uses: $/.github/workflows/treefmt.yaml
+    if: >
+      github.event_name != 'workflow_call' ||
+      contains(fromJSON(inputs.jobs), 'treefmt')
     permissions:
       actions: read
     secrets: inherit
 
   check:
     uses: $/.github/workflows/check.yaml
+    if: >
+      github.event_name != 'workflow_call' ||
+      contains(fromJSON(inputs.jobs), 'check')
     permissions:
       actions: read
     secrets: inherit
 
   matrix:
     uses: $/.github/workflows/matrix.yaml
+    if: >
+      github.event_name != 'workflow_call' ||
+      contains(fromJSON(inputs.jobs), 'matrix')
     permissions:
       pull-requests: read
 
   shells:
     uses: $/.github/workflows/build.yaml
+    if: >
+      github.event_name != 'workflow_call' ||
+      contains(fromJSON(inputs.jobs), 'build')
     needs:
     - matrix
     - check
@@ -47,6 +69,9 @@ jobs:
 
   packages:
     uses: $/.github/workflows/build.yaml
+    if: >
+      github.event_name != 'workflow_call' ||
+      contains(fromJSON(inputs.jobs), 'build')
     needs:
     - matrix
     - check
@@ -59,7 +84,11 @@ jobs:
 
   hosts:
     uses: $/.github/workflows/build.yaml
-    if: github.event_name != 'pull_request'
+    if: |
+      github.event_name != 'pull_request' && (
+        github.event_name != 'workflow_call' ||
+        contains(fromJSON(inputs.jobs), 'build')
+      )
     needs:
     - matrix
     - check
