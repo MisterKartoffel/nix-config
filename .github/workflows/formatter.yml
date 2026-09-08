@@ -1,11 +1,11 @@
 ---
-name: "Treefmt"
+name: "Formatter"
 
 on:
   workflow_call:
 
 jobs:
-  treefmt:
+  formatter:
     name: "Check formatting"
     runs-on: ubuntu-latest
 

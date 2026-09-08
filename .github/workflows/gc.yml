@@ -30,7 +30,7 @@ concurrency:
 
 jobs:
   gc:
-    name: "Garbage collect"
+    name: "Clear Actions cache"
     runs-on: ubuntu-latest
 
     permissions:

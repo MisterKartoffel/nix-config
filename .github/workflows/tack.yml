@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
-      caller_event:
-        description: "Event that triggered the parent workflow"
-        required: true
-        type: string
+      called:
+        required: false
+        default: false
+        type: boolean
 
 permissions: {}
 
@@ -31,7 +31,8 @@ jobs:
       - name: "Checkout tack directory"
         uses: actions/checkout@v7.0.1
         with:
-          sparse-checkout: .tack
+          sparse-checkout: |
+            .tack
 
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.1
@@ -53,7 +54,7 @@ jobs:
         } >> "${GITHUB_OUTPUT}"
 
     - name: "Run tack update"
-      if: github.event_name != 'workflow_call'
+      if: github.event_name != 'pull_request'
       run: nix run nixpkgs#tack -- update
 
     - name: "Upload changes"
@@ -85,12 +86,9 @@ jobs:
         name: tack
         path: .tack
 
-    - name: "Debug"
-      run: echo "github.event_name=${{ github.event_name }}"
-
     - name: "Create pull request"
+      if: ${{ !inputs.called }}
       uses: peter-evans/create-pull-request@v8
-      if: github.event_name != 'workflow_call'
       with:
         branch: tack/update-inputs
         delete-branch: true

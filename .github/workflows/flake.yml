@@ -14,55 +14,50 @@ on:
     - ".github/workflows/**"
     - "ci/**"
   workflow_dispatch:
+    inputs:
+      jobs:
+        description: "JSON list of jobs to run"
+        required: false
+        default: "[\"formatter\",\"check\",\"matrix\",\"build\"]"
+        type: string
   workflow_call:
     inputs:
       jobs:
         description: "JSON list of jobs to run"
-        required: true
-        type: string
-      caller_event:
-        description: "Event that triggered the parent workflow"
-        required: true
+        required: false
+        default: "[\"formatter\",\"check\",\"matrix\",\"build\"]"
         type: string
 
 permissions: {}
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: "flake-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  treefmt:
-    uses: $/.github/workflows/treefmt.yml
-    if: >
-      github.event_name != 'workflow_call' ||
-      contains(fromJSON(inputs.jobs), 'treefmt')
+  formatter:
+    uses: $/.github/workflows/formatter.yml
+    if: contains(fromJSON(inputs.jobs), 'formatter')
     permissions:
       actions: read
     secrets: inherit
 
   check:
     uses: $/.github/workflows/check.yml
-    if: >
-      github.event_name != 'workflow_call' ||
-      contains(fromJSON(inputs.jobs), 'check')
+    if: contains(fromJSON(inputs.jobs), 'check')
     permissions:
       actions: read
     secrets: inherit
 
   matrix:
     uses: $/.github/workflows/matrix.yml
-    if: >
-      github.event_name != 'workflow_call' ||
-      contains(fromJSON(inputs.jobs), 'matrix')
+    if: contains(fromJSON(inputs.jobs), 'matrix')
     permissions:
       pull-requests: read
 
   shells:
     uses: $/.github/workflows/build.yml
-    if: >
-      github.event_name != 'workflow_call' ||
-      contains(fromJSON(inputs.jobs), 'build')
+    if: contains(fromJSON(inputs.jobs), 'build')
     needs:
     - matrix
     - check
@@ -75,9 +70,7 @@ jobs:
 
   packages:
     uses: $/.github/workflows/build.yml
-    if: >
-      github.event_name != 'workflow_call' ||
-      contains(fromJSON(inputs.jobs), 'build')
+    if: contains(fromJSON(inputs.jobs), 'build')
     needs:
     - matrix
     - check
@@ -90,11 +83,9 @@ jobs:
 
   hosts:
     uses: $/.github/workflows/build.yml
-    if: |
-      github.event_name != 'pull_request' && (
-        inputs.caller_event != 'pull_request' &&
-        contains(fromJSON(inputs.jobs), 'build')
-      )
+    if: >
+      github.event_name != 'pull_request' &&
+      contains(fromJSON(inputs.jobs), 'build')
     needs:
     - matrix
     - check

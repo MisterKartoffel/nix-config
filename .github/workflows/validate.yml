@@ -13,7 +13,7 @@ on:
     - "ci/**"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: "validate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions: {}
@@ -54,7 +54,8 @@ jobs:
     - name: "Checkout repository"
       uses: actions/checkout@v7.0.1
       with:
-        sparse-checkout: .github/workflows
+        sparse-checkout: |
+          .github/workflows
 
     - name: "Create filter"
       uses: dorny/paths-filter@v4.0.3
@@ -72,15 +73,15 @@ jobs:
           check: &check
             - *build
             - ".github/workflows/check.yml"
-          treefmt: &treefmt
+          formatter: &formatter
             - *flake
-            - ".github/workflows/treefmt.yml"
+            - ".github/workflows/formatter.yml"
           ci:
             - *flake
             - *matrix
             - *build
             - *check
-            - *treefmt
+            - *formatter
 
           gc:
             - ".github/workflows/gc.yml"
@@ -92,32 +93,31 @@ jobs:
       changes: ${{ steps.filter.outputs.changes }}
 
   flake:
-    name: "Validate CI"
+    name: "Flake CI"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'ci')
     uses: $/.github/workflows/flake.yml
     with:
       jobs: ${{ needs.filter.outputs.changes }}
-      caller_event: ${{ github.event_name }}
     permissions:
       actions: read
       pull-requests: read
     secrets: inherit
 
   tack:
-    name: "Validate updater"
+    name: "Updater CI"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'tack')
     uses: $/.github/workflows/tack.yml
     with:
-      caller_event: ${{ github.event_name }}
+      called: true
     permissions:
       contents: write
       pull-requests: write
     secrets: inherit
 
-  gc:
-    name: "Validate GC"
+  cache:
+    name: "Cache CI"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'gc')
     uses: $/.github/workflows/gc.yml
