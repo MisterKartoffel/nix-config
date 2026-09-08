@@ -20,6 +20,10 @@ on:
         description: "JSON list of jobs to run"
         required: true
         type: string
+      caller_event:
+        description: "Event that triggered the parent workflow"
+        required: true
+        type: string
 
 permissions: {}
 
@@ -88,7 +92,7 @@ jobs:
     uses: $/.github/workflows/build.yml
     if: |
       github.event_name != 'pull_request' && (
-        github.event_name != 'workflow_call' ||
+        inputs.caller_event != 'pull_request' &&
         contains(fromJSON(inputs.jobs), 'build')
       )
     needs:

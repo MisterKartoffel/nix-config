@@ -98,18 +98,23 @@ jobs:
     uses: $/.github/workflows/flake.yml
     with:
       jobs: ${{ needs.filter.outputs.changes }}
+      caller_event: ${{ github.event_name }}
     permissions:
       actions: read
       pull-requests: read
+    secrets: inherit
 
   tack:
     name: "Validate updater"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'tack')
     uses: $/.github/workflows/tack.yml
+    with:
+      caller_event: ${{ github.event_name }}
     permissions:
       contents: write
       pull-requests: write
+    secrets: inherit
 
   gc:
     name: "Validate GC"
@@ -121,3 +126,4 @@ jobs:
     permissions:
       actions: write
       contents: read
+    secrets: inherit
