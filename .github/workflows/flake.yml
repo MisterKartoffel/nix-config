@@ -29,7 +29,7 @@ concurrency:
 
 jobs:
   treefmt:
-    uses: $/.github/workflows/treefmt.yaml
+    uses: $/.github/workflows/treefmt.yml
     if: >
       github.event_name != 'workflow_call' ||
       contains(fromJSON(inputs.jobs), 'treefmt')
@@ -38,7 +38,7 @@ jobs:
     secrets: inherit
 
   check:
-    uses: $/.github/workflows/check.yaml
+    uses: $/.github/workflows/check.yml
     if: >
       github.event_name != 'workflow_call' ||
       contains(fromJSON(inputs.jobs), 'check')
@@ -47,7 +47,7 @@ jobs:
     secrets: inherit
 
   matrix:
-    uses: $/.github/workflows/matrix.yaml
+    uses: $/.github/workflows/matrix.yml
     if: >
       github.event_name != 'workflow_call' ||
       contains(fromJSON(inputs.jobs), 'matrix')
@@ -55,7 +55,7 @@ jobs:
       pull-requests: read
 
   shells:
-    uses: $/.github/workflows/build.yaml
+    uses: $/.github/workflows/build.yml
     if: >
       github.event_name != 'workflow_call' ||
       contains(fromJSON(inputs.jobs), 'build')
@@ -70,7 +70,7 @@ jobs:
     secrets: inherit
 
   packages:
-    uses: $/.github/workflows/build.yaml
+    uses: $/.github/workflows/build.yml
     if: >
       github.event_name != 'workflow_call' ||
       contains(fromJSON(inputs.jobs), 'build')
@@ -85,7 +85,7 @@ jobs:
     secrets: inherit
 
   hosts:
-    uses: $/.github/workflows/build.yaml
+    uses: $/.github/workflows/build.yml
     if: |
       github.event_name != 'pull_request' && (
         github.event_name != 'workflow_call' ||

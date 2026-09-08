@@ -62,19 +62,19 @@ jobs:
       with:
         filters: |
           flake: &flake
-            - ".github/workflows/flake.yaml"
+            - ".github/workflows/flake.yml"
           matrix: &matrix
             - *flake
-            - ".github/workflows/matrix.yaml"
+            - ".github/workflows/matrix.yml"
           build: &build
             - *matrix
-            - ".github/workflows/build.yaml"
+            - ".github/workflows/build.yml"
           check: &check
             - *build
-            - ".github/workflows/check.yaml"
+            - ".github/workflows/check.yml"
           treefmt: &treefmt
             - *flake
-            - ".github/workflows/treefmt.yaml"
+            - ".github/workflows/treefmt.yml"
           ci:
             - *flake
             - *matrix
@@ -83,10 +83,10 @@ jobs:
             - *treefmt
 
           gc:
-            - ".github/workflows/gc.yaml"
+            - ".github/workflows/gc.yml"
 
           tack:
-            - ".github/workflows/tack.yaml"
+            - ".github/workflows/tack.yml"
 
     outputs:
       changes: ${{ steps.filter.outputs.changes }}
@@ -95,7 +95,7 @@ jobs:
     name: "Validate CI"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'ci')
-    uses: $/.github/workflows/flake.yaml
+    uses: $/.github/workflows/flake.yml
     with:
       jobs: ${{ needs.filter.outputs.changes }}
     permissions:
@@ -106,7 +106,7 @@ jobs:
     name: "Validate updater"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'tack')
-    uses: $/.github/workflows/tack.yaml
+    uses: $/.github/workflows/tack.yml
     permissions:
       contents: write
       pull-requests: write
@@ -115,7 +115,7 @@ jobs:
     name: "Validate GC"
     needs: filter
     if: contains(fromJSON(needs.filter.outputs.changes), 'gc')
-    uses: $/.github/workflows/gc.yaml
+    uses: $/.github/workflows/gc.yml
     with:
       dry-run: true
     permissions:
