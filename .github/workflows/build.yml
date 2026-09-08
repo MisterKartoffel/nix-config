@@ -4,18 +4,13 @@ name: "Build"
 on:
   workflow_call:
     inputs:
-      validate:
-        description: "Run in validation mode"
-        type: boolean
       target:
         description: "Derivation kind"
-        required: false
-        default: "shell"
+        required: true
         type: string
       matrix:
         description: "Build matrix"
-        required: false
-        default: "[{\"installable\": \"default\", \"runner\": \"ubuntu-latest\", \"system\": \"x86_64-linux\"}]"
+        required: true
         type: string
 
 jobs:
@@ -43,7 +38,6 @@ jobs:
 
     - parallel:
       - name: "Setup Cachix"
-        if: ${{ !inputs.validate }}
         uses: cachix/cachix-action@v17
         continue-on-error: true
         with:
@@ -51,7 +45,6 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: "Setup Hestia"
-        if: ${{ !inputs.validate }}
         uses: Mic92/hestia@v3.0.1
         continue-on-error: true
         with:

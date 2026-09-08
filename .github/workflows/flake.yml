@@ -1,6 +1,6 @@
 ---
 name: "Build Outputs"
-run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: "flake-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:

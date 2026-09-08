@@ -13,14 +13,6 @@ on:
           touch, or delete anything."
         required: false
         type: boolean
-  workflow_call:
-    inputs:
-      dry-run:
-        description: >
-          "Plan only; do not repack,
-          touch, or delete anything."
-        required: false
-        type: boolean
 
 permissions: {}
 

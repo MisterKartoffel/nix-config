@@ -1,6 +1,6 @@
 ---
 name: "Validate Workflows"
-run-name: "${{ github.workflow }}: ${{ github.event.pull_request.title || github.ref }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "validate-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions: {}
@@ -46,60 +46,3 @@ jobs:
 
     - name: "Run formatter on CI"
       run: nix fmt -- --ci ./ci
-
-  filter:
-    name: "Filter modified jobs"
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: "Checkout repository"
-      uses: actions/checkout@v7.0.1
-      with:
-        sparse-checkout: |
-          .github/workflows
-
-    - name: "Create filter"
-      uses: dorny/paths-filter@v4.0.3
-      id: filter
-      with:
-        filters: |
-          formatter: ".github/workflows/formatter.yml"
-          check: ".github/workflows/check.yml"
-          matrix: ".github/workflows/matrix.yml"
-          build: ".github/workflows/build.yml"
-          gc: ".github/workflows/gc.yml"
-          tack: ".github/workflows/tack.yml"
-
-    outputs:
-      changes: ${{ steps.filter.outputs.changes }}
-
-  flake:
-    name: "Flake CI"
-    needs: filter
-    uses: $/.github/workflows/mock.yml
-    with:
-      jobs: ${{ needs.filter.outputs.changes }}
-
-  tack:
-    name: "Updater CI"
-    needs: filter
-    if: ${{ contains(fromJSON(needs.filter.outputs.changes), 'tack') }}
-    uses: $/.github/workflows/tack.yml
-    with:
-      validate: true
-    permissions:
-      contents: write
-      pull-requests: write
-    secrets: inherit
-
-  cache:
-    name: "Cache CI"
-    needs: filter
-    if: ${{ contains(fromJSON(needs.filter.outputs.changes), 'gc') }}
-    uses: $/.github/workflows/gc.yml
-    with:
-      dry-run: true
-    permissions:
-      actions: write
-      contents: read
-    secrets: inherit

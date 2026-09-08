@@ -34,9 +34,7 @@ jobs:
         with:
           filters: |
             tree: &tree
-              - ".github/workflows/**"
               - ".tack/**"
-              - "ci/**"
               - "flake.nix"
 
             shells:

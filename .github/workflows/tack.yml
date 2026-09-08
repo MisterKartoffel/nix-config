@@ -6,12 +6,6 @@ on:
   schedule:
   - cron: "0 0 * * 0"
   workflow_dispatch:
-  workflow_call:
-    inputs:
-      validate:
-        required: false
-        default: false
-        type: boolean
 
 permissions: {}
 
@@ -54,7 +48,6 @@ jobs:
         } >> "${GITHUB_OUTPUT}"
 
     - name: "Run tack update"
-      if: github.event_name != 'pull_request'
       run: nix run nixpkgs#tack -- update
 
     - name: "Upload changes"
@@ -87,7 +80,6 @@ jobs:
         path: .tack
 
     - name: "Create pull request"
-      if: ${{ !inputs.validate }}
       uses: peter-evans/create-pull-request@v8
       with:
         branch: tack/update-inputs

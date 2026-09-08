@@ -3,10 +3,6 @@ name: "Formatter"
 
 on:
   workflow_call:
-    inputs:
-      validate:
-        description: "Run in validation mode"
-        type: boolean
 
 jobs:
   formatter:
@@ -27,14 +23,12 @@ jobs:
 
     - parallel:
       - name: "Setup Cachix"
-        if: ${{ !inputs.validate }}
         uses: cachix/cachix-action@v17
         continue-on-error: true
         with:
           name: misterkartoffel
 
       - name: "Setup Hestia"
-        if: ${{ !inputs.validate }}
         uses: Mic92/hestia@v3.0.1
         continue-on-error: true
         with:
@@ -45,4 +39,4 @@ jobs:
             misterkartoffel.cachix.org-1
 
     - name: "Run formatter"
-      run: nix fmt -- ${{ !inputs.validate && '--ci' || '' }}
+      run: nix fmt -- --ci
