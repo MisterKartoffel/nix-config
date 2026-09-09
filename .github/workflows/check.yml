@@ -21,22 +21,21 @@ jobs:
             keep-going = true
             cores = 0
 
-    - parallel:
-      - name: "Setup Cachix"
-        uses: cachix/cachix-action@v17
-        continue-on-error: true
-        with:
-          name: misterkartoffel
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+    - name: "Set up Hestia"
+      uses: Mic92/hestia@v3.0.1
+      continue-on-error: true
+      with:
+        upstream-cache-filter: true
+        upstream-cache-key-names: >
+          cache.nixos.org-1
+          misterkartoffel.cachix.org-1
 
-      - name: "Setup Hestia"
-        uses: Mic92/hestia@v3.0.1
-        continue-on-error: true
-        with:
-          upstream-cache-filter: true
-          upstream-cache-key-names: >
-            cache.nixos.org-1
-            misterkartoffel.cachix.org-1
+    - name: "Set up Cachix"
+      uses: cachix/cachix-action@v17
+      continue-on-error: true
+      with:
+        name: misterkartoffel
+        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
     - name: "Run flake check"
       run: nix flake check --all-systems
