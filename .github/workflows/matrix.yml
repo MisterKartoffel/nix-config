@@ -17,58 +17,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Checkout repository"
-      uses: actions/checkout@v7.0.1
-
     - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.1
         with:
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
 
-      - name: "Create filter"
-        uses: dorny/paths-filter@v4.0.3
-        id: filter
-        with:
-          filters: |
-            tree: &tree
-              - ".tack/**"
-              - "flake.nix"
-
-            shells:
-              - *tree
-              - "shell.nix"
-
-            packages: &packages
-              - *tree
-              - "pkgs/**"
-
-            hosts:
-              - *packages
-              - "hosts/**"
-              - "modules/**"
-              - "users/**"
+    - name: "Set up Hestia"
+      uses: Mic92/hestia@v3.0.1
 
     - name: "Discover matrices"
       id: matrix
-      env:
-        SHELLS: ${{ steps.filter.outputs.shells }}
-        PACKAGES: ${{ steps.filter.outputs.packages }}
-        HOSTS: ${{ steps.filter.outputs.hosts }}
       run: |
         for OUTPUT in shells packages hosts; do
           echo "::group::Evaluating ${OUTPUT}"
-          declare -n CHANGED="${OUTPUT^^}"
-
-          if [[ "${CHANGED}" == "true" ]]; then
-            VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
-          else
-            VALUE="[]"
-            echo "${OUTPUT} skipped, no changes."
-          fi
-
+          VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
+          jq -r '.[].drvPath' <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
           echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
           echo "::endgroup::"
         done

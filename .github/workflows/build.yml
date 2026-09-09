@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    name: "${{ matrix.installable }} (${{ matrix.system }})"
+    name: "${{ matrix.name }} (${{ matrix.system }})"
     runs-on: ${{ matrix.runner }}
 
     strategy:
@@ -46,7 +46,6 @@ jobs:
 
       - name: "Setup Hestia"
         uses: Mic92/hestia@v3.0.1
-        continue-on-error: true
         with:
           upstream-cache-filter: true
           upstream-cache-key-names: >
@@ -54,25 +53,7 @@ jobs:
             misterkartoffel.cachix.org-1
 
     - name: "Build ${{ inputs.target }}"
-      env:
-        TARGET: ${{ inputs.target }}
-      run: |
-        case "${TARGET}" in
-          host)
-            nix build \
-            ".#${{ matrix.platform }}Configurations.${{ matrix.installable }}.config.system.build.toplevel" \
-            --print-build-logs
-            ;;
-
-          package)
-            nix build \
-            ".#packages.${{ matrix.system }}.${{ matrix.installable }}" \
-            --print-build-logs
-            ;;
-
-          shell)
-            nix build \
-            ".#devShells.${{ matrix.system }}.${{ matrix.installable }}" \
-            --print-build-logs
-            ;;
-        esac
+      run: >
+        nix build
+        "${{ matrix.drvPath }}^*"
+        --print-build-logs

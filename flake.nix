@@ -47,13 +47,5 @@
       formatter = forAllSystems (
         pkgs: pkgs.treefmt.withConfig (import ./ci/treefmt.nix { inherit pkgs lib; })
       );
-
-      hydraJobs = forAllSystems (
-        pkgs:
-        {
-          recurseForDerivations = true;
-        }
-        // builtins.mapAttrs (_: drv: drv) self.packages.${pkgs.stdenv.hostPlatform.system}
-      );
     };
 }

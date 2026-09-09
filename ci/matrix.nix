@@ -7,10 +7,6 @@ let
   */
   flake = import ../.;
 
-  /*
-    Since this matrix generator is host-centric, it maps each existing
-    pkgs.stdenv.hostPlatform.system to its GitHub Actions runner
-  */
   runners = {
     x86_64-linux = "ubuntu-latest";
     aarch64-linux = "ubuntu-24.04-arm";
@@ -26,22 +22,17 @@ let
     "darwin"
   ];
 
-  systems = builtins.groupBy (host: host.system) (
-    builtins.concatMap (
-      platform:
-      map (hostname: {
-        installable = hostname;
-        inherit platform;
-        inherit (flake."${platform}Configurations".${hostname}.pkgs.stdenv.hostPlatform) system;
-      }) (builtins.attrNames (flake."${platform}Configurations" or { }))
-    ) platforms
-  );
-
   # Helper for merging information common to all jobs into each output.
-  matrix = system: {
-    inherit system;
+  matrix = drv: rec {
+    inherit (drv) name drvPath system;
     runner = runners.${system} or (abort "No runner defined for ${system}");
   };
+
+  jobs =
+    outputs:
+    builtins.concatMap (
+      system: map (name: matrix outputs.${system}.${name}) (builtins.attrNames outputs.${system})
+    ) (builtins.attrNames outputs);
 in
 /*
   All these outputs are composed by the common attributes:
@@ -53,28 +44,17 @@ in
   in the runner's build job.
 */
 {
-  shells = builtins.concatMap (
-    system:
-    map (shell: (matrix system) // { installable = shell; }) (
-      builtins.attrNames (flake.devShells.${system} or { })
-    )
-  ) (builtins.attrNames systems);
-
-  packages = builtins.concatMap (
-    system:
-    map (package: (matrix system) // { installable = package; }) (
-      builtins.attrNames (flake.packages.${system} or { })
-    )
-  ) (builtins.attrNames systems);
+  shells = jobs flake.devShells;
+  packages = jobs flake.packages;
 
   hosts = builtins.concatMap (
-    system:
+    platform:
     map (
-      host:
-      (matrix system)
+      hostname:
+      (matrix flake."${platform}Configurations".${hostname}.config.system.build.toplevel)
       // {
-        inherit (host) installable platform;
+        inherit platform;
       }
-    ) systems.${system}
-  ) (builtins.attrNames systems);
+    ) (builtins.attrNames (flake."${platform}Configurations" or { }))
+  ) platforms;
 }

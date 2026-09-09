@@ -36,8 +36,10 @@ jobs:
 
   matrix:
     uses: $/.github/workflows/matrix.yml
+    if: github.event_name != 'pull_request'
     permissions:
       pull-requests: read
+    secrets: inherit
 
   shells:
     uses: $/.github/workflows/build.yml
@@ -65,7 +67,6 @@ jobs:
 
   hosts:
     uses: $/.github/workflows/build.yml
-    if: github.event_name != 'pull_request'
     needs:
     - check
     - matrix
