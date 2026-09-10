@@ -56,3 +56,4 @@ jobs:
         nix build
         "${{ matrix.drvPath }}^*"
         --print-build-logs
+        --no-link

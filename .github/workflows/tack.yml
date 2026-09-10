@@ -20,6 +20,9 @@ jobs:
     env:
       TACK_NIX_CONF_TOKENS: 1
 
+    outputs:
+      summary: ${{ steps.summary.outputs.summary }}
+
     steps:
     - parallel:
       - name: "Checkout tack directory"
@@ -57,12 +60,139 @@ jobs:
         path: .tack
         include-hidden-files: true
 
+  matrix:
+    uses: $/.github/workflows/matrix.yml
+    needs: update
+    with:
+      eval: "[\"hosts\"]"
+    permissions:
+      actions: read
+      pull-requests: read
+    secrets: inherit
+
+  diffs:
+    name: "Generate diffs"
+    needs: matrix
+    runs-on: ${{ matrix.runner }}
+
+    permissions:
+      actions: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.1
+        with:
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Set up Hestia"
+      uses: Mic92/hestia@v3.0.1
+      with:
+        upstream-cache-filter: true
+        upstream-cache-key-names: >
+          cache.nixos.org-1
+          misterkartoffel.cachix.org-1
+
+    - name: "Set up Cachix"
+      uses: cachix/cachix-action@v17
+      continue-on-error: true
+      with:
+        name: misterkartoffel
+
+    - name: "Build old closure"
+      id: old
+      run: >
+        CLOSURE="$(nix build
+        "${{ matrix.drvPath }}^*"
+        --no-link
+        --print-out-paths)"
+
+        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
+
+    - name: "Download changes"
+      uses: actions/download-artifact@v8.0.1
+      with:
+        name: tack
+        path: .tack
+
+    - name: "Build new closure"
+      id: new
+      run: >
+        CLOSURE="$(nix build
+        ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel"
+        --no-link
+        --print-out-paths)"
+
+        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
+
+    - name: "Generate diff"
+      run: |
+        DIFF="$(nix run nixpkgs#dix -- \
+          "${{ steps.old.outputs.closure }}" \
+          "${{ steps.new.outputs.closure }}")"
+
+        cat > "${{ matrix.hostname }}.md" <<EOF
+        ## ${{ matrix.hostname }}
+
+        \`\`\`text
+        ${DIFF}
+        \`\`\`
+
+        EOF
+
+    - name: "Upload diff"
+      uses: actions/upload-artifact@v7
+      with:
+        name: diff-${{ matrix.hostname }}
+        path: ${{ matrix.hostname }}.md
+
+  consolidate:
+    name: "Merge diffs"
+    needs: diffs
+    runs-on: ubuntu-latest
+
     outputs:
-      summary: ${{ steps.summary.outputs.summary }}
+      diff: ${{ steps.merge.outputs.diff }}
+
+    steps:
+    - name: "Download diffs"
+      uses: actions/download-artifact@v8.0.1
+      with:
+        pattern: diff-*
+        path: diffs
+        merge-multiple: true
+
+    - name: "Merge diffs"
+      id: merge
+      run: |
+        {
+          echo "DIFF<<EOF"
+          echo "# Closure diffs"
+
+          for FILE in diffs/*.md; do
+            cat "${FILE}"
+            echo
+          done
+
+          echo "EOF"
+        } >> "${GITHUB_OUTPUT}"
 
   pull-request:
     name: "Create pull request"
-    needs: update
+    needs:
+    - update
+    - consolidate
     runs-on: ubuntu-latest
 
     permissions:
@@ -95,3 +225,5 @@ jobs:
           ```text
           ${{ needs.update.outputs.summary }}
           ```
+
+          ${{ needs.consolidate.outputs.diff }}

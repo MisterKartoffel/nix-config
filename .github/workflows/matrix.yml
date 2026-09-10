@@ -3,6 +3,12 @@ name: "Matrix"
 
 on:
   workflow_call:
+    inputs:
+      eval:
+        description: "Outputs to evaluate"
+        required: false
+        default: "[\"shells\", \"packages\", \"hosts\"]"
+        type: string
     outputs:
       shells:
         value: ${{ jobs.matrix.outputs.shells }}
@@ -34,11 +40,13 @@ jobs:
 
     - name: "Discover matrices"
       id: matrix
+      env:
+        EVAL: ${{ inputs.eval }}
       run: |
-        for OUTPUT in shells packages hosts; do
+        for OUTPUT in $(jq -r ".[]" <<< "${EVAL}"); do
           echo "::group::Evaluating ${OUTPUT}"
           VALUE="$(nix eval --json --file ./ci/matrix.nix --apply "x: x.${OUTPUT}")"
-          jq -r '.[].drvPath' <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
+          jq -r ".[].drvPath" <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
           echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
           echo "::endgroup::"
         done

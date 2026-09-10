@@ -44,8 +44,12 @@ in
 
   hosts = builtins.concatMap (
     platform:
-    map (hostname: (matrix flake.${platform}.${hostname}.config.system.build.toplevel)) (
-      builtins.attrNames (flake.${platform} or { })
-    )
+    map (
+      hostname:
+      (matrix flake.${platform}.${hostname}.config.system.build.toplevel)
+      // {
+        inherit hostname;
+      }
+    ) (builtins.attrNames (flake.${platform} or { }))
   ) platforms;
 }

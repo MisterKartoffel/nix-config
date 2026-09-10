@@ -38,6 +38,7 @@ jobs:
     uses: $/.github/workflows/matrix.yml
     if: github.event_name != 'pull_request'
     permissions:
+      actions: read
       pull-requests: read
     secrets: inherit
 
