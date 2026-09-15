@@ -1,218 +1,214 @@
 let
-  statuses = {
-    Upgraded = {
-      marker = "[U.]";
-      color = "green";
-      section = "CHANGED";
+  data = builtins.fromJSON (builtins.readFile ./diff.json);
+
+  config = {
+    status = {
+      Added = {
+        color = "green";
+        marker = "A.";
+      };
+
+      Removed = {
+        color = "red";
+        marker = "R.";
+      };
+
+      Upgraded = {
+        color = "green";
+        marker = "U.";
+      };
+
+      Downgraded = {
+        color = "red";
+        marker = "D.";
+      };
+
+      Changed = {
+        color = "Goldenrod";
+        marker = "C.";
+      };
     };
 
-    Downgraded = {
-      marker = "[D.]";
-      color = "red";
-      section = "CHANGED";
-    };
-
-    Changed = {
-      marker = "[C.]";
-      color = "yellow";
-      section = "CHANGED";
-    };
-
-    Added = {
-      marker = "[A.]";
-      color = "green";
-      section = "ADDED";
-    };
-
-    Removed = {
-      marker = "[R.]";
-      color = "red";
-      section = "REMOVED";
-    };
+    units = [
+      {
+        suffix = "GiB";
+        size = 1024 * 1024 * 1024;
+      }
+      {
+        suffix = "MiB";
+        size = 1024 * 1024;
+      }
+      {
+        suffix = "KiB";
+        size = 1024;
+      }
+      {
+        suffix = "B";
+        size = 1;
+      }
+    ];
   };
 
-  arrow = " → ";
-  text = s: "\\text{${s}}";
-  special = s: "\\<${s}\\>";
-  color = c: s: "{\\color{${c}}${s}}";
+  format = {
+    bytes =
+      signed: bytes:
+      let
+        abs = if bytes > 0 then bytes else -bytes;
+        sign =
+          if !signed then
+            ""
+          else if bytes > 0 then
+            "+"
+          else if bytes < 0 then
+            "–"
+          else
+            "";
 
-  round3 =
-    n:
-    let
-      factor =
-        if n < 10 then
-          100
-        else if n < 100 then
-          10
-        else
-          1;
-    in
-    builtins.floor (n * factor + 0.5) / factor;
+        unit = builtins.head (builtins.filter (unit: (abs + 1) >= unit.size) config.units);
 
-  size =
-    bytes:
-    let
-      abs = if bytes > 0 then bytes else -bytes;
+        scaled = (abs * 100 + unit.size / 2) / unit.size;
+        integer = scaled / 100;
+        fraction =
+          let
+            decimal = scaled - integer * 100;
+          in
+          if decimal < 10 then "0${toString decimal}" else toString decimal;
+      in
+      sign + "${toString integer}.${fraction}" + unit.suffix;
 
-      sign =
-        if bytes > 0 then
-          "+"
-        else if bytes < 0 then
-          "-"
-        else
-          "";
+    version =
+      version:
+      let
+        amount = version.amount or 1;
+      in
+      version.name + (if amount == 1 then "" else "×${toString amount}");
 
-      units = [
+    versions =
+      versions:
+      builtins.map (
+        v:
         {
-          suffix = "GiB";
-          threshold = 1024 * 1024 * 1024;
-        }
-        {
-          suffix = "MiB";
-          threshold = 1024 * 1024;
-        }
-        {
-          suffix = "KiB";
-          threshold = 1024;
-        }
-        {
-          suffix = "B";
-          threshold = 1;
-        }
-      ];
-
-      unit = builtins.head (builtins.filter (u: abs >= u.threshold) units);
-
-      value = if unit.threshold == 1 then abs else round3 (abs / unit.threshold);
-    in
-    "${sign}${toString value} ${unit.suffix}";
-
-  plainVersion =
-    v:
-    let
-      inherit (v) name;
-      amount = if (v.amount or 1) == 1 then "" else "×${toString v.amount}";
-    in
-    name + amount;
-
-  version = c: v: color c (plainVersion v);
-
-  versionDiff =
-    diff:
-    let
-      pair = old: new: version "red" old + arrow + version "green" new;
-    in
-    {
-      changed = pair diff.old diff.new;
-      added = version "green" diff.version;
-      removed = version "red" diff.version;
-
-      amount_changed =
-        pair
-          {
-            inherit (diff.version) name;
-            amount = diff.old_amount;
-          }
-          {
-            inherit (diff.version) name;
-            amount = diff.new_amount;
+          changed = {
+            old = format.version v.old;
+            new = format.version v.new;
           };
-    }
-    .${diff.kind} or (throw "Unknown version diff kind: ${diff.kind}");
+          added = {
+            old = null;
+            new = format.version v.version;
+          };
+          removed = {
+            old = format.version v.version;
+            new = null;
+          };
+          amount_changed = {
+            old = v.version.name + "×${toString v.old_amount}";
+            new = v.version.name + "×${toString v.new_amount}";
+          };
+        }
+        .${v.kind} or (throw "Unknown version kind: ${v.kind}")
+      ) versions;
+  };
 
-  packageVersion =
-    diff:
+  diffLine =
+    {
+      name,
+      color,
+      marker,
+      oldVersions ? [ ],
+      newVersions ? [ ],
+      omitted ? false,
+      delta,
+    }:
     let
-      changed = builtins.filter (v: v.kind == "changed") diff.versions;
-      other = builtins.filter (v: v.kind != "changed") diff.versions;
+      applyColor = color: string: ''{\color{${color}}${string}}'';
+      joinVersions = color: versions: builtins.concatStringsSep ", " (map (applyColor color) versions);
 
-      old = builtins.concatStringsSep ", " (map (v: version "red" v.old) changed);
-      new = builtins.concatStringsSep ", " (map (v: version "green" v.new) changed);
-
-      unchanged = color "gray" (special "unchanged");
-    in
-    if diff.versions == [ ] then
-      ""
-    else if diff.has_omitted_versions then
-      "${old}, ${unchanged + arrow + new}, ${unchanged}"
-    else
-      builtins.concatStringsSep ", " (
-        builtins.filter (s: s != "") [
-          (if changed == [ ] then "" else old + arrow + new)
-          (builtins.concatStringsSep ", " (map versionDiff other))
-        ]
-      );
-
-  package =
-    diff:
-    let
-      left =
+      render =
+        text:
         let
-          status = statuses.${diff.status};
+          unchanged = applyColor "gray" "unchanged";
         in
-        "${color status.color status.marker} ${diff.name}";
+        if omitted && text != "" then
+          "${text}, ${unchanged}"
+        else if omitted then
+          unchanged
+        else
+          text;
 
-      right = builtins.concatStringsSep ", " (
+      versionsText =
+        let
+          oldText = joinVersions "red" oldVersions;
+          newText = joinVersions "green" newVersions;
+        in
+        if oldText == "" then
+          render newText
+        else if newText == "" then
+          render oldText
+        else
+          (render oldText) + " → " + (render newText);
+
+      sizeText =
+        if delta == 0 then
+          ""
+        else
+          applyColor (if delta < 0 then "blue" else "orange") (format.bytes true delta);
+
+      renderedVersionsText = builtins.concatStringsSep ", " (
         builtins.filter (s: s != "") [
-          (packageVersion diff)
-          (
-            if diff.size_delta == 0 then
-              ""
-            else
-              color (if diff.size_delta < 0 then "blue" else "orange") (size diff.size_delta)
-          )
+          versionsText
+          sizeText
         ]
       );
-
     in
-    "&${text left}&&${text right}";
+    ''&\text{[${applyColor color marker}] ${name}}\ &&\text{${renderedVersionsText}}\\'';
 
-  renderSection =
-    name: diffs:
-    let
-      matching = builtins.filter (d: (statuses.${d.status} or { }).section or null == name) diffs;
-      rows = [ "&${text name}" ] ++ map package matching;
-    in
-    if matching == [ ] then "" else builtins.concatStringsSep "\\\\\n" rows;
-
-  pathSummary =
-    paths:
-    text "PATHS: ${paths.old} ${arrow} ${paths.new} (${color "green" "+${toString paths.added}"}, ${color "red" "-${toString paths.removed}"})";
-
-  sizeSummary = diff: text "SIZE: ${size diff.size_old} ${arrow} ${size diff.size_new}";
-
-  diffSummary =
+  makeLine =
     diff:
     let
-      delta = diff.size_new - diff.size_old;
-      formatted = size delta;
+      versions = format.versions diff.versions;
+      oldVersions = builtins.map (v: v.old) (builtins.filter (v: v.old != null) versions);
+      newVersions = builtins.map (v: v.new) (builtins.filter (v: v.new != null) versions);
     in
-    text "DIFF: ${color (if delta <= 0 then "green" else "red") formatted}";
+    diffLine (
+      {
+        inherit (diff) name;
+        inherit oldVersions newVersions;
+        omitted = diff.has_omitted_versions;
+        delta = diff.size_delta;
+      }
+      // config.status.${diff.status}
+    );
+
+  added = builtins.filter (d: d.status == "Added") data.diffs;
+  removed = builtins.filter (d: d.status == "Removed") data.diffs;
+  changed = builtins.filter (
+    d:
+    builtins.elem d.status [
+      "Upgraded"
+      "Downgraded"
+      "Changed"
+    ]
+  ) data.diffs;
+
+  section =
+    name: diffs:
+    if diffs == [ ] then
+      ""
+    else
+      builtins.concatStringsSep "\n" ([ ''&\text{${name}}\\'' ] ++ builtins.map makeLine diffs);
 in
-{
-  parse =
-    file:
-    let
-      data = builtins.fromJSON (builtins.readFile file);
-
-      sections = builtins.filter (s: s != "") (
-        map (name: renderSection name data.diffs) [
-          "CHANGED"
-          "ADDED"
-          "REMOVED"
-        ]
-      );
-    in
-    ''
-      $$
-      \begin{flalign}
-      ${builtins.concatStringsSep "\\\\\n${text ""}\\\\\n" sections}
-      \end{flalign}
-      $$
-
-      ${pathSummary data.paths}
-      ${sizeSummary data}
-      ${diffSummary data}
-
-    '';
-}
+''
+  $$
+  \begin{flalign}
+  ${section "CHANGED" changed}
+  \text{}\\
+  ${section "ADDED" added}
+  \text{}\\
+  ${section "REMOVED" removed}
+  \text{}\\
+  &\text{PATHS: ${toString data.paths.old} → ${toString data.paths.new} (+${toString data.paths.added}, –${toString data.paths.removed})}\\
+  &\text{SIZE: ${format.bytes false data.size_old} → ${format.bytes false data.size_new}}\\
+  &\text{DIFF: ${format.bytes true (data.size_new - data.size_old)}}
+  \end{flalign}
+  $$
+''
