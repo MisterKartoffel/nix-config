@@ -137,12 +137,16 @@ jobs:
         echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
 
     - name: "Generate diff"
+      id: diff
       run: |
-        DIFF="$(nix run nixpkgs#dix -- \
+        nix run nixpkgs#dix -- --output json \
           "${{ steps.old.outputs.closure }}" \
-          "${{ steps.new.outputs.closure }}")"
+          "${{ steps.new.outputs.closure }}" \
+          > ./ci/diff.json
 
-        cat > "${{ matrix.hostname }}.md" <<EOF
+        DIFF="$(nix eval --raw --file ./ci/diff.nix)"
+
+        cat > "${{ matrix.hostname }}.txt" <<EOF
         ## ${{ matrix.hostname }}
 
         \`\`\`text
@@ -151,11 +155,18 @@ jobs:
 
         EOF
 
+    - name: "Upload diff failure"
+      if: steps.diff.outcome == 'failure'
+      uses: actions/upload-artifact@v7
+      with:
+        name: failure-${{ matrix.hostname }}
+        path: ci/diff.json
+
     - name: "Upload diff"
       uses: actions/upload-artifact@v7
       with:
         name: diff-${{ matrix.hostname }}
-        path: ${{ matrix.hostname }}.md
+        path: ${{ matrix.hostname }}.txt
 
   consolidate:
     name: "Merge diffs"
@@ -180,7 +191,7 @@ jobs:
           echo "DIFF<<EOF"
           echo "# Closure diffs"
 
-          for FILE in diffs/*.md; do
+          for FILE in diffs/*.txt; do
             cat "${FILE}"
             echo
           done
