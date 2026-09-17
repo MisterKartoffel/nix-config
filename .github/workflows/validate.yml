@@ -32,7 +32,7 @@ jobs:
           .github
 
     - name: "Actionlint"
-      uses: kjanat/actionlint@v1.15.1
+      uses: kjanat/actionlint@v1.16.1
 
   formatter:
     name: "Treefmt CI"
