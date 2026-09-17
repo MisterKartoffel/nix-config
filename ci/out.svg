@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1066"
+  height="1148"
+  viewBox="0 0 1066 1148"
+>
+  <rect
+    width="1066"
+    height="1148"
+    fill="#1e1e2e"
+  />
+  <text
+  x="16"
+  y="32"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  CHANGED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >bcachefs-tools</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >electron</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >electron-unwrapped</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fish</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fishplugin-pure</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >gdk-pixbuf-loaders.cache</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >impala</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >initrd-linux</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >kwindowsystem</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libwacom</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >linux</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >myx</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >nixos-system-ghost</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >rclone</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >sops-install-secrets</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >source</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >talloc</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >user-environment</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[D.]</tspan> <tspan  >zen-browser</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[D.]</tspan> <tspan  >zen-browser-unwrapped</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="57"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="316"
+  dy="0"
+><tspan fill="#f38ba8" >1.39.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.39.4</tspan><tspan  >, </tspan><tspan fill="#fab387" >+203.99KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >43.4.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >43.5.1</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >43.4.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >43.5.1</tspan><tspan  >, </tspan><tspan fill="#fab387" >+2.43MiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >4.8.1-doc</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >4.8.1</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >4.9.3-doc</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >4.9.3</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  >, </tspan><tspan fill="#fab387" >+210.99KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >4.18.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >4.19.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.04KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >&lt;none&gt; ×3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >&lt;none&gt; ×2</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–5.06KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >0.7.4</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.9.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+288.41KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >6.18.49</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.18.50</tspan><tspan  >, </tspan><tspan fill="#fab387" >+47.92KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >6.29.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.30.0</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2.19.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.20.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+12.55KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >6.18.49-modules ×2</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >6.18.49</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.18.50-modules ×2</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >6.18.50</tspan><tspan  >, </tspan><tspan fill="#fab387" >+41.38KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#fab387" >+46.71KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >26.11.19800101.c043004</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >26.11.19800101.8ce4ef6</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >1.75.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.75.1</tspan><tspan  >, </tspan><tspan fill="#fab387" >+40.09KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#fab387" >+8.61KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#fab387" >+286.13KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2.4.4</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.5.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+11.02KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#89b4fa" >–8.76KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >1.21.16b</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.22b</tspan><tspan  >, </tspan><tspan fill="#fab387" >+31.45KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >1.21.16b</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.22b</tspan><tspan  >, </tspan><tspan fill="#fab387" >+17.03MiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="582"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  ADDED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[A.]</tspan> <tspan  >bat</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="607"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="316"
+  dy="0"
+><tspan fill="#a6e3a1" >0.26.1</tspan><tspan  >, </tspan><tspan fill="#fab387" >+7.14MiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="657"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  REMOVED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >ghostscript-with-X</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >girara</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >gumbo</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >ijs</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >jbig2dec</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >libspectre</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >mupdf</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >texlive-bin</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura-cb</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura-djvu</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura-pdf-mupdf</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura-ps</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >zathura-with-plugins</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="682"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="316"
+  dy="0"
+><tspan fill="#f38ba8" >10.07.1-fonts</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >10.07.1</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–54.78MiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.02.04</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–57.45KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >0.13.2</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–425.49KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >10.07.1</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–86.27KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >0.20</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–382.89KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >0.2.12</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–108.24KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >1.27.2</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–51.37MiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2025</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–338.51KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.05.20-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2026.05.20-dev</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2026.05.20-man</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2026.05.20</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–1.87MiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.05.10</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–29.40KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.05.10</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–38.39KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.05.10</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–39.97KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.02.03</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–24.22KiB</tspan></tspan>
+ <tspan
+  x="316"
+  dy="25"
+><tspan fill="#f38ba8" >2026.05.20</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–36.80KiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="1057"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>PATHS: 1319 → 1301 (+98, –116)</text>
+ <text
+  x="16"
+  y="1082"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>SIZE: 6.26GiB → 6.18GiB</text>
+ <text
+  x="16"
+  y="1107"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>DIFF: –81.75MiB</text>
+
+</svg>
