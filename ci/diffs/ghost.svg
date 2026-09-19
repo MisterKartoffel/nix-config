@@ -1,0 +1,823 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="2326"
+  height="2548"
+  viewBox="0 0 2326 2548"
+>
+  <rect
+    width="2326"
+    height="2548"
+    fill="#1e1e2e"
+  />
+  <text
+  x="16"
+  y="32"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  CHANGED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >appstream</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >bcachefs-tools</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >bubblewrap</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >curl</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >ed</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >electron</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >electron-unwrapped</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >expat</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >eza</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >fc-cache</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fish</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fishplugin-pure</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fontconfig</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >fzf</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >greetd</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >gtest</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >hwdata</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >imagemagick</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >imath</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >impala</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >initrd-linux</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >kwindowsystem</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libblake3</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libcap-ng</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libde265</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libheif</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libmysofa</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libnftnl</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libopenmpt</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >libqmi</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >librsvg</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libsodium</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >libtorrent-rasterbar</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libwacom</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >libxml2</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >linux</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >linux-firmware</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >linux-headers</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >linux-headers-static</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >make-initrd-ng</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >mesa</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >myx</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >nftables</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >niri</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >nixos-system-ghost</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >nodejs</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >nodejs-slim</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >oo7</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >oo7-pam</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >oo7-portal</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >oo7-server</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >openexr</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >openssl</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >pcre2</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >perl5.42.3-DBI</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >perl5.42.3-URI</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >polkit-stdin-agent</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >publicsuffix-list</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >rclone</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >rdma-core</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >ripgrep</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >ruby</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >run0-sudo-shim</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >s2n-tls</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >simdjson</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >simdutf</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >sops-install-secrets</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >source</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >systemd</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >talloc</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >tinysparql</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >tree-sitter</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >tree-sitter-gitcommit</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >tree-sitter-kdl</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >tree-sitter-nix</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >tuigreet</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >udev-rules</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >util-linux</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >util-linux-minimal</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#f9e2af" >[C.]</tspan> <tspan  >vellum</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >vid.stab</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >vimplugin-luajit2.1-lz.n</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >vimplugin-nvim-treesitter</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >x264</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >zen-browser</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[U.]</tspan> <tspan  >zen-browser-unwrapped</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="57"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="326"
+  dy="0"
+><tspan fill="#fab387" >+155.98KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.39.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.39.6</tspan><tspan  >, </tspan><tspan fill="#fab387" >+251.51KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.11.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.12.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+9.29KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >8.21.0-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >8.21.0-man</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >8.21.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >8.22.0-bin</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >8.22.0-man</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >8.22.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+33.99KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.22.5</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.22.6</tspan><tspan  >, </tspan><tspan fill="#fab387" >+336.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >43.4.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >43.6.0</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >43.4.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >43.6.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+3.11MiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.8.3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.8.4</tspan><tspan  >, </tspan><tspan fill="#fab387" >+7.47KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–9.42KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+23.30KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >4.8.1-doc</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >4.8.1</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >4.9.3-doc</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >4.9.3</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  >, </tspan><tspan fill="#fab387" >+204.36KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >4.18.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >4.19.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.04KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.18.2-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.18.2-lib</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.18.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.18.3-bin</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.18.3-lib</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.18.3</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–70.16KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.74.3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.74.4</tspan><tspan  >, </tspan><tspan fill="#fab387" >+8.48KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+15.17KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.17.0-dev</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >1.17.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.18.0-dev</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >1.18.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+21.16KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.410</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.411</tspan><tspan  >, </tspan><tspan fill="#fab387" >+43.40KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >7.1.2-29</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >7.1.2-31</tspan><tspan  >, </tspan><tspan fill="#fab387" >+32.88KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >3.2.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >3.2.3</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–2.30KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.7.4</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.9.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+287.64KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >6.18.49</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.18.52</tspan><tspan  >, </tspan><tspan fill="#fab387" >+396.59KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >6.29.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.30.0</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.8.6</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.8.7</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.9.3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.9.5</tspan><tspan  >, </tspan><tspan fill="#fab387" >+2.38KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.1.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.1.2</tspan><tspan  >, </tspan><tspan fill="#fab387" >+488.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.23.1-lib</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.23.3-lib</tspan><tspan  >, </tspan><tspan fill="#fab387" >+35.51KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.3.4</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.3.5</tspan><tspan  >, </tspan><tspan fill="#fab387" >+5.18KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.3.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.3.2</tspan><tspan  >, </tspan><tspan fill="#fab387" >+4.79KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.8.7</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.8.9</tspan><tspan  >, </tspan><tspan fill="#fab387" >+3.89KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–60.06MiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–146.49KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.0.22-unstable-2026-07-31</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.0.22-unstable-2026-08-13</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+19.75KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.19.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.20.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+12.55KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.15.3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.15.4</tspan><tspan  >, </tspan><tspan fill="#fab387" >+160.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >6.18.49-modules ×2</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >6.18.49</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >6.18.52-modules ×2</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >6.18.52</tspan><tspan  >, </tspan><tspan fill="#fab387" >+237.34KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >20260810-zstd</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >20260910-zstd</tspan><tspan  >, </tspan><tspan fill="#fab387" >+16.75MiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >7.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >7.2</tspan><tspan  >, </tspan><tspan fill="#fab387" >+51.10KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >7.1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >7.2</tspan><tspan  >, </tspan><tspan fill="#fab387" >+51.10KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+12.66KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+33.34KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+49.81KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.1.6</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.1.7</tspan><tspan  >, </tspan><tspan fill="#fab387" >+21.88KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+19.48KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >26.11.19800101.c043004</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >26.11.19800101.b1b8759</tspan><tspan  >, </tspan><tspan fill="#fab387" >+24.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >24.19.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >24.20.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.86KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >24.19.0-corepack</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >24.19.0-npm</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >24.19.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >24.20.0-corepack</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >24.20.0-npm</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >24.20.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+776.99KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–30.50KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–12.95KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–41.92KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–108.27KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >3.4.13</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >3.4.15</tspan><tspan  >, </tspan><tspan fill="#fab387" >+20.09KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >3.6.3-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >3.6.3-dev</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >3.6.3</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >3.6.4-bin</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >3.6.4-dev</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >3.6.4</tspan><tspan  >, </tspan><tspan fill="#fab387" >+8.52KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >10.47</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >10.48</tspan><tspan  >, </tspan><tspan fill="#fab387" >+12.29KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.651</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.653</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.50KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >5.21</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >5.36</tspan><tspan  >, </tspan><tspan fill="#fab387" >+42.13KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.3.2</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.3.3</tspan><tspan  >, </tspan><tspan fill="#fab387" >+108.12KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0-unstable-2026-08-14</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0-unstable-2026-09-02</tspan><tspan  >, </tspan><tspan fill="#fab387" >+392.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.75.0</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.75.1</tspan><tspan  >, </tspan><tspan fill="#fab387" >+40.09KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–39.32KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–17.13KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–12.00KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+12.43KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.7.6</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.7.8</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–1.02KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >4.6.5</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >4.6.8</tspan><tspan  >, </tspan><tspan fill="#fab387" >+5.60KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >9.0.0</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >9.1.0</tspan><tspan  >, </tspan><tspan fill="#6c7086" >unchanged</tspan><tspan  >, </tspan><tspan fill="#fab387" >+24.34KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+610.65KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+1.22MiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+8.01KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.4.4</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.5.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+11.02KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+151.98KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–14.86KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.0.0+rev=a87878a</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.0.0+rev=55a265c</tspan><tspan  >, </tspan><tspan fill="#fab387" >+8.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.0.0+rev=b37e3d5</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.0.0+rev=v2.0.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.13KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.0.0+rev=3d0173d</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.0.0+rev=5a64e75</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–2.04KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+19.22KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#fab387" >+79.33KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.42.2-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-lastlog</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-lib</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-login</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-man</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-mount</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-swap</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.42.3-bin</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-lastlog</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-lib</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-login</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-man</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-mount</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-swap</tspan><tspan  >, </tspan><tspan fill="#fab387" >+9.16KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.42.2-bin</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-lib</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-login</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-mount</tspan><tspan  >, </tspan><tspan fill="#f38ba8" >2.42.2-swap</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >2.42.3-bin</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-lib</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-login</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-mount</tspan><tspan  >, </tspan><tspan fill="#a6e3a1" >2.42.3-swap</tspan><tspan  >, </tspan><tspan fill="#fab387" >+2.14KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#89b4fa" >–19.11KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.1.1-unstable-2025-08-21</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.1.2</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–56.00B</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >2.11.3-1</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >3.1.0-1</tspan><tspan  >, </tspan><tspan fill="#fab387" >+2.84KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0.10.0-unstable-2026-09-01</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0.10.0-unstable-2026-09-12</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–15.13KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >0-unstable-2025-01-03-lib</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >0-unstable-2025-09-10-lib</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.21.16b</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.22.2b</tspan><tspan  >, </tspan><tspan fill="#fab387" >+23.63KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#f38ba8" >1.21.16b</tspan><tspan  > → </tspan><tspan fill="#a6e3a1" >1.22.2b</tspan><tspan  >, </tspan><tspan fill="#fab387" >+19.67MiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="2232"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  ADDED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[A.]</tspan> <tspan  >config</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[A.]</tspan> <tspan  >libhwy</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[A.]</tspan> <tspan  >perl5.42.3-MIME-Base32</tspan></tspan>
+ <tspan
+  x="16"
+  dy="25"
+><tspan fill="#a6e3a1" >[A.]</tspan> <tspan  >programs.sqlite</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="2257"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="326"
+  dy="0"
+><tspan fill="#a6e3a1" >&lt;none&gt;</tspan><tspan  >, </tspan><tspan fill="#fab387" >+1.47KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#a6e3a1" >1.4.0</tspan><tspan  >, </tspan><tspan fill="#fab387" >+100.51KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#a6e3a1" >1.303</tspan><tspan  >, </tspan><tspan fill="#fab387" >+8.45KiB</tspan></tspan>
+ <tspan
+  x="326"
+  dy="25"
+><tspan fill="#a6e3a1" >&lt;none&gt;</tspan><tspan  >, </tspan><tspan fill="#fab387" >+16.26MiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="2382"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  font-weight="bold">
+  REMOVED
+</tspan>
+<tspan
+  x="16"
+  dy="25"
+><tspan fill="#f38ba8" >[R.]</tspan> <tspan  >python3.14-packaging</tspan></tspan>
+
+</text>
+<text
+  x="16"
+  y="2407"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+><tspan
+  x="326"
+  dy="0"
+><tspan fill="#f38ba8" >26.2</tspan><tspan  >, </tspan><tspan fill="#89b4fa" >–1.25MiB</tspan></tspan>
+</text>
+
+<text
+  x="16"
+  y="2457"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>PATHS: 1319 → 1322 (+1304, –1301)</text>
+ <text
+  x="16"
+  y="2482"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>SIZE: 6.26GiB → 6.25GiB</text>
+ <text
+  x="16"
+  y="2507"
+  fill="#cdd6f4"
+  font-family="monospace"
+  font-size="16"
+>DIFF: –765.08KiB</text>
+
+</svg>
