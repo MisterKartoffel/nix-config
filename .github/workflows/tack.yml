@@ -160,11 +160,47 @@ jobs:
         name: diff-${{ matrix.hostname }}
         path: ${{ matrix.hostname }}.svg
 
+  pages:
+    name: "Publish diffs"
+    needs: diffs
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      id-token: write
+      pages: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    outputs:
+      page_url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+    - name: "Download diffs"
+      uses: actions/download-artifact@v8.0.1
+      with:
+        pattern: diff-*
+        path: _site/diffs/${{ github.run_id }}
+        merge-multiple: true
+
+    - name: "Set up Pages"
+      uses: actions/configure-pages@v6.0.0
+
+    - name: "Upload Pages artifact"
+      uses: actions/upload-pages-artifact@v5.0.0
+
+    - name: "Deploy to Pages"
+      id: deploy
+      uses: actions/deploy-pages@v5.0.1
+
   pull-request:
     name: "Create pull request"
     needs:
     - update
-    - diffs
+    - matrix
+    - pages
     runs-on: ubuntu-latest
 
     permissions:
@@ -181,15 +217,11 @@ jobs:
         name: tack
         path: .tack
 
-    - name: "Download diffs"
-      uses: actions/download-artifact@v8.0.1
-      with:
-        pattern: diff-*
-        path: ci/diffs
-        merge-multiple: true
-
     - name: "Create pull request body"
       id: body
+      env:
+        PAGE_URL: ${{ needs.pages.outputs.page_url }}
+        HOSTS: ${{ needs.matrix.outputs.hosts }}
       run: |
         {
           echo "TEXT<<EOF"
@@ -201,15 +233,12 @@ jobs:
           echo
           echo "## Closure diffs"
 
-          for FILE in ci/diffs/*.svg; do
-            HOSTNAME="${FILE##*/}"
-            HOSTNAME="${HOSTNAME%.svg}"
-
+          while read -r HOSTNAME; do
             echo "### ${HOSTNAME}"
             echo
-            echo "![${HOSTNAME} closure diff](${FILE})"
+            echo "![${HOSTNAME} closure diff](${PAGE_URL}diffs/${HOSTNAME}.svg)"
             echo
-          done
+          done < <(jq -r '.[].hostname' <<< "${HOSTS}")
 
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
@@ -226,18 +255,3 @@ jobs:
         reviewers: ${{ github.repository_owner }}
         title: "tack: update inputs"
         body: ${{ steps.body.outputs.text }}
-
-    - name: "Attach diff images"
-      if: steps.pull-request.outputs.pull-request-number != ''
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        ATTACHMENTS=()
-
-        for FILE in ci/diffs/*.svg; do
-          ATTACHMENTS+=(--attach "$FILE")
-        done
-
-        gh pr edit \
-          "${{ steps.pull-request.outputs.pull-request-number }}" \
-          "${ATTACHMENTS[@]}"
