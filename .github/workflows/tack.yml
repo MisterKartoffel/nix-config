@@ -97,8 +97,9 @@ jobs:
             cores = 0
 
     - name: "Set up Hestia"
-      uses: Mic92/hestia@v3.0.1
+      uses: Mic92/hestia@v3.1.0
       with:
+        filter-drv-closures: true
         upstream-cache-filter: true
         upstream-cache-key-names: >
           cache.nixos.org-1
@@ -109,6 +110,11 @@ jobs:
       continue-on-error: true
       with:
         name: misterkartoffel
+
+    - name: "Prefetch derivation closure"
+      run: >
+        "${HESTIA_BIN}" prefetch
+        ${{ matrix.drvPath }}
 
     - name: "Build old closure"
       id: old
@@ -147,14 +153,15 @@ jobs:
         nix eval --raw --file ./ci/diff.nix \
           > "${{ matrix.hostname }}.svg"
 
-    - name: "Upload diff failure"
+    - name: "Upload diff JSON"
       if: steps.diff.outcome == 'failure'
       uses: actions/upload-artifact@v7
       with:
         name: failure-${{ matrix.hostname }}
         path: ci/diff.json
 
-    - name: "Upload diff"
+    - name: "Upload diff SVG"
+      if: steps.diff.outcome == 'success'
       uses: actions/upload-artifact@v7
       with:
         name: diff-${{ matrix.hostname }}

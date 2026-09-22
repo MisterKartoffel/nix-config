@@ -36,7 +36,13 @@ jobs:
             cores = 0
 
     - name: "Set up Hestia"
-      uses: Mic92/hestia@v3.0.1
+      uses: Mic92/hestia@v3.1.0
+      with:
+        filter-drv-closures: true
+        upstream-cache-filter: true
+        upstream-cache-key-names: >
+          cache.nixos.org-1
+          misterkartoffel.cachix.org-1
 
     - name: "Discover matrices"
       id: matrix
