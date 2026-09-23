@@ -78,7 +78,6 @@ let
 
     text =
       {
-        x,
         y,
         color ? config.colors.foreground,
         font-family ? config.font.family,
@@ -87,7 +86,6 @@ let
       }:
       ''
         <text
-          x="${toString x}"
           y="${toString y}"
           fill="${color}"
           font-family="${font-family}"
@@ -100,7 +98,7 @@ let
         content,
         color ? null,
       }:
-      "<tspan ${if color != null then ''fill="${color}"'' else ""}>${escape content}</tspan>";
+      "<tspan ${if color == null then "" else ''fill="${color}"''}>${escape content}</tspan>";
 
     max =
       lines:
@@ -171,113 +169,156 @@ let
     );
   };
 
-  diffLine =
-    diff:
-    let
-      render =
-        text:
-        builtins.concatStringsSep (helpers.tspan { content = ", "; }) (
-          if diff.has_omitted_versions then
-            text
-            ++ [
-              (helpers.tspan {
-                content = "unchanged";
-                color = config.colors.gray;
-              })
+  render = {
+    line =
+      diff:
+      let
+        realize =
+          text:
+          builtins.concatStringsSep ", " (
+            if diff.has_omitted_versions then
+              text
+              ++ [
+                (helpers.tspan {
+                  content = "unchanged";
+                  color = config.colors.gray;
+                })
+              ]
+            else
+              text
+          );
+
+        old = {
+          list = builtins.filter (x: x != null) (map (v: v.old) versions.raw);
+          text = map (
+            content:
+            helpers.tspan {
+              inherit content;
+              color = config.colors.red;
+            }
+          ) old.list;
+          rendered = realize old.text;
+        };
+
+        new = {
+          list = builtins.filter (x: x != null) (map (v: v.new) versions.raw);
+          text = map (
+            content:
+            helpers.tspan {
+              inherit content;
+              color = config.colors.green;
+            }
+          ) new.list;
+          rendered = realize new.text;
+        };
+
+        versions = {
+          raw = format.versions diff.versions;
+          rendered =
+            if old.text == [ ] then
+              new.rendered
+            else if new.text == [ ] then
+              old.rendered
+            else
+              old.rendered + " → " + new.rendered;
+        };
+
+        size =
+          if diff.size_delta == 0 then
+            ""
+          else
+            let
+              separator = if versions.rendered == "" then "" else ", ";
+              color = if diff.size_delta < 0 then config.colors.blue else config.colors.orange;
+            in
+            separator
+            + helpers.tspan {
+              content = format.bytes true diff.size_delta;
+              inherit color;
+            };
+
+        inherit (config.status.${diff.status}) marker color;
+      in
+      {
+        plain = {
+          prefix = "${marker} ${diff.name}";
+
+          details = toString (
+            builtins.filter (x: x != "") [
+              (
+                let
+                  unchanged = if diff.has_omitted_versions then [ "unchanged" ] else [ ];
+                  oldPlain = builtins.concatStringsSep ", " (old.list ++ unchanged);
+                  newPlain = builtins.concatStringsSep ", " (new.list ++ unchanged);
+                in
+                if old.list == [ ] then
+                  newPlain
+                else if new.list == [ ] then
+                  oldPlain
+                else
+                  "${oldPlain} → ${newPlain}"
+              )
+              (if diff.size_delta == 0 then "" else format.bytes true diff.size_delta)
             ]
-          else
-            text
-        );
+          );
+        };
 
-      old = {
-        list = builtins.filter (x: x != null) (map (v: v.old) versions.raw);
-        text = map (
-          content:
-          helpers.tspan {
-            inherit content;
-            color = config.colors.red;
-          }
-        ) old.list;
-        rendered = render old.text;
-      };
-
-      new = {
-        list = builtins.filter (x: x != null) (map (v: v.new) versions.raw);
-        text = map (
-          content:
-          helpers.tspan {
-            inherit content;
-            color = config.colors.green;
-          }
-        ) new.list;
-        rendered = render new.text;
-      };
-
-      versions = {
-        raw = format.versions diff.versions;
-        rendered =
-          if old.text == [ ] then
-            new.rendered
-          else if new.text == [ ] then
-            old.rendered
-          else
-            old.rendered + helpers.tspan { content = " → "; } + new.rendered;
-      };
-
-      size =
-        if diff.size_delta == 0 then
-          ""
-        else
-          let
-            separator = if versions.rendered == "" then "" else helpers.tspan { content = ", "; };
-            color = if diff.size_delta < 0 then config.colors.blue else config.colors.orange;
-          in
-          separator
-          + helpers.tspan {
-            content = format.bytes true diff.size_delta;
+        svg = {
+          marker = helpers.tspan {
+            content = marker;
             inherit color;
           };
-
-      inherit (config.status.${diff.status}) marker color;
-    in
-    {
-      plain = {
-        prefix = "${marker} ${diff.name}";
-
-        details = toString (
-          builtins.filter (x: x != "") [
-            (
-              let
-                unchanged = if diff.has_omitted_versions then [ "unchanged" ] else [ ];
-                oldPlain = builtins.concatStringsSep ", " (old.list ++ unchanged);
-                newPlain = builtins.concatStringsSep ", " (new.list ++ unchanged);
-              in
-              if old.list == [ ] then
-                newPlain
-              else if new.list == [ ] then
-                oldPlain
-              else
-                "${oldPlain} → ${newPlain}"
-            )
-            (if diff.size_delta != 0 then format.bytes true diff.size_delta else "")
-          ]
-        );
-      };
-
-      svg = {
-        marker = helpers.tspan {
-          content = marker;
-          inherit color;
+          inherit (diff) name;
+          details = versions.rendered + size;
         };
-        name = helpers.tspan { content = diff.name; };
-        details = versions.rendered + size;
       };
-    };
+
+    section =
+      y:
+      {
+        category,
+        lines,
+      }:
+      if lines == [ ] then
+        {
+          inherit y;
+          svg = "";
+        }
+      else
+        let
+          title = ''
+            <tspan
+              x="${toString config.padding}"
+              font-weight="bold"
+            >${helpers.escape category}</tspan>
+          '';
+
+          text = toString (
+            map (line: ''
+              <tspan
+                x="${toString config.padding}"
+                dy="${toString config.font.height}"
+              >${line.svg.marker} ${line.svg.name}</tspan>
+              <tspan
+                x="${toString dimensions.prefix}"
+              >${line.svg.details}</tspan>
+            '') lines
+          );
+        in
+        {
+          y = y + (builtins.length lines + 2) * config.font.height;
+
+          svg = helpers.text {
+            inherit y;
+            content = title + text;
+          };
+        };
+  };
 
   sections = {
     raw = [
       {
-        name = "CHANGED";
+        category = "CHANGED";
         diffs = builtins.filter (
           diff:
           builtins.elem diff.status [
@@ -288,18 +329,18 @@ let
         ) data.diffs;
       }
       {
-        name = "ADDED";
+        category = "ADDED";
         diffs = builtins.filter (diff: diff.status == "Added") data.diffs;
       }
       {
-        name = "REMOVED";
+        category = "REMOVED";
         diffs = builtins.filter (diff: diff.status == "Removed") data.diffs;
       }
     ];
 
     processed = map (section: {
-      inherit (section) name;
-      lines = map diffLine section.diffs;
+      inherit (section) category;
+      lines = map render.line section.diffs;
     }) sections.raw;
 
     rendered =
@@ -307,21 +348,41 @@ let
         (
           acc: section:
           let
-            res = renderSection acc.y section;
+            res = render.section acc.y section;
           in
           {
             inherit (res) y;
-            svg = if res.svg == "" then acc.svg else acc.svg + "\n" + res.svg;
+            svg = acc.svg + res.svg;
           }
         )
         {
-          y = 32;
+          y = config.font.height;
           svg = "";
         }
         sections.processed;
+
+    footer = {
+      raw = [
+        "PATHS: ${toString data.paths.old} → ${toString data.paths.new} (+${toString data.paths.added}, –${toString data.paths.removed})"
+        "SIZE: ${format.bytes false data.size_old} → ${format.bytes false data.size_new}"
+        "DIFF: ${format.bytes true (data.size_new - data.size_old)}"
+      ];
+
+      svg = helpers.text {
+        y = sections.rendered.y;
+        content = toString (
+          map (line: ''
+            <tspan
+              x="${toString config.padding}"
+              dy="${toString config.font.height}"
+            >${line}</tspan>
+          '') sections.footer.raw
+        );
+      };
+    };
   };
 
-  sizes = rec {
+  dimensions = rec {
     prefix =
       config.padding
       +
@@ -334,102 +395,32 @@ let
         * config.font.width;
 
     details =
-      (helpers.max (
+      helpers.max (
         builtins.concatLists (
           map (section: map (line: line.plain.details) section.lines) sections.processed
         )
-      ))
+      )
       * config.font.width;
 
     width = prefix + details;
-
-    height = sections.rendered.y + (builtins.length footer) * config.font.height;
+    height = sections.rendered.y + (builtins.length sections.footer.raw + 1) * config.font.height;
   };
 
-  footer = [
-    "PATHS: ${toString data.paths.old} → ${toString data.paths.new} (+${toString data.paths.added}, –${toString data.paths.removed})"
-    "SIZE: ${format.bytes false data.size_old} → ${format.bytes false data.size_new}"
-    "DIFF: ${format.bytes true (data.size_new - data.size_old)}"
-  ];
-
-  renderSection =
-    y:
-    {
-      name,
-      lines,
-    }:
-    if lines == [ ] then
-      {
-        inherit y;
-        svg = "";
-      }
-    else
-      let
-        nameRowsSvg = toString (
-          map (line: ''
-            <tspan
-              x="${toString config.padding}"
-              dy="${toString config.font.height}"
-            >${line.svg.marker} ${line.svg.name}</tspan>
-          '') lines
-        );
-
-        detailRowsSvg = toString (
-          map (line: ''
-            <tspan
-              x="${toString sizes.prefix}"
-              dy="${toString config.font.height}"
-            >${line.svg.details}</tspan>
-          '') lines
-        );
-      in
-      {
-        y = y + (builtins.length lines + 2) * config.font.height;
-
-        svg =
-          helpers.text {
-            x = config.padding;
-            inherit y;
-            content = ''
-              <tspan
-                font-weight="bold">
-                ${helpers.escape name}
-              </tspan>
-              ${nameRowsSvg}
-            '';
-          }
-          + helpers.text {
-            x = config.padding;
-            inherit y;
-            content = detailRowsSvg;
-          };
-      };
-
-  footerSvg = builtins.concatStringsSep "\n" (
-    builtins.genList (
-      i:
-      helpers.text {
-        x = config.padding;
-        y = sections.rendered.y + i * config.font.height;
-        content = builtins.elemAt footer i;
-      }
-    ) (builtins.length footer)
-  );
 in
 ''
   <?xml version="1.0" encoding="UTF-8"?>
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="${toString sizes.width}"
-    height="${toString sizes.height}"
-    viewBox="0 0 ${toString sizes.width} ${toString sizes.height}"
+    width="${toString dimensions.width}"
+    height="${toString dimensions.height}"
+    viewBox="0 0 ${toString dimensions.width} ${toString dimensions.height}"
   >
     <rect
-      width="${toString sizes.width}"
-      height="${toString sizes.height}"
+      width="${toString dimensions.width}"
+      height="${toString dimensions.height}"
       fill="${config.colors.background}"
     />
     ${sections.rendered.svg}
-    ${footerSvg}
+    ${sections.footer.svg}
   </svg>
 ''
