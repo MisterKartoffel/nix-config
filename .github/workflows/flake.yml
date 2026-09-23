@@ -5,13 +5,13 @@ run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_numbe
 on:
   pull_request:
     paths-ignore:
-    - ".github/workflows/**"
+    - ".github/**"
     - "ci/**"
   push:
     branches:
     - main
     paths-ignore:
-    - ".github/workflows/**"
+    - ".github/**"
     - "ci/**"
   workflow_dispatch:
 

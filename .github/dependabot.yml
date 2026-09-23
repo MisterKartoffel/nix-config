@@ -5,3 +5,9 @@ updates:
   directory: "/"
   schedule:
     interval: "weekly"
+  commit-message:
+    prefix: "ci"
+  labels:
+  - dependencies
+  - CI/CD
+  - github_actions

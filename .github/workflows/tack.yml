@@ -42,11 +42,9 @@ jobs:
     - name: "Get update summary"
       id: summary
       run: |
-        SUMMARY="$(nix run nixpkgs#tack -- look --verbose)"
-
         {
           echo "SUMMARY<<EOF"
-          echo "${SUMMARY}"
+          nix run nixpkgs#tack -- look --verbose
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
 
@@ -112,19 +110,20 @@ jobs:
         name: misterkartoffel
 
     - name: "Prefetch derivation closure"
-      run: >
-        "${HESTIA_BIN}" prefetch
-        ${{ matrix.drvPath }}
+      env:
+        DRV_PATH: ${{ matrix.drvPath }}
+      run: ${HESTIA_BIN} prefetch "${DRV_PATH}"
 
     - name: "Build old closure"
       id: old
+      env:
+        DRV_PATH: ${{ matrix.drvPath }}
       run: >
-        CLOSURE="$(nix build
-        "${{ matrix.drvPath }}^*"
+        "closure=$(nix build
+        "${DRV_PATH}^*"
         --no-link
         --print-out-paths)"
-
-        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
+        >> "${GITHUB_OUTPUT}"
 
     - name: "Download changes"
       uses: actions/download-artifact@v8.0.1
@@ -134,41 +133,52 @@ jobs:
 
     - name: "Build new closure"
       id: new
+      env:
+        HOSTNAME: ${{ matrix.hostname }}
       run: >
-        CLOSURE="$(nix build
-        ".#nixosConfigurations.${{ matrix.hostname }}.config.system.build.toplevel"
+        "closure=$(nix build
+        ".#nixosConfigurations.${HOSTNAME}.config.system.build.toplevel"
         --no-link
         --print-out-paths)"
-
-        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
+        >> "${GITHUB_OUTPUT}"
 
     - name: "Generate diff"
-      id: diff
-      run: |
-        nix run nixpkgs#dix -- --output json \
-          "${{ steps.old.outputs.closure }}" \
-          "${{ steps.new.outputs.closure }}" \
-          > ./ci/diff.json
+      id: generate
+      env:
+        OLD_CLOSURE: ${{ steps.old.outputs.closure }}
+        NEW_CLOSURE: ${{ steps.new.outputs.closure }}
+      working-directory: ./ci
+      run: >
+        nix run nixpkgs#dix -- --output json
+        "${OLD_CLOSURE}" "${NEW_CLOSURE}"
+        > diff.json
 
-        nix eval --raw --file ./ci/diff.nix \
-          > "${{ matrix.hostname }}.svg"
+    - name: "Parse JSON"
+      id: parse
+      env:
+        HOSTNAME: ${{ matrix.hostname }}
+      working-directory: ./ci
+      run: >
+        nix eval --raw --file diff.nix
+        > "${HOSTNAME}.svg"
 
     - name: "Upload diff JSON"
-      if: steps.diff.outcome == 'failure'
+      if: steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure'
       uses: actions/upload-artifact@v7
       with:
         name: failure-${{ matrix.hostname }}
         path: ci/diff.json
 
     - name: "Upload diff SVG"
-      if: steps.diff.outcome == 'success'
+      if: steps.parse.outcome == 'success'
       uses: actions/upload-artifact@v7
       with:
         name: diff-${{ matrix.hostname }}
-        path: ${{ matrix.hostname }}.svg
+        path: ci/${{ matrix.hostname }}.svg
 
   pages:
     name: "Publish diffs"
+    if: ${{ !cancelled() }}
     needs: diffs
     runs-on: ubuntu-latest
 
@@ -204,6 +214,7 @@ jobs:
 
   pull-request:
     name: "Create pull request"
+    if: ${{ !cancelled() && needs.pages.result == 'success' }}
     needs:
     - update
     - matrix
@@ -228,6 +239,7 @@ jobs:
       id: body
       env:
         RUN_ID: ${{ github.run_id }}
+        SUMMARY: ${{ needs.update.outputs.summary }}
         PAGE_URL: ${{ needs.pages.outputs.page_url }}
         HOSTS: ${{ needs.matrix.outputs.hosts }}
       run: |
@@ -236,7 +248,7 @@ jobs:
           echo "## tack update summary:"
           echo
           echo '```text'
-          echo "${{ needs.update.outputs.summary }}"
+          echo "${SUMMARY}"
           echo '```'
           echo
           echo "## Closure diffs"
@@ -260,9 +272,12 @@ jobs:
       with:
         branch: tack/update-inputs
         delete-branch: true
-        commit-message: "tack: update inputs"
         sign-commits: true
         assignees: ${{ github.repository_owner }}
-        reviewers: ${{ github.repository_owner }}
+        commit-message: "tack: update inputs"
         title: "tack: update inputs"
         body: ${{ steps.body.outputs.text }}
+        labels: |
+          dependencies
+          CI/CD
+          tack

@@ -55,4 +55,5 @@ jobs:
             cores = 0
 
     - name: "Run formatter on CI"
-      run: nix fmt -- --ci ./ci
+      working-directory: ./ci
+      run: nix fmt -- --ci .
