@@ -27,9 +27,7 @@ let
   # Creates the job matrix for GitHub actions for a given flake output.
   jobs =
     outputs:
-    builtins.concatMap (
-      system: map (drv: matrix outputs.${system}.${drv}) (builtins.attrNames outputs.${system})
-    ) (builtins.attrNames outputs);
+    builtins.concatMap (drv: map matrix (builtins.attrValues drv)) (builtins.attrValues outputs);
 in
 /*
   All these outputs are composed by the common attributes (set by the matrix function):
