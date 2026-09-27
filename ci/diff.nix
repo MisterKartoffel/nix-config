@@ -76,13 +76,6 @@ let
         toString value
       );
 
-    text =
-      {
-        y,
-        content,
-      }:
-      ''<text y="${toString y}">${content}</text>'';
-
     tspan =
       {
         x ? null,
@@ -349,32 +342,47 @@ let
         sections.list;
 
     footer = {
-      list = [
-        "SUMMARY"
-        "PATHS: ${toString data.paths.old} → ${toString data.paths.new} (+${toString data.paths.added}, –${toString data.paths.removed})"
-        "SIZE: ${format.bytes false data.size_old} → ${format.bytes false data.size_new}"
-        "DIFF: ${format.bytes true (data.size_new - data.size_old)}"
-      ];
-
-      svg =
+      list =
         let
-          first = helpers.tspan {
-            x = toString config.padding;
-            dy = 2 * config.font.height;
-            font-weight = "bold";
-            content = builtins.head sections.footer.list;
+          compare = old: new: {
+            old = if old > new then "r" else "g";
+            new = if old > new then "g" else "r";
           };
 
-          rest = map (
+          paths = compare data.paths.old data.paths.new;
+          size = compare data.size_old data.size_new;
+
+          category =
             content:
             helpers.tspan {
-              x = toString config.padding;
+              x = config.padding;
+              dy = 2 * config.font.height;
+              font-weight = "bold";
+              inherit content;
+            };
+
+          row =
+            content:
+            helpers.tspan {
+              x = config.padding;
               dy = config.font.height;
               inherit content;
-            }
-          ) (builtins.tail sections.footer.list);
+            };
+
+          span =
+            class: content:
+            helpers.tspan {
+              inherit class content;
+            };
         in
-        builtins.concatStringsSep "\n" ([ first ] ++ rest);
+        [
+          (category "SUMMARY")
+          "${row "PATHS: "}${span paths.old data.paths.old} → ${span paths.new data.paths.new} (${span "r" "+${toString data.paths.added}"}, ${span "g" "-${toString data.paths.removed}"})"
+          "${row "SIZE: "}${span size.old (format.bytes false data.size_old)} → ${span size.new (format.bytes false data.size_new)}"
+          "${row "DIFF: "}${span size.new (format.bytes true (data.size_new - data.size_old))}"
+        ];
+
+      svg = builtins.concatStringsSep "\n" sections.footer.list;
     };
   };
 
