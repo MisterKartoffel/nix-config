@@ -138,37 +138,59 @@ let
       "${sign}${toString integer}.${decimal} ${unit.suffix}";
 
     versions =
+      list: omitted:
       let
-        string =
+        kinds =
+          let
+            string =
+              {
+                name,
+                amount ? 1,
+              }:
+              name + (if amount == 1 then "" else " ×${toString amount}");
+          in
           {
-            name,
-            amount ? 1,
-          }:
-          name + (if amount == 1 then "" else " ×${toString amount}");
+            changed = v: {
+              old = string v.old;
+              new = string v.new;
+            };
 
-        kinds = {
-          changed = v: {
-            old = string v.old;
-            new = string v.new;
+            added = v: {
+              old = null;
+              new = string v.version;
+            };
+
+            removed = v: {
+              old = string v.version;
+              new = null;
+            };
+
+            amount_changed = v: {
+              old = string {
+                inherit (v.version) name;
+                amount = v.old_amount;
+              };
+
+              new = string {
+                inherit (v.version) name;
+                amount = v.new_amount;
+              };
+            };
           };
 
-          added = v: {
-            old = null;
-            new = string v.version;
-          };
-
-          removed = v: {
-            old = string v.version;
-            new = null;
-          };
-
-          amount_changed = v: {
-            old = "${v.version.name} ×${toString v.old_amount}";
-            new = "${v.version.name} ×${toString v.new_amount}";
-          };
-        };
+        mapped = map (v: kinds.${v.kind} v) list;
+        unchanged = if !omitted then [ ] else [ "unchanged" ];
       in
-      builtins.map (v: kinds.${v.kind} v);
+      builtins.mapAttrs
+        (name: class: rec {
+          list = builtins.filter (x: x != null) (builtins.catAttrs name mapped);
+          plain = builtins.concatStringsSep ", " (list ++ unchanged);
+          rendered = dx: render.versions list omitted class dx;
+        })
+        {
+          old = "r";
+          new = "g";
+        };
   };
 
   render = {
@@ -206,37 +228,22 @@ let
     line =
       diff:
       let
-        generate = field: class: rec {
-          list = builtins.filter (x: x != null) (builtins.catAttrs field versions.raw);
-          rendered = dx: render.versions list omitted class dx;
-        };
-
-        versions.raw = format.versions diff.versions;
-
-        old = generate "old" "r";
-        new = generate "new" "g";
-
-        omitted = diff.has_omitted_versions;
+        inherit (format.versions diff.versions diff.has_omitted_versions) old new;
         status = config.status.${diff.status};
       in
       {
-        text = {
-          prefix = "${status.marker} ${diff.name}";
+        plain = {
+          prefix = "${status.marker} ${diff.name} ";
 
           details =
             let
               versions =
-                let
-                  unchanged = if omitted then [ "unchanged" ] else [ ];
-                  oldPlain = builtins.concatStringsSep ", " (old.list ++ unchanged);
-                  newPlain = builtins.concatStringsSep ", " (new.list ++ unchanged);
-                in
                 if old.list == [ ] then
-                  newPlain
+                  new.plain
                 else if new.list == [ ] then
-                  oldPlain
+                  old.plain
                 else
-                  "${oldPlain} → ${newPlain}";
+                  "${old.plain} → ${new.plain}";
 
               size = if diff.size_delta == 0 then "" else format.bytes true diff.size_delta;
             in
@@ -254,14 +261,12 @@ let
             };
 
             versions =
-              if old.list != [ ] && new.list != [ ] then
-                "${old.rendered dx} → ${new.rendered null}"
-              else if old.list != [ ] then
-                old.rendered dx
-              else if new.list != [ ] then
+              if old.list == [ ] then
                 new.rendered dx
+              else if new.list == [ ] then
+                old.rendered dx
               else
-                "";
+                "${old.rendered dx} → ${new.rendered null}";
 
             size =
               if diff.size_delta == 0 then
@@ -287,24 +292,19 @@ let
         category,
         lines,
       }:
-      if lines == [ ] then
-        {
-          inherit y;
-          svg = "";
-        }
-      else
-        let
-          title = ''<tspan x="${toString config.padding}" font-weight="bold">${helpers.escape category}</tspan>'';
-          body = map (line: line.svg dimensions.prefix) lines;
-        in
-        {
-          y = y + (builtins.length lines + 2) * config.font.height;
-
-          svg = helpers.text {
-            inherit y;
-            content = builtins.concatStringsSep "\n" ([ title ] ++ body);
-          };
+      let
+        title = helpers.tspan {
+          x = config.padding;
+          dy = 2 * config.font.height;
+          font-weight = "bold";
+          content = category;
         };
+        body = map (line: line.svg dimensions.prefix) lines;
+      in
+      {
+        y = y + (builtins.length lines + 2) * config.font.height;
+        svg = builtins.concatStringsSep "\n" ([ title ] ++ body);
+      };
   };
 
   diffs = builtins.groupBy (
@@ -317,25 +317,18 @@ let
   ) data.diffs;
 
   sections = {
-    raw = [
-      {
-        category = "CHANGED";
-        diffs = diffs.CHANGED or [ ];
-      }
-      {
-        category = "ADDED";
-        diffs = diffs.ADDED or [ ];
-      }
-      {
-        category = "REMOVED";
-        diffs = diffs.REMOVED or [ ];
-      }
-    ];
-
-    list = map (section: {
-      inherit (section) category;
-      lines = map render.line section.diffs;
-    }) sections.raw;
+    list = builtins.filter (s: s.lines != [ ]) (
+      map
+        (category: {
+          inherit category;
+          lines = map render.line (diffs.${category} or [ ]);
+        })
+        [
+          "CHANGED"
+          "ADDED"
+          "REMOVED"
+        ]
+    );
 
     rendered =
       builtins.foldl'
@@ -357,29 +350,41 @@ let
 
     footer = {
       list = [
+        "SUMMARY"
         "PATHS: ${toString data.paths.old} → ${toString data.paths.new} (+${toString data.paths.added}, –${toString data.paths.removed})"
         "SIZE: ${format.bytes false data.size_old} → ${format.bytes false data.size_new}"
         "DIFF: ${format.bytes true (data.size_new - data.size_old)}"
       ];
 
-      svg = helpers.text {
-        y = sections.rendered.y;
-        content = builtins.concatStringsSep "" (
-          map (line: ''
-            <tspan x="${toString config.padding}" dy="${toString config.font.height}">${helpers.escape line}</tspan>
-          '') sections.footer.list
-        );
-      };
+      svg =
+        let
+          first = helpers.tspan {
+            x = toString config.padding;
+            dy = 2 * config.font.height;
+            font-weight = "bold";
+            content = builtins.head sections.footer.list;
+          };
+
+          rest = map (
+            content:
+            helpers.tspan {
+              x = toString config.padding;
+              dy = config.font.height;
+              inherit content;
+            }
+          ) (builtins.tail sections.footer.list);
+        in
+        builtins.concatStringsSep "\n" ([ first ] ++ rest);
     };
   };
 
   dimensions =
     let
-      text = builtins.catAttrs "text" (builtins.concatMap (s: s.lines) sections.list);
+      plain = builtins.catAttrs "plain" (builtins.concatMap (s: s.lines) sections.list);
     in
     rec {
-      prefix = config.padding + (helpers.max (builtins.catAttrs "prefix" text) + 1) * config.font.width;
-      details = (helpers.max (builtins.catAttrs "details" text) - 2) * config.font.width;
+      prefix = helpers.max (builtins.catAttrs "prefix" plain) * config.font.width + config.padding;
+      details = helpers.max (builtins.catAttrs "details" plain) * config.font.width;
       width = prefix + details;
       height = sections.rendered.y + (builtins.length sections.footer.list + 1) * config.font.height;
     };
@@ -406,7 +411,8 @@ in
     width="${toString dimensions.width}"
     height="${toString dimensions.height}"
     fill="${config.colors.background}"
-  />${sections.rendered.svg}
+  /><text>${sections.rendered.svg}
   ${sections.footer.svg}
+  </text>
   </svg>
 ''
