@@ -119,10 +119,12 @@ jobs:
       env:
         DRV_PATH: ${{ matrix.drvPath }}
       run: >
-        "closure=$(nix build
+        CLOSURE="$(nix build
         "${DRV_PATH}^*"
         --no-link
         --print-out-paths)"
+
+        echo "closure=${CLOSURE}"
         >> "${GITHUB_OUTPUT}"
 
     - name: "Download changes"
@@ -136,10 +138,12 @@ jobs:
       env:
         HOSTNAME: ${{ matrix.hostname }}
       run: >
-        "closure=$(nix build
+        CLOSURE="$(nix build
         ".#nixosConfigurations.${HOSTNAME}.config.system.build.toplevel"
         --no-link
         --print-out-paths)"
+
+        echo "closure=${CLOSURE}"
         >> "${GITHUB_OUTPUT}"
 
     - name: "Generate diff"
