@@ -1,4 +1,3 @@
-#
 {
   wrapFish,
   fishPlugins,
@@ -20,7 +19,7 @@
     fzf
   ],
 }:
-wrapFish {
+(wrapFish {
   inherit
     completionDirs
     functionDirs
@@ -29,4 +28,7 @@ wrapFish {
     shellAliases
     runtimeInputs
     ;
-}
+}).overrideAttrs
+  {
+    passthru.shellPath = "/bin/fish";
+  }

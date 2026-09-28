@@ -7,6 +7,6 @@
       wl-clipboard
       zathura
       ;
-    inherit (self.packages.${pkgs.stdenv.hostPlatform.system}) nvim zen-browser fish;
+    inherit (self.packages.${pkgs.stdenv.hostPlatform.system}) nvim zen-browser;
   };
 }

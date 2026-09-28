@@ -1,8 +1,8 @@
-#
-{
+{ self, pkgs, ... }: {
   modules = {
     users."mimikyu" = {
       description = "Felipe Duarte";
+      shell = self.packages.${pkgs.stdenv.hostPlatform.system}.fish;
       extraGroups = [
         "wheel"
         "qbt"
@@ -34,7 +34,6 @@
     git.enable = true;
     nh.enable = true;
     niri.enable = true;
-    zsh.enable = true;
   };
 
   security = {
