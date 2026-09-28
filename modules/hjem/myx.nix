@@ -1,14 +1,6 @@
+{ osConfig, pkgs, ... }:
 {
-  inputs,
-  osConfig,
-  pkgs,
-  ...
-}:
-let
-  inherit (inputs.myx.packages.${pkgs.stdenv.hostPlatform.system}) myx;
-in
-{
-  packages = builtins.attrValues { inherit myx; };
+  packages = builtins.attrValues { inherit (pkgs) myx; };
 
   xdg.config.files."myx/config.toml".source = osConfig.sops.templates."myx-config.toml".path;
 }

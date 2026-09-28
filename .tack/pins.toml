@@ -51,8 +51,3 @@ url = "github:youwen5/zen-browser-flake"
 # https://github.com/NixOS/nixpkgs/pull/551635
 [inputs.ortie]
 url = "github:pimalaya/ortie"
-
-# Waiting on:
-# Still no PR to Nixpkgs
-[inputs.myx]
-url = "github:HaseebKhalid1507/Myx"

@@ -23,14 +23,6 @@
     "narHash": "sha256-tycoVCB2KSVdy9ERT1lJGHdP9Hf4FHanaEY25hUxylw=",
     "lastModified": 1790081753
   },
-  "myx": {
-    "type": "github",
-    "owner": "HaseebKhalid1507",
-    "repo": "Myx",
-    "rev": "2738f9e50e2bd1f218f55e2a05342eea2db92e8e",
-    "narHash": "sha256-dOcQgiq+XHXEoMvQjjwKhJ4ciMDKYCAEWVxrLxlk8yA=",
-    "lastModified": 1788947424
-  },
   "nix-secrets": {
     "type": "github",
     "owner": "MisterKartoffel",

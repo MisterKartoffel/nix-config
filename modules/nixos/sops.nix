@@ -106,6 +106,7 @@ in
         file = (pkgs.formats.toml { }).generate "myx-config.toml" {
           client_id = config.sops.placeholder."mimikyu/spotify/client_id";
           protocol = "kitty";
+          bitrate = 320;
         };
         owner = "mimikyu";
         group = "users";
