@@ -28,6 +28,7 @@
 
       nixosModules.default = importTree "modules/nixos";
       hjemModules.default = importTree "modules/hjem";
+      overlays.default = [ (import ./overlays { inherit lib; }) ];
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
