@@ -1,25 +1,21 @@
-{
-  vimPlugins,
-  vimUtils,
-  fetchFromGitHub,
-}:
-let
-  /*
-    This plugin is currently set up in ../plugin/himalaya.lua as a mock,
-    since it's waiting to be updated to support Himalaya v2.*
-  */
-  himalaya-nvim = vimUtils.buildVimPlugin {
-    pname = "himalaya-nvim";
-    version = "2026-08-19";
+{ vimPlugins }:
+/*
+  This plugin is currently disabled due to neovimRequirePluginCheck errors
 
-    src = fetchFromGitHub {
-      owner = "xav-ie";
-      repo = "himalaya-nvim";
-      rev = "576102bd3e1db2285ca3f40b99f3536c254d34db";
-      hash = "sha256-MYwfZjJBciAFCwC4t9Z5RLtCaIs7XEVV8B3AGVlhQbo=";
+  let
+    himalaya-nvim = vimUtils.buildVimPlugin {
+      pname = "himalaya.nvim";
+      version = "2026-09-03";
+
+      src = fetchFromGitHub {
+        owner = "knownasnaffy";
+        repo = "himalaya.nvim";
+        rev = "1ad45468fdb44cc705ec6d69f0d389b233e7b14e";
+        hash = "sha256-wFM4SEmjbzovbbnLsUwsHiHv8SYKWWs6OHMFJ3AfRHY=";
+      };
     };
-  };
-in
+  in
+*/
 builtins.attrValues {
   inherit (vimPlugins)
     catppuccin-nvim
@@ -34,6 +30,4 @@ builtins.attrValues {
     snacks-nvim
     which-key-nvim
     ;
-
-  inherit himalaya-nvim;
 }

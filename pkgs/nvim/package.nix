@@ -23,7 +23,7 @@
       ;
   },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
-  plugins ? import ./nix/plugins.nix { inherit vimPlugins vimUtils fetchFromGitHub; },
+  plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
   extraPackages ? [
     fd
     imagemagick
