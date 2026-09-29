@@ -4,7 +4,6 @@
   wrapNeovimUnstable,
   neovimUtils,
   vimPlugins,
-  vimUtils,
   tree-sitter,
   fetchFromGitHub,
   linkFarm,
