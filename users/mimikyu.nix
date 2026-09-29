@@ -2,7 +2,6 @@
 {
   packages = builtins.attrValues {
     inherit (pkgs)
-      impala
       legcord
       wl-clipboard
       zathura
