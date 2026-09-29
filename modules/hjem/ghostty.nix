@@ -38,7 +38,7 @@ in
         "clear"
 
         # General keybinds
-        "alt+comma=reload_config"
+        "alt+semicolon=reload_config"
         "performable:ctrl+shift+c=copy_to_clipboard"
         "performable:ctrl+shift+v=paste_from_clipboard"
 
@@ -76,8 +76,8 @@ in
 
         # Tab keybinds
         "alt+t=new_tab"
-        "alt+n=next_tab"
-        "alt+p=previous_tab"
+        "alt+period=next_tab"
+        "alt+comma=previous_tab"
       ];
     };
   };
