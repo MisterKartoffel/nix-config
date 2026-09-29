@@ -23,7 +23,7 @@ let
     };
   };
 
-  resolvedFallbacks = lib.mapAttrs (
+  resolvedFallbacks = builtins.mapAttrs (
     grammar: fallback:
     let
       available = vimPlugins.nvim-treesitter-parsers ? ${grammar};
