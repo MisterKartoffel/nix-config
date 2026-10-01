@@ -4,9 +4,13 @@
 pkgs.mkShellNoCC {
   packages = builtins.attrValues {
     inherit (pkgs)
-      tack
-      nil
+      # keep-sorted start
+
       lua-language-server
+      nil
+      tack
+
+      # keep-sorted end
       ;
   };
 

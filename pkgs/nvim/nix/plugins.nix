@@ -18,6 +18,8 @@
 */
 builtins.attrValues {
   inherit (vimPlugins)
+    # keep-sorted start
+
     catppuccin-nvim
     gitsigns-nvim
     lualine-nvim
@@ -29,5 +31,7 @@ builtins.attrValues {
     oil-nvim
     snacks-nvim
     which-key-nvim
+
+    # keep-sorted end
     ;
 }

@@ -32,7 +32,7 @@
 
       keep-sorted = {
         command = lib.getExe pkgs.keep-sorted;
-        includes = [ "TODO.txt" ];
+        includes = [ "*" ];
       };
 
       yamlfmt = {

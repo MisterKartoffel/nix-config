@@ -5,11 +5,19 @@ in
 {
   preservation.preserveAt."/persist".users.mimikyu = {
     commonMountOptions = [
-      "x-gvfs-hide"
       "x-gdu.hide"
+      "x-gvfs-hide"
     ];
 
     directories = [
+      # keep-sorted start
+
+      ".cache/direnv/layouts"
+      ".cache/myx"
+      ".cache/neomutt"
+      ".cache/nix"
+      ".config/legcord"
+      ".config/zen"
       "Desktop"
       "Documents"
       "Downloads"
@@ -20,12 +28,7 @@ in
       "Templates"
       "Videos"
 
-      ".config/legcord"
-      ".config/zen"
-      ".cache/direnv/layouts"
-      ".cache/myx"
-      ".cache/neomutt"
-      ".cache/nix"
+      # keep-sorted end
     ]
     ++ lib.optionals oo7.enable [
       {

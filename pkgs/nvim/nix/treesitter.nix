@@ -38,12 +38,14 @@ vimPlugins.nvim-treesitter.withPlugins (
   builtins.attrValues (
     {
       inherit (plugins)
+        # keep-sorted start
+
         bash
         editorconfig
         fish
+        git_config
         gitcommit
         gitignore
-        git_config
         json
         just
         kdl
@@ -58,6 +60,8 @@ vimPlugins.nvim-treesitter.withPlugins (
         vimdoc
         yaml
         zsh
+
+        # keep-sorted end
         ;
     }
     // resolvedFallbacks
