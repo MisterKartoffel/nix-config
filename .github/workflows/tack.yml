@@ -48,8 +48,11 @@ jobs:
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
 
-    - name: "Run tack update"
+    - name: "Update pins"
       run: nix run nixpkgs#tack -- update
+
+    - name: "Update resolver"
+      run: nix run nixpkgs#tack -- init --resolver
 
     - name: "Upload changes"
       uses: actions/upload-artifact@v7
