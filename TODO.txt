@@ -4,7 +4,6 @@ https://github.com/todotxt/todo.txt
 keep-sorted start block=yes
 
 2026-09-29 Configure himalaya neovim plugin +neovim @packages
-2026-09-29 Split overlays into multiple small-scoped files +nixos @overlays
 x (A) 2026-08-24 2026-08-24 Set up binary cache +repo @cache
     Solution: cache hosted at https://misterkartoffel.cachix.org/
 x (A) 2026-09-03 2026-08-30 Fix build workflow failing on pull request +repo @actions
