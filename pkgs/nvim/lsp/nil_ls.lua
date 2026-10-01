@@ -17,9 +17,11 @@ return {
       formatting = {
         command = vim.fn.executable("nixfmt") == 1 and { "nixfmt" } or nil,
       },
-      flake = {
-        autoArchive = true,
-        autoEvalInputs = true,
+      nix = {
+        flake = {
+          autoArchive = true,
+          autoEvalInputs = true,
+        },
       },
     },
   },
