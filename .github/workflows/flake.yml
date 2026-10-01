@@ -7,12 +7,18 @@ on:
     paths-ignore:
     - ".github/**"
     - "ci/**"
+    - "LICENSE"
+    - "README.md"
+    - "TODO.txt"
   push:
     branches:
     - main
     paths-ignore:
     - ".github/**"
     - "ci/**"
+    - "LICENSE"
+    - "README.md"
+    - "TODO.txt"
   workflow_dispatch:
 
 permissions: {}
