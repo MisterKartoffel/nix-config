@@ -6,7 +6,6 @@
       # keep-sorted start
 
       legcord
-      wl-clipboard
       zathura
 
       # keep-sorted end
