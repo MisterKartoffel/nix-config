@@ -9,6 +9,7 @@ pkgs.mkShellNoCC {
       lua-language-server
       nil
       tack
+      yaml-language-server
 
       # keep-sorted end
       ;
