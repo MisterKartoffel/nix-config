@@ -17,10 +17,17 @@ on:
       hosts:
         value: ${{ jobs.matrix.outputs.hosts }}
 
+permissions: {}
+
 jobs:
   matrix:
     name: "Generate builder matrix"
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    permissions:
+      actions: read
+      pull-requests: read
 
     steps:
     - parallel:

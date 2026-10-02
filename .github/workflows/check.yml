@@ -4,10 +4,16 @@ name: "Check"
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   check:
     name: "Check flake"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions:
+      actions: read
 
     steps:
     - parallel:

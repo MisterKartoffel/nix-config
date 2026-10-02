@@ -4,10 +4,13 @@ name: "Formatter"
 on:
   workflow_call:
 
+permissions: {}
+
 jobs:
   formatter:
     name: "Check formatting"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
     - parallel:

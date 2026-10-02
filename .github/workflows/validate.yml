@@ -5,11 +5,13 @@ run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_numbe
 on:
   push:
     paths:
-    - ".github/workflows/**"
+    - "!.github/assets/**"
+    - ".github/**"
     - "ci/**"
   pull_request:
     paths:
-    - ".github/workflows/**"
+    - "!.github/assets/**"
+    - ".github/**"
     - "ci/**"
   workflow_dispatch:
 
@@ -23,6 +25,7 @@ jobs:
   actionlint:
     name: "Lint actions"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
     - name: "Checkout .github"
@@ -37,6 +40,7 @@ jobs:
   formatter:
     name: "Treefmt CI"
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
     - parallel:
