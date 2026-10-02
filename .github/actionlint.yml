@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kjanat/actionlint/HEAD/actionlint.schema.json
+---
+config-secrets:
+- CACHIX_AUTH_TOKEN
+- GH_PAT_SECRETS_RO
+
+assume-default-permissions: restricted
+
+policy:
+  require-job-timeout: true
+  require-permissions: true
