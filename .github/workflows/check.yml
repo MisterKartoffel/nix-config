@@ -23,6 +23,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.1
         with:
+          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
