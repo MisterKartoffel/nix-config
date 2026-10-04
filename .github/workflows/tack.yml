@@ -175,7 +175,7 @@ jobs:
         > "${HOSTNAME}.svg"
 
     - name: "Upload diff JSON"
-      if: steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure'
+      if: always() && (steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure')
       uses: actions/upload-artifact@v7
       with:
         name: failure-${{ matrix.hostname }}
