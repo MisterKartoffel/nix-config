@@ -37,7 +37,6 @@
   };
 
   security = {
-    polkit.enable = true;
     rtkit.enable = true;
     run0.enable = true;
   };
