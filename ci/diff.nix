@@ -47,6 +47,8 @@ let
         class = "y";
         marker = "[C.]";
       };
+
+      Mixed = status.Changed;
     };
 
     units = [
@@ -179,6 +181,7 @@ let
           list = builtins.filter (x: x != null) (builtins.catAttrs name mapped);
           plain = builtins.concatStringsSep ", " (list ++ unchanged);
           rendered = dx: render.versions list omitted class dx;
+          empty = list == [ ] && !omitted;
         })
         {
           old = "r";
@@ -190,7 +193,14 @@ let
     versions =
       items: omitted: class: x:
       if items == [ ] then
-        ""
+        if !omitted then
+          ""
+        else
+          helpers.tspan {
+            inherit x;
+            content = "unchanged";
+            class = "gr";
+          }
       else
         let
           first = helpers.tspan {
@@ -231,9 +241,9 @@ let
           details =
             let
               versions =
-                if old.list == [ ] then
+                if old.empty then
                   new.plain
-                else if new.list == [ ] then
+                else if new.empty then
                   old.plain
                 else
                   "${old.plain} → ${new.plain}";
@@ -254,9 +264,9 @@ let
             };
 
             versions =
-              if old.list == [ ] then
+              if old.empty then
                 new.rendered dx
-              else if new.list == [ ] then
+              else if new.empty then
                 old.rendered dx
               else
                 "${old.rendered dx} → ${new.rendered null}";
