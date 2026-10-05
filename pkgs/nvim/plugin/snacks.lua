@@ -24,7 +24,6 @@ local opts = {
     },
   },
 
-  image = { enabled = true },
   notifier = { enabled = true },
   picker = { enabled = true },
 

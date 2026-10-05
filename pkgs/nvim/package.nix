@@ -9,7 +9,6 @@
   linkFarm,
 
   fd,
-  imagemagick,
   ripgrep,
 
   appName ? "nvim",
@@ -25,7 +24,6 @@
   plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
   extraPackages ? [
     fd
-    imagemagick
     ripgrep
   ],
   withPython3 ? false,
