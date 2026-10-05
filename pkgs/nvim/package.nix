@@ -26,10 +26,6 @@
     fd
     ripgrep
   ],
-  withPython3 ? false,
-  withNodeJs ? false,
-  withPerl ? false,
-  withRuby ? false,
   viAlias ? appName == "nvim",
   vimAlias ? appName == "nvim",
   initLuaPre ? "",
@@ -69,10 +65,6 @@ let
       ];
 
     inherit
-      withPython3
-      withNodeJs
-      withPerl
-      withRuby
       vimAlias
       viAlias
       wrapRc
