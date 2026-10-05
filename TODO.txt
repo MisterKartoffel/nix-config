@@ -1,16 +1,46 @@
 This file follows the structure linked below:
 https://github.com/todotxt/todo.txt
 
+-- TODO list
 keep-sorted start
 
-(A) 2026-10-01 Figure out which tasks and projects should actually exist in this file, and add a glossary +todo
 2026-09-29 Configure himalaya neovim plugin +neovim @packages
 x (A) 2026-08-24 2026-08-24 Set up binary cache +repo @cache
 x (A) 2026-09-03 2026-08-30 Fix build workflow failing on pull request +repo @actions
+x (A) 2026-10-04 2026-10-01 Figure out which tasks and projects should actually exist in this file, and add a glossary +todo
 x (B) 2026-08-28 2026-08-24 Set up GHA +repo @cache @actions
-x 2026-08-21 2026-08-20 Investigate https://github.com/HaseebKhalid1507/Myx/ +tack +hjem @inputs @packages
+x 2026-08-21 2026-08-20 Investigate https://github.com/HaseebKhalid1507/Myx/ +hjem @inputs @packages
 x 2026-08-21 2026-08-21 Change format-specific files in SOPS to use the template's `file` attribute instead of plaintext `content` in order to use `pkgs.formats` generators +nixos @sops
 x 2026-09-29 2026-09-03 Configure Impala with pkgs.formats.toml +hjem
 
 keep-sorted end
+
+
+-- Context glossary
+keep-sorted start
+
+@actions  - tasks related to CI/CD and GitHub Actions
+@cache    - anything related to Cachix / Hestia
+@hosts    - host definition(s)
+@packages - package definition(s)
+@shells   - devShell definition(s)
+@sops     - tasks that impact secrets
+@tack     - modifies .tack pins
+
+keep-sorted end
+
+
+-- Project glossary
+keep-sorted start
+
++fish         - fish wrapper
++hjem         - hjem modules
++neovim       - neovim wrapper
++nixos        - nixos modules
++repo         - repository-wide changes
++todo         - this file itself
++zen-browser  - zen-browser wrapper
+
+keep-sorted end
+
 vim: set wrap linebreak breakindent breakindentopt=shift\:2 breakat-=+ breakat-=@ :
