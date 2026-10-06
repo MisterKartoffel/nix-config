@@ -7,6 +7,7 @@
     partOf = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
     requisite = [ "graphical-session.target" ];
+    wantedBy = [ "graphical-session.target" ];
 
     serviceConfig = {
       Type = "simple";
