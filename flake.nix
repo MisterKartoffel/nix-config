@@ -28,7 +28,6 @@
 
       nixosModules.default = importTree "modules/nixos";
       hjemModules.default = importTree "modules/hjem";
-      overlays.default = import ./overlays { inherit lib; };
 
       devShells = forAllSystems (pkgs: {
         default = pkgs.callPackage ./shell.nix { };
@@ -46,6 +45,12 @@
 
       formatter = forAllSystems (
         pkgs: pkgs.treefmt.withConfig (import ./ci/treefmt.nix { inherit pkgs lib; })
+      );
+
+      overlays.default = lib.composeManyExtensions (
+        lib.mapAttrsToList (name: _: import ./overlays/${name} { inherit lib; }) (
+          builtins.readDir ./overlays
+        )
       );
     };
 }
