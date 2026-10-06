@@ -38,7 +38,7 @@ local function floating_terminal()
       buf = terminal.buf,
     }
 
-    vim.keymap.set("t", "<Esc>", function()
+    vim.keymap.set({ "n", "t" }, "<Esc>", function()
       if terminal.job_id and vim.api.nvim_win_is_valid(terminal.win) then
         vim.api.nvim_win_close(terminal.win, false)
       end
