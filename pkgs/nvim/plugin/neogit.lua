@@ -13,4 +13,4 @@ local map = require("lz.n").keymap({
 local opts = { silent = true }
 
 opts.desc = "Open Neogit"
-map("n", "<leader>gg", ":Neogit<CR>", opts)
+map("n", "<leader>gg", vim.cmd.Neogit, opts)

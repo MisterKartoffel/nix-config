@@ -29,4 +29,4 @@ local map = require("lz.n").keymap({
 local map_opts = { silent = true }
 
 map_opts.desc = "Open parent directory in Oil"
-map("n", "-", ":Oil<CR>", map_opts)
+map("n", "-", vim.cmd.Oil, map_opts)
