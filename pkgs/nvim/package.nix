@@ -43,13 +43,17 @@ let
   );
 
   neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
-    plugins = (neovimUtils.normalizePlugins plugins) ++ [ treesitter ];
+    inherit wrapRc;
+    vimAlias = vimAlias && appName == "nvim";
+    viAlias = viAlias && appName == "nvim";
 
-    luaRcContent = builtins.concatStringsSep "\n" [
-      initLuaPre
-      ''vim.opt.rtp:prepend("${nvimRtp}")''
-      (builtins.readFile ./init.lua)
-    ];
+    plugins = neovimUtils.normalizePlugins plugins ++ [ treesitter ];
+
+    luaRcContent = ''
+      ${initLuaPre}
+      vim.opt.rtp:prepend("${nvimRtp}")
+      ${builtins.readFile ./init.lua}
+    '';
 
     wrapperArgs =
       lib.optionals (appName != "nvim") [
@@ -63,17 +67,13 @@ let
         ":"
         (lib.makeBinPath extraPackages)
       ];
-
-    inherit
-      vimAlias
-      viAlias
-      wrapRc
-      ;
   };
 in
-if appName != "nvim" then
+if appName == "nvim" then
+  neovim-wrapped
+else
   neovim-wrapped.overrideAttrs (oldAttrs: {
-    postBuild = oldAttrs.postBuild + ''
+    postBuild = (oldAttrs.postBuild or "") + ''
       mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
     '';
 
@@ -81,5 +81,3 @@ if appName != "nvim" then
       mainProgram = appName;
     };
   })
-else
-  neovim-wrapped
