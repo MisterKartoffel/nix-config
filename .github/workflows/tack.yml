@@ -244,7 +244,6 @@ jobs:
         path: .tack
 
     - name: "Create pull request body"
-      id: body
       env:
         RUN_ID: ${{ github.run_id }}
         SUMMARY: ${{ needs.update.outputs.summary }}
@@ -252,7 +251,6 @@ jobs:
         HOSTS: ${{ needs.matrix.outputs.hosts }}
       run: |
         {
-          echo "TEXT<<EOF"
           echo "## tack update summary:"
           echo
           echo '```text'
@@ -270,9 +268,7 @@ jobs:
             echo "</details>"
             echo
           done < <(jq -r '.[].hostname' <<< "${HOSTS}")
-
-          echo "EOF"
-        } >> "${GITHUB_OUTPUT}"
+        } > "pr-body.md"
 
     - name: "Create pull request"
       id: pull-request
@@ -284,7 +280,7 @@ jobs:
         assignees: ${{ github.repository_owner }}
         commit-message: "tack: update inputs"
         title: "tack: update inputs"
-        body: ${{ steps.body.outputs.text }}
+        body-path: pr-body.md
         labels: |
           dependencies
           CI/CD
