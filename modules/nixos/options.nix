@@ -1,5 +1,21 @@
 { pkgs, lib, ... }:
 let
+  keysModule = lib.types.submodule {
+    options = {
+      keys = lib.mkOption {
+        description = "Authorized OpenSSH public keys";
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
+
+      keyFiles = lib.mkOption {
+        description = "List of files containing one OpenSSH public key each";
+        type = lib.types.listOf lib.types.path;
+        default = [ ];
+      };
+    };
+  };
+
   usersModule = lib.types.submodule {
     options = {
       description = lib.mkOption {
@@ -18,6 +34,11 @@ let
         description = "Groups to add to";
         type = lib.types.listOf lib.types.str;
         default = [ ];
+      };
+
+      authorizedKeys = lib.mkOption {
+        description = "Set of authorized OpenSSH keys";
+        type = keysModule;
       };
     };
   };

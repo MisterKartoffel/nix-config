@@ -24,9 +24,7 @@ in
       initialPassword = lib.mkIf (!sops.enable) "nixos";
       hashedPasswordFile = lib.mkIf sops.enable secrets."${username}/password".path;
 
-      openssh.authorizedKeys.keys = [
-        "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJRyJ3RdkVQsdZpnQ0+hPPwzI+lg9XprrK3ntSFPldhBsA4sywtAy4U2P+9DtdeON29opxsUyiDd2yprr2iwWG8= termius@s20fe"
-      ];
+      openssh = { inherit (user) authorizedKeys; };
     }) users)
     // {
       root.initialPassword = "!";
