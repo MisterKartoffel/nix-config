@@ -10,4 +10,3 @@ formatter:
   scan_folded_as_literal: true
   indentless_arrays: true
   force_array_style: block
-  force_quote_style: double

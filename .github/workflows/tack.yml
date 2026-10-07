@@ -67,7 +67,7 @@ jobs:
     uses: $/.github/workflows/matrix.yml
     needs: update
     with:
-      eval: "[\"hosts\"]"
+      eval: '["hosts"]'
     permissions:
       actions: read
       pull-requests: read
