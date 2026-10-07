@@ -3,13 +3,6 @@ name: "Build Outputs"
 run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
-  pull_request:
-    paths-ignore:
-    - ".github/**"
-    - "ci/**"
-    - "LICENSE"
-    - "README.md"
-    - "TODO.txt"
   push:
     branches:
     - main
@@ -42,7 +35,6 @@ jobs:
 
   matrix:
     uses: $/.github/workflows/matrix.yml
-    if: github.event_name != 'pull_request'
     with:
       eval: '["shells", "packages", "hosts"]'
     permissions:

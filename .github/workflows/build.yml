@@ -45,7 +45,6 @@ jobs:
     - name: "Set up Hestia"
       uses: Mic92/hestia@v3.1.0
       with:
-        read-only: ${{ github.event_name == 'pull-request' }}
         filter-drv-closures: true
         upstream-cache-filter: true
         upstream-cache-key-names: >
