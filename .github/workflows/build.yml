@@ -4,10 +4,6 @@ name: "Build"
 on:
   workflow_call:
     inputs:
-      target:
-        description: "Derivation kind"
-        required: true
-        type: string
       matrix:
         description: "Build matrix"
         required: true
@@ -63,7 +59,7 @@ jobs:
         DRV_PATH: ${{ matrix.drvPath }}
       run: ${HESTIA_BIN} prefetch "${DRV_PATH}"
 
-    - name: "Build ${{ inputs.target }}"
+    - name: "Build"
       env:
         DRV_PATH: ${{ matrix.drvPath }}
       run: >
