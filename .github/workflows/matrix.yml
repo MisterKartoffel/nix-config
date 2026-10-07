@@ -6,8 +6,7 @@ on:
     inputs:
       eval:
         description: "Outputs to evaluate"
-        required: false
-        default: "[\"shells\", \"packages\", \"hosts\"]"
+        required: true
         type: string
     outputs:
       shells:
