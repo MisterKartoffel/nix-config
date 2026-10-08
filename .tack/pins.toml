@@ -1,4 +1,3 @@
-#
 # tack pins. edit by hand or with tack add / rm / alias
 # nix reads pins.lock.json; this file drives tack update
 
@@ -43,8 +42,3 @@ url = "github:MisterKartoffel/nix-secrets"
 
 [inputs.zen-browser]
 url = "github:youwen5/zen-browser-flake"
-
-# Waiting on:
-# https://github.com/NixOS/nixpkgs/pull/551635
-[inputs.ortie]
-url = "github:pimalaya/ortie"

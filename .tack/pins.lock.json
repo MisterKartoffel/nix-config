@@ -25,17 +25,9 @@
   },
   "nixpkgs": {
     "type": "tarball",
-    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1083223.c59305bab206/nixexprs.tar.zst",
-    "rev": "c59305bab2065cfecc4944690d9eedbb56f3a9fa",
-    "narHash": "sha256-VBA0QerzzmL+4wxgtwiCdiLwLpJg2/9xOxhgO3BRJQA="
-  },
-  "ortie": {
-    "type": "github",
-    "owner": "pimalaya",
-    "repo": "ortie",
-    "rev": "42502729458d5a281caae1dc90067d77841dc811",
-    "narHash": "sha256-JEdvZg7NrDIOZiCX9tZQ1E67rforzaVGvsWhqKzFlLU=",
-    "lastModified": 1791058248
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1087755.e7439b6b14ad/nixexprs.tar.zst",
+    "rev": "e7439b6b14ad3cc35d05608ebca9bce01a25f5f8",
+    "narHash": "sha256-gRZ/s8WQJ2CsXdhcDVQH34qxuL0MuMCOs3aBiK1Prsw="
   },
   "preservation": {
     "type": "github",
