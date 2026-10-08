@@ -1,6 +1,7 @@
 { pkgs, lib, ... }:
 let
   wallpaper = pkgs.fetchurl {
+    name = "swaybg-wallpaper.png";
     url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/refs/heads/master/cat-vibin.png";
     hash = "sha256-ERZ4sAGhkaBM/tMBPfxeY5dF6xs61i9xXy1z/ovtJr8=";
   };

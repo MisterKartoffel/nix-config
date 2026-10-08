@@ -32,6 +32,7 @@ in
   };
 
   xdg.config.files."dunst/dunstrc.d/colors.conf".source = pkgs.fetchurl {
+    name = "dunst-colors.conf";
     url = "https://raw.githubusercontent.com/catppuccin/dunst/refs/heads/main/themes/mocha.conf";
     hash = "sha256-v/Ger5s0WUXNUreIM3HvaBcJCR9B4lCrQQrFkW7PSIg=";
   };

@@ -24,6 +24,7 @@
       drun-launch = true;
 
       include = pkgs.fetchurl {
+        name = "tofi-colors.conf";
         url = "https://raw.githubusercontent.com/catppuccin/tofi/refs/heads/main/themes/catppuccin-mocha";
         hash = "sha256-epKCz6gAHq3euR80UkGRuSu+l0xaSZc8zKzUjSuUf0Y=";
       };
