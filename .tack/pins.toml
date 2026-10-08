@@ -41,9 +41,6 @@ url = "github:Mic92/sops-nix"
 [inputs.nix-secrets]
 url = "github:MisterKartoffel/nix-secrets"
 
-[inputs.basix]
-url = "github:NotAShelf/Basix"
-
 [inputs.zen-browser]
 url = "github:youwen5/zen-browser-flake"
 

@@ -1,12 +1,4 @@
 {
-  "basix": {
-    "type": "github",
-    "owner": "NotAShelf",
-    "repo": "Basix",
-    "rev": "a0533460f08ecc0f06126b2540e5502ad2c92256",
-    "narHash": "sha256-housjVTjhgLBWUlJPR1ox4tRk0l2XjH1LqJCGsRrX4I=",
-    "lastModified": 1791018085
-  },
   "disko": {
     "type": "github",
     "owner": "nix-community",
