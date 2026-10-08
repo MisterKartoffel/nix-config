@@ -7,7 +7,7 @@ in
   systemd = { inherit packages; };
 
   xdg.config.files."dunst/dunstrc" = {
-    generator = lib.generators.toGitINI;
+    generator = lib.generators.toINI { };
     value = {
       global = {
         width = "(100, 300)";
