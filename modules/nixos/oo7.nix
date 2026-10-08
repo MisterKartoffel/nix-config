@@ -1,12 +1,16 @@
 { config, lib, ... }:
 let
-  inherit (config.services) oo7;
+  inherit (config.services) greetd oo7;
 in
 {
-  services.gnome.gnome-keyring.enable = !oo7.enable;
-  security.pam.services.passwd.oo7.enable = oo7.enable;
+  config = lib.mkIf oo7.enable {
+    services.gnome.gnome-keyring.enable = false;
 
-  xdg.portal.config.niri."org.freedesktop.impl.portal.Secret" = lib.mkIf oo7.enable (
-    lib.mkForce "oo7-portal"
-  );
+    security.pam.services = {
+      passwd.oo7.enable = true;
+      greetd.oo7.enable = greetd.enable;
+    };
+
+    xdg.portal.config.niri."org.freedesktop.impl.portal.Secret" = lib.mkForce "oo7-portal";
+  };
 }

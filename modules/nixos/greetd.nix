@@ -28,6 +28,4 @@
         user_menu.enable = true;
         secret.mode = "characters";
       };
-
-  security.pam.services.greetd.oo7.enable = lib.mkDefault config.services.oo7.enable;
 }
