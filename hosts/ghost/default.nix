@@ -31,6 +31,7 @@
 
   programs = {
     git.enable = true;
+    msmtp.enable = true;
     nh.enable = true;
     niri.enable = true;
   };
