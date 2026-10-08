@@ -121,16 +121,10 @@ let
             "-";
 
         unit = builtins.head (builtins.filter (u: abs + 1 >= u.size) config.units);
-
-        scaled = (abs * 100) / unit.size;
-        integer = scaled / 100;
-        decimal =
-          let
-            fraction = scaled - integer * 100;
-          in
-          if fraction < 10 then "0${toString fraction}" else toString fraction;
+        scaled = abs * 100 / unit.size / 100.0;
+        size = builtins.replaceStrings [ "0000" ] [ "" ] (toString scaled);
       in
-      "${sign}${toString integer}.${decimal} ${unit.suffix}";
+      "${sign}${size} ${unit.suffix}";
 
     versions =
       list: omitted:
