@@ -1,12 +1,4 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
-let
-  inherit (inputs.basix.schemeData.base24.catppuccin-mocha) palette;
-in
+{ pkgs, lib, ... }:
 {
   packages = builtins.attrValues { inherit (pkgs) tofi; };
 
@@ -31,17 +23,10 @@ in
       fuzzy-match = true;
       drun-launch = true;
 
-      background-color = palette.base00;
-      outline-color = palette.base05;
-      border-color = palette.base05;
-      text-color = palette.base05;
-      prompt-color = palette.base0A;
-      prompt-background = palette.base00;
-      placeholder-color = palette.base03;
-      input-background = palette.base00;
-      default-result-background = palette.base00;
-      selection-color = palette.base03;
-      selection-background = palette.base00;
+      include = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/catppuccin/tofi/refs/heads/main/themes/catppuccin-mocha";
+        hash = "sha256-epKCz6gAHq3euR80UkGRuSu+l0xaSZc8zKzUjSuUf0Y=";
+      };
     };
   };
 }

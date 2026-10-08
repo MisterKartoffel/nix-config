@@ -1,13 +1,9 @@
 {
-  inputs,
   config,
   pkgs,
   lib,
   ...
 }:
-let
-  inherit (inputs.basix.schemeData.base24.catppuccin-mocha) palette;
-in
 {
   packages = builtins.attrValues { inherit (pkgs) vellum; };
 
@@ -16,18 +12,16 @@ in
     value = {
       remember_last_tool = false;
       clear_on_escape = true;
-      palette = builtins.attrValues {
-        inherit (palette)
-          base08
-          base09
-          base0A
-          base0B
-          base0D
-          base0E
-          base05
-          base00
-          ;
-      };
+      palette = [
+        "#f38ba8"
+        "#fab387"
+        "#f9e2af"
+        "#a6e3a1"
+        "#89b4fa"
+        "#cba6f7"
+        "#cdd6f4"
+        "#1e1e2e"
+      ];
     };
   };
 
