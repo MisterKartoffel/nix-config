@@ -1,0 +1,8 @@
+[shorturls]
+nixpkgs = "https://channels.nixos.org/{path}/nixexprs.tar.zst"
+
+[inputs.nixpkgs]
+url = "nixpkgs:nixos-unstable"
+
+[tack]
+recomposable = true

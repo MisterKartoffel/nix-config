@@ -47,6 +47,11 @@
         pkgs: pkgs.treefmt.withConfig (import ./ci/treefmt.nix { inherit pkgs lib; })
       );
 
+      templates = lib.genAttrs (builtins.attrNames (builtins.readDir ./templates)) (language: {
+        path = ./templates/${language};
+        description = "Template for ${language}";
+      });
+
       overlays.default = lib.composeManyExtensions (
         lib.mapAttrsToList (name: _: import ./overlays/${name} { inherit lib; }) (
           builtins.readDir ./overlays

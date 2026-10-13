@@ -1,0 +1,39 @@
+{ pkgs, lib }:
+{
+  settings = {
+    tree-root-file = "flake.nix";
+
+    formatter = {
+      typstyle = {
+        command = lib.getExe pkgs.typstyle;
+        includes = [ "*.typ" ];
+      };
+
+      deadnix = {
+        command = lib.getExe pkgs.deadnix;
+        options = [ "--edit" ];
+        includes = [ "*.nix" ];
+        priority = 1;
+      };
+
+      statix = {
+        command = lib.getExe pkgs.statix;
+        options = [ "fix" ];
+        includes = [ "*.nix" ];
+        priority = 2;
+        no-positional-arg-support = true;
+      };
+
+      nixfmt = {
+        command = lib.getExe pkgs.nixfmt-rs;
+        includes = [ "*.nix" ];
+        priority = 3;
+      };
+
+      keep-sorted = {
+        command = lib.getExe pkgs.keep-sorted;
+        includes = [ "*" ];
+      };
+    };
+  };
+}
