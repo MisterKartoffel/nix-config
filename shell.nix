@@ -1,9 +1,17 @@
 {
-  pkgs ? import <nixpkgs> { },
+  # keep-sorted start
+
+  lua-language-server,
+  mkShellNoCC,
+  nil,
+  tack,
+  yaml-language-server,
+
+  # keep-sorted end
 }:
-pkgs.mkShellNoCC {
+mkShellNoCC {
   packages = builtins.attrValues {
-    inherit (pkgs)
+    inherit
       # keep-sorted start
 
       lua-language-server
