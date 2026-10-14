@@ -6,6 +6,7 @@
   tack,
   tinymist,
   typst,
+  websocat,
 
   # keep-sorted end
 }:
@@ -19,6 +20,7 @@ mkShellNoCC {
       nil
       tack
       tinymist
+      websocat
 
       # keep-sorted end
       ;
@@ -26,6 +28,6 @@ mkShellNoCC {
 
   strictDeps = true;
   nativeBuildInputs = [
-    (typst.withPackages (_packages: builtins.attrValues { }))
+    (typst.withPackages (_: builtins.attrValues { }))
   ];
 }
