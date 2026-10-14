@@ -2,7 +2,6 @@
   lib,
   neovim-unwrapped,
   wrapNeovimUnstable,
-  neovimUtils,
   vimPlugins,
   tree-sitter,
   fetchFromGitHub,
@@ -45,8 +44,7 @@ let
     inherit wrapRc;
     vimAlias = vimAlias && appName == "nvim";
     viAlias = viAlias && appName == "nvim";
-
-    plugins = neovimUtils.normalizePlugins plugins ++ [ treesitter ];
+    plugins = plugins ++ [ treesitter ];
 
     luaRcContent = ''
       ${initLuaPre}
