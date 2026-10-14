@@ -1,8 +1,3 @@
-if vim.g.did_load_keybindings_plugin then
-  return
-end
-vim.g.did_load_keybindings_plugin = true
-
 local opts = { silent = true }
 
 opts.desc = "Move selected line down and autoindent"

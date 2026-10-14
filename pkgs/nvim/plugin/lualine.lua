@@ -1,8 +1,3 @@
-if vim.g.did_load_lualine_plugin then
-  return
-end
-vim.g.did_load_lualine_plugin = true
-
 -- Uses gitsigns as a source for diffs.
 local function diff_source()
   local gitsigns = vim.b.gitsigns_status_dict

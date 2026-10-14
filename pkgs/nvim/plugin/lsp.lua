@@ -1,8 +1,3 @@
-if vim.g.did_load_lsp_plugin then
-  return
-end
-vim.g.did_load_lsp_plugin = true
-
 local debug = false
 if debug then
   vim.lsp.log.set_level(vim.log.levels.DEBUG)

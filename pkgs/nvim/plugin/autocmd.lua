@@ -1,8 +1,3 @@
-if vim.g.did_load_autocmd_plugin then
-  return
-end
-vim.g.did_load_autocmd_plugin = true
-
 vim.api.nvim_create_autocmd("FileType", {
   desc = "Enable treesitter for available parsers",
   group = vim.api.nvim_create_augroup("enable_treesitter", { clear = true }),

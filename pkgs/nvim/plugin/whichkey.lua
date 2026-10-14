@@ -1,8 +1,3 @@
-if vim.g.did_load_whichkey_plugin then
-  return
-end
-vim.g.did_load_whichkey_plugin = true
-
 local opts = {
   delay = 200,
   preset = "helix",

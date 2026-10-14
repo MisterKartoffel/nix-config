@@ -1,8 +1,3 @@
-if vim.g.did_load_catppuccin_plugin then
-  return
-end
-vim.g.did_load_catppuccin_plugin = true
-
 local opts = {
   flavor = "mocha",
   integrations = {

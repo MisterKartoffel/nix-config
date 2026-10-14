@@ -1,8 +1,4 @@
-if vim.g.did_load_options_plugin then
-  return
-end
-vim.g.did_load_options_plugin = true
-
+-- General
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.cursorline = true

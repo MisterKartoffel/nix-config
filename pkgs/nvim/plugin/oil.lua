@@ -1,8 +1,3 @@
-if vim.g.did_load_oil_plugin then
-  return
-end
-vim.g.did_load_oil_plugin = true
-
 function _G.get_oil_winbar()
   local path = vim.fn.expand("%")
   path = path:gsub("oil://", "")
@@ -22,7 +17,7 @@ local map = require("lz.n").keymap({
   "oil",
   after = function()
     require("oil").setup(opts)
-    require("oil-git-status").setup({})
+    require("oil-git-status").setup()
   end,
 }).set
 

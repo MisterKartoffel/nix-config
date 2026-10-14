@@ -1,8 +1,3 @@
-if vim.g.did_load_gitsigns_plugin then
-  return
-end
-vim.g.did_load_gitsigns_plugin = true
-
 local gitsigns = require("gitsigns")
 gitsigns.setup({
   on_attach = function(bufnr)
