@@ -17,7 +17,6 @@
       tree-sitter
       fetchFromGitHub
       vimPlugins
-      lib
       ;
   },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },

@@ -2,68 +2,53 @@
   tree-sitter,
   fetchFromGitHub,
   vimPlugins,
-  lib,
 }:
 let
-  fallbackGrammars = {
-    /*
-      muttrc was dropped from nvim-treesitter:
-      https://github.com/nvim-treesitter/nvim-treesitter/commit/78bebe
-    */
-    muttrc = tree-sitter.buildGrammar {
-      language = "muttrc";
-      version = "2026-07-26";
-
-      src = fetchFromGitHub {
-        owner = "neomutt";
-        repo = "tree-sitter-muttrc";
-        rev = "da8af7ba87b1bbe6d9e1606dfdc5eceb0fccc2dc";
-        hash = "sha256-TR11ezKjO0HdKUKD/wMebP+Ybmw0I6PGMFMv/heEwGY=";
-      };
+  /*
+    muttrc was dropped from nvim-treesitter:
+    https://github.com/nvim-treesitter/nvim-treesitter/commit/78bebe
+  */
+  muttrc = tree-sitter.buildGrammar {
+    language = "muttrc";
+    version = "2026-07-26";
+    src = fetchFromGitHub {
+      owner = "neomutt";
+      repo = "tree-sitter-muttrc";
+      rev = "da8af7ba87b1bbe6d9e1606dfdc5eceb0fccc2dc";
+      hash = "sha256-TR11ezKjO0HdKUKD/wMebP+Ybmw0I6PGMFMv/heEwGY=";
     };
   };
-
-  resolvedFallbacks = builtins.mapAttrs (
-    grammar: fallback:
-    let
-      available = vimPlugins.nvim-treesitter-parsers ? ${grammar};
-    in
-    lib.warnIf available "${grammar} is available in nixpkgs, you may remove this fallback" (
-      if available then vimPlugins.nvim-treesitter-parsers.${grammar} else fallback
-    )
-  ) fallbackGrammars;
 in
 vimPlugins.nvim-treesitter.withPlugins (
   plugins:
-  builtins.attrValues (
-    {
-      inherit (plugins)
-        # keep-sorted start
+  builtins.attrValues {
+    inherit (plugins)
+      # keep-sorted start
 
-        bash
-        editorconfig
-        fish
-        git_config
-        gitcommit
-        gitignore
-        json
-        just
-        kdl
-        lua
-        luadoc
-        markdown
-        nix
-        ssh_config
-        toml
-        typst
-        vim
-        vimdoc
-        yaml
-        zsh
+      bash
+      editorconfig
+      fish
+      git_config
+      gitcommit
+      gitignore
+      json
+      just
+      kdl
+      lua
+      luadoc
+      markdown
+      nix
+      ssh_config
+      toml
+      typst
+      vim
+      vimdoc
+      yaml
+      zsh
 
-        # keep-sorted end
-        ;
-    }
-    // resolvedFallbacks
-  )
+      # keep-sorted end
+      ;
+
+    inherit muttrc;
+  }
 )
