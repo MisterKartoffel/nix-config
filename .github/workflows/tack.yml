@@ -132,7 +132,7 @@ jobs:
         echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
 
     - name: "Download changes"
-      uses: actions/download-artifact@v8.0.1
+      uses: actions/download-artifact@v8.0.2
       with:
         name: tack
         path: .tack
@@ -204,7 +204,7 @@ jobs:
 
     steps:
     - name: "Download diffs"
-      uses: actions/download-artifact@v8.0.1
+      uses: actions/download-artifact@v8.0.2
       with:
         pattern: diff-*
         path: _site/diffs/${{ github.run_id }}
@@ -239,7 +239,7 @@ jobs:
       uses: actions/checkout@v7.0.1
 
     - name: "Download changes"
-      uses: actions/download-artifact@v8.0.1
+      uses: actions/download-artifact@v8.0.2
       with:
         name: tack
         path: .tack
