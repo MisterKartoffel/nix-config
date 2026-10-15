@@ -50,6 +50,7 @@ jobs:
           sparse-checkout: |
             .tack
             ci
+            overlays
 
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.1
