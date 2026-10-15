@@ -4,10 +4,9 @@ https://github.com/todotxt/todo.txt
 -- TODO list
 keep-sorted start
 
-2026-10-08 Keep track of nixpkgs#551635 branch reachability to remove ortie from inputs +hjem @tack
+2026-10-15 Remove lib from overlay imports (lib is reachable from final and prev) +hjem +neovim @overlays
 
 keep-sorted end
-
 
 -- Context glossary
 keep-sorted start
@@ -15,13 +14,13 @@ keep-sorted start
 @actions  - tasks related to CI/CD and GitHub Actions
 @cache    - anything related to Cachix / Hestia
 @hosts    - host definition(s)
+@overlays - overlay definition(s)
 @packages - package definition(s)
 @shells   - devShell definition(s)
 @sops     - tasks that impact secrets
 @tack     - modifies .tack pins
 
 keep-sorted end
-
 
 -- Project glossary
 keep-sorted start
@@ -35,5 +34,4 @@ keep-sorted start
 +zen-browser  - zen-browser wrapper
 
 keep-sorted end
-
 vim: set wrap linebreak breakindent breakindentopt=shift\:2 breakat-=+ breakat-=@ :
