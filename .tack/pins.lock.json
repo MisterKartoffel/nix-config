@@ -19,9 +19,9 @@
     "type": "github",
     "owner": "MisterKartoffel",
     "repo": "nix-secrets",
-    "rev": "7cf6231c4e17e92b698869e19bcd3e4303b078f7",
-    "narHash": "sha256-+1bTjQl1Uxr8K0pxXSCEzniYz2HYOF70ITJTWUqE4/c=",
-    "lastModified": 1791073942
+    "rev": "83758ec6b6a64423d8a82da5e8c062341cbc53a2",
+    "narHash": "sha256-vv6Rfpuv/bTtSUIEEDeYVByXyZRt4aKoIOQ3Z7d5Vt4=",
+    "lastModified": 1791480383
   },
   "nixpkgs": {
     "type": "tarball",
