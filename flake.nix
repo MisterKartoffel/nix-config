@@ -14,7 +14,13 @@
       forAllSystems =
         apply:
         lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
-          system: apply inputs.nixpkgs.legacyPackages.${system}
+          system:
+          apply (
+            import inputs.nixpkgs {
+              inherit system;
+              overlays = [ self.overlays.default ];
+            }
+          )
         );
     in
     {
