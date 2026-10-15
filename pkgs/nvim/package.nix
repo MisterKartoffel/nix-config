@@ -3,21 +3,13 @@
   neovim-unwrapped,
   wrapNeovimUnstable,
   vimPlugins,
-  tree-sitter,
-  fetchFromGitHub,
   linkFarm,
 
   fd,
   ripgrep,
 
   appName ? "nvim",
-  treesitter ? import ./nix/treesitter.nix {
-    inherit
-      tree-sitter
-      fetchFromGitHub
-      vimPlugins
-      ;
-  },
+  treesitter ? import ./nix/treesitter.nix { inherit vimPlugins; },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
   plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
   extraPackages ? [
