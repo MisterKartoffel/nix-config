@@ -114,7 +114,7 @@ in
 
         binds {
           // General use binds
-          Mod+Space repeat=false { spawn "${lib.getExe' pkgs.tofi "tofi-drun"}"; }
+          Menu repeat=false { spawn "${lib.getExe' pkgs.tofi "tofi-drun"}"; }
           Mod+T repeat=false { spawn "${lib.getExe pkgs.ghostty}"; }
           Mod+F repeat=false { spawn "${lib.getExe zen-browser}"; }
 
@@ -123,8 +123,9 @@ in
           Mod+O { toggle-overview; }
 
           // Screencapture
-          Mod+Print { screenshot; }
-          Mod+Shift+Print { screenshot-window; }
+          Print { screenshot; }
+          Mod+Print { screenshot-window; }
+          Mod+Shift+Print { screenshot-screen; }
           Mod+A { spawn "${lib.getExe pkgs.vellum}" "toggle"; }
 
           // Window and workspace movement
