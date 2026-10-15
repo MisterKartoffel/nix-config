@@ -5,17 +5,11 @@
   vimPlugins,
   linkFarm,
 
-  fd,
-  ripgrep,
-
   appName ? "nvim",
   treesitter ? import ./nix/treesitter.nix { inherit vimPlugins; },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
   plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
-  extraPackages ? [
-    fd
-    ripgrep
-  ],
+  extraPackages ? [ ],
   viAlias ? appName == "nvim",
   vimAlias ? appName == "nvim",
   initLuaPre ? "",
