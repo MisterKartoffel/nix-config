@@ -7,13 +7,14 @@ end
 ---@param bufnr integer
 ---@return fun():nil run_tinymist_command, string cmd_name, string cmd_desc
 local function create_tinymist_command(command_name, client, bufnr)
-  local export_type = command_name:match("tinymist%.export(%w+)")
-  local info_type = command_name:match("tinymist%.(%w+)")
-  local cmd_display = export_type or info_type:gsub("^get", "Get"):gsub("^pin", "Pin")
+  local raw_name = command_name:match("tinymist%.(.+)") or ""
+  local cmd_display = raw_name:gsub("^export", "Export to "):gsub("^get", "Get "):gsub("^pin", "Pin ")
+
+  local cmd_name = "Tinymist" .. raw_name:sub(1, 1):upper() .. raw_name:sub(2)
+  local cmd_desc = cmd_display
 
   local function run_tinymist_command()
     local arguments = { vim.api.nvim_buf_get_name(bufnr) }
-    local title_str = export_type and ("Export " .. cmd_display) or cmd_display
 
     local function handler(err, res)
       if err then
@@ -24,14 +25,12 @@ local function create_tinymist_command(command_name, client, bufnr)
     end
 
     return client:exec_cmd({
-      title = title_str,
+      title = cmd_desc,
       command = command_name,
       arguments = arguments,
     }, { bufnr = bufnr }, handler)
   end
 
-  local cmd_name = export_type and ("TinymistExport" .. cmd_display) or ("Tinymist" .. cmd_display) ---@type string
-  local cmd_desc = export_type and ("Export to " .. cmd_display) or ("Get " .. cmd_display) ---@type string
   return run_tinymist_command, cmd_name, cmd_desc
 end
 
@@ -41,22 +40,26 @@ return {
   filetypes = { "typst" },
   on_attach = function(client, bufnr)
     for _, command in ipairs({
-      "tinymist.exportSvg",
-      "tinymist.exportPng",
-      "tinymist.exportPdf",
+      -- keep-sorted start
+
+      "tinymist.exportAnsiHighlight",
       "tinymist.exportHtml",
       "tinymist.exportMarkdown",
-      "tinymist.exportText",
+      "tinymist.exportPdf",
+      "tinymist.exportPng",
       "tinymist.exportQuery",
-      "tinymist.exportAnsiHighlight",
-      "tinymist.getServerInfo",
-      "tinymist.getDocumentTrace",
-      "tinymist.getWorkspaceLabels",
+      "tinymist.exportSvg",
+      "tinymist.exportText",
       "tinymist.getDocumentMetrics",
+      "tinymist.getDocumentTrace",
+      "tinymist.getServerInfo",
+      "tinymist.getWorkspaceLabels",
       "tinymist.pinMain",
+
+      -- keep-sorted end
     }) do
       local cmd_func, cmd_name, cmd_desc = create_tinymist_command(command, client, bufnr)
-      vim.api.nvim_buf_create_user_command(bufnr, "Lsp" .. cmd_name, cmd_func, { nargs = 0, desc = cmd_desc })
+      vim.api.nvim_buf_create_user_command(bufnr, cmd_name, cmd_func, { nargs = 0, desc = cmd_desc })
     end
   end,
 }
