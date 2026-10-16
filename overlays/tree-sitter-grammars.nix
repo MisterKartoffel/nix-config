@@ -1,4 +1,4 @@
-_: final: prev: {
+final: prev: {
   tree-sitter-grammars = prev.tree-sitter-grammars.overrideScope (
     _: _: {
       tree-sitter-muttrc = final.tree-sitter.buildGrammar {

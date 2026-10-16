@@ -1,4 +1,4 @@
-_: _final: prev: {
+_: prev: {
   bibata-cursors = prev.bibata-cursors.overrideAttrs (_: {
     buildPhase = ''
       runHook preBuild

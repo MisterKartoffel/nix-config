@@ -4,8 +4,6 @@ https://github.com/todotxt/todo.txt
 -- TODO list
 keep-sorted start
 
-2026-10-15 Remove lib from overlay imports (lib is reachable from final and prev) +hjem +neovim @overlays
-
 keep-sorted end
 
 -- Context glossary

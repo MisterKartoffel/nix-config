@@ -1,4 +1,4 @@
-_: final: prev: {
+final: prev: {
   magnetic-catppuccin-gtk = prev.magnetic-catppuccin-gtk.override {
     accent = [ "mauve" ];
   };

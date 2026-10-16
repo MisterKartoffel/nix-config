@@ -1,10 +1,6 @@
-_: final: prev: {
+final: prev: {
   vimPlugins = prev.vimPlugins.extend (
     _: prev': {
-      /*
-        I could add these to extraPackages in the wrapper, but I think
-        this is the more "correct" and "clean" approach.
-      */
       snacks-nvim = prev'.snacks-nvim.overrideAttrs (_: {
         runtimeDeps = builtins.attrValues { inherit (final) fd ripgrep; };
       });

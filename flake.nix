@@ -59,9 +59,7 @@
       });
 
       overlays.default = lib.composeManyExtensions (
-        lib.mapAttrsToList (name: _: import ./overlays/${name} { inherit lib; }) (
-          builtins.readDir ./overlays
-        )
+        lib.mapAttrsToList (name: _: import ./overlays/${name}) (builtins.readDir ./overlays)
       );
     };
 }
