@@ -17,10 +17,10 @@ vimPlugins.nvim-treesitter.withPlugins (
       lua
       luadoc
       markdown
-      muttrc
       nix
       ssh_config
       toml
+      tree-sitter-muttrc
       typst
       vim
       vimdoc
