@@ -8,6 +8,9 @@ on:
         description: "Build matrix"
         required: true
         type: string
+    secrets:
+      BWS_ACCESS_TOKEN:
+        required: true
 
 permissions: {}
 
@@ -22,10 +25,21 @@ jobs:
 
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         include: ${{ fromJSON(inputs.matrix) }}
 
     steps:
+    - name: "Get secrets"
+      id: secrets
+      uses: bitwarden/sm-action@v3.0.1
+      with:
+        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
+        set_env: false
+        secrets: |
+          ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+
     - parallel:
       - name: "Checkout repository"
         uses: actions/checkout@v7.0.1
@@ -33,7 +47,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.2
         with:
-          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -52,7 +66,7 @@ jobs:
       continue-on-error: true
       with:
         name: misterkartoffel
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        authToken: ${{ steps.secrets.outputs.CACHIX_AUTH_TOKEN }}
 
     - name: "Prefetch derivation closure"
       env:

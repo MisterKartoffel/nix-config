@@ -6,29 +6,41 @@ on:
     inputs:
       eval:
         description: "Outputs to evaluate"
-        required: true
+        required: false
         type: string
+        default: '["hosts", "packages", "shells"]'
+    secrets:
+      BWS_ACCESS_TOKEN:
+        required: true
     outputs:
-      shells:
-        value: ${{ jobs.matrix.outputs.shells }}
-      packages:
-        value: ${{ jobs.matrix.outputs.packages }}
       hosts:
-        value: ${{ jobs.matrix.outputs.hosts }}
+        value: ${{ jobs.eval.outputs.hosts }}
+      packages:
+        value: ${{ jobs.eval.outputs.packages }}
+      shells:
+        value: ${{ jobs.eval.outputs.shells }}
 
 permissions: {}
 
 jobs:
-  matrix:
+  eval:
     name: "Generate builder matrix"
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     permissions:
       actions: read
-      pull-requests: read
 
     steps:
+    - name: "Get secrets"
+      id: secrets
+      uses: bitwarden/sm-action@v3.0.1
+      with:
+        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
+        set_env: false
+        secrets: |
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+
     - parallel:
       - name: "Checkout repository"
         uses: actions/checkout@v7.0.1
@@ -36,7 +48,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.2
         with:
-          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -51,20 +63,24 @@ jobs:
           misterkartoffel.cachix.org-1
 
     - name: "Discover matrices"
-      id: matrix
+      id: discover
       env:
         EVAL: ${{ inputs.eval }}
       working-directory: ./ci
       run: |
-        for OUTPUT in $(jq -r ".[]" <<< "${EVAL}"); do
+        for OUTPUT in $(jq --raw-output ".[]" <<< "${EVAL}"); do
           echo "::group::Evaluating ${OUTPUT}"
-          VALUE="$(nix eval --json --file matrix.nix --apply "x: x.${OUTPUT}")"
-          jq -r ".[].drvPath" <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
+          VALUE=$(nix eval --json --file matrix.nix --apply "x: x.${OUTPUT}")
+
+          echo "Evaluated JSON for ${OUTPUT}:"
+          jq "." <<< "${VALUE}"
+
+          jq --raw-output ".[].drvPath" <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
           echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
           echo "::endgroup::"
         done
 
     outputs:
-      shells: ${{ steps.matrix.outputs.shells }}
-      packages: ${{ steps.matrix.outputs.packages }}
-      hosts: ${{ steps.matrix.outputs.hosts }}
+      hosts: ${{ steps.discover.outputs.hosts }}
+      packages: ${{ steps.discover.outputs.packages }}
+      shells: ${{ steps.discover.outputs.shells }}

@@ -26,6 +26,15 @@ jobs:
       summary: ${{ steps.summary.outputs.summary }}
 
     steps:
+    - name: "Get secrets"
+      id: secrets
+      uses: bitwarden/sm-action@v3.0.1
+      with:
+        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
+        set_env: false
+        secrets: |
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+
     - parallel:
       - name: "Checkout tack directory"
         uses: actions/checkout@v7.0.1
@@ -36,7 +45,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.2
         with:
-          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -50,10 +59,10 @@ jobs:
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
 
-    - name: "Update resolver and pins"
+    - name: "Update pins and resolver"
       run: |
-        nix run nixpkgs#tack -- init --resolver
         nix run nixpkgs#tack -- update
+        nix run nixpkgs#tack -- init --resolver
 
     - name: "Upload changes"
       uses: actions/upload-artifact@v7
@@ -83,10 +92,21 @@ jobs:
 
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
 
     steps:
+    - name: "Get secrets"
+      id: secrets
+      uses: bitwarden/sm-action@v3.0.1
+      with:
+        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
+        set_env: false
+        secrets: |
+          ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+
     - parallel:
       - name: "Checkout repository"
         uses: actions/checkout@v7.0.1
@@ -94,7 +114,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@v31.11.2
         with:
-          github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -113,7 +133,7 @@ jobs:
       continue-on-error: true
       with:
         name: misterkartoffel
-        authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+        authToken: ${{ steps.secrets.outputs.CACHIX_AUTH_TOKEN }}
 
     - name: "Prefetch derivation closure"
       env:
@@ -245,6 +265,7 @@ jobs:
         path: .tack
 
     - name: "Create pull request body"
+      id: body
       env:
         RUN_ID: ${{ github.run_id }}
         SUMMARY: ${{ needs.update.outputs.summary }}
@@ -252,6 +273,7 @@ jobs:
         HOSTS: ${{ needs.matrix.outputs.hosts }}
       run: |
         {
+          echo "TEXT<<EOF"
           echo "## tack update summary:"
           echo
           echo '```text'
@@ -269,10 +291,10 @@ jobs:
             echo "</details>"
             echo
           done < <(jq -r '.[].hostname' <<< "${HOSTS}")
-        } > "pr-body.md"
+          echo "EOF"
+        } >> "${GITHUB_OUTPUT}"
 
     - name: "Create pull request"
-      id: pull-request
       uses: peter-evans/create-pull-request@v8
       with:
         branch: tack/update-inputs
@@ -281,7 +303,7 @@ jobs:
         assignees: ${{ github.repository_owner }}
         commit-message: "tack: update inputs"
         title: "tack: update inputs"
-        body-path: pr-body.md
+        body: ${{ steps.body.outputs.text }}
         labels: |
           dependencies
           CI/CD
