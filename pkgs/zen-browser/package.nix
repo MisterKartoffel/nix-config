@@ -2,14 +2,22 @@
   lib,
   wrapFirefox,
   zen-browser-unwrapped,
+  stdenv,
 }:
 # Manually override hash until this is fixed:
 # https://github.com/youwen5/zen-browser-flake/issues/24
 let
   zen-browser =
     if zen-browser-unwrapped.version == "1.23.3b" then
+      let
+        hash =
+          if stdenv.hostPlatform.system == "x86_64-linux" then
+            "sha256-uyBF0+IWVNQP6EElAJLurf0sH8gx7vtQkiJ3PIvcoUk="
+          else
+            "sha256-EQDLPoVyVO26gzopPrUAEN5moWZGXt/NzIU23ecy36c=";
+      in
       zen-browser-unwrapped.override (_: {
-        hash = "sha256-uyBF0+IWVNQP6EElAJLurf0sH8gx7vtQkiJ3PIvcoUk=";
+        inherit hash;
       })
     else
       zen-browser-unwrapped;
