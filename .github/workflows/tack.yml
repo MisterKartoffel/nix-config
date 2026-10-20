@@ -34,7 +34,7 @@ jobs:
             .tack
 
       - name: "Install Nix"
-        uses: cachix/install-nix-action@v31.11.1
+        uses: cachix/install-nix-action@v31.11.2
         with:
           github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
@@ -92,7 +92,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: "Install Nix"
-        uses: cachix/install-nix-action@v31.11.1
+        uses: cachix/install-nix-action@v31.11.2
         with:
           github_access_token: ${{ secrets.GH_PAT_SECRETS_RO }}
           extra_nix_config: |
