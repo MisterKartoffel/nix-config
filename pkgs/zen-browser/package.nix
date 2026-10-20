@@ -3,7 +3,18 @@
   wrapFirefox,
   zen-browser-unwrapped,
 }:
-wrapFirefox zen-browser-unwrapped {
+# Manually override hash until this is fixed:
+# https://github.com/youwen5/zen-browser-flake/issues/24
+let
+  zen-browser =
+    if zen-browser-unwrapped.version == "1.23.3b" then
+      zen-browser-unwrapped.override (_: {
+        hash = "sha256-uyBF0+IWVNQP6EElAJLurf0sH8gx7vtQkiJ3PIvcoUk=";
+      })
+    else
+      zen-browser-unwrapped;
+in
+wrapFirefox zen-browser {
   pname = "zen-browser";
 
   extraPolicies = import ./policies.nix // {
