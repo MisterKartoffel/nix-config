@@ -1,6 +1,6 @@
 ---
 name: "Hestia Cache GC"
-run-name: "${{ github.workflow }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }} (${{ github.run_id }}-${{ github.run_attempt }})"
 
 on:
   schedule:

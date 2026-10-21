@@ -1,6 +1,6 @@
 ---
 name: "Update Inputs"
-run-name: "${{ github.workflow }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }} (${{ github.run_id }}-${{ github.run_attempt }}): ${{ github.sha }}"
 
 on:
   schedule:
@@ -74,12 +74,12 @@ jobs:
   matrix:
     uses: $/.github/workflows/matrix.yml
     needs: update
-    with:
-      eval: '["hosts"]'
     permissions:
       actions: read
-      pull-requests: read
-    secrets: inherit
+    with:
+      eval: '["hosts"]'
+    secrets:
+      BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
   diffs:
     name: "Generate diffs"
@@ -274,32 +274,29 @@ jobs:
       run: |
         {
           echo "TEXT<<EOF"
-          echo "## tack update summary:"
-          echo
+          echo "## Input update summary"
           echo '```text'
           echo "${SUMMARY}"
           echo '```'
-          echo
           echo "## Closure diffs"
 
           while read -r HOSTNAME; do
             echo "<details>"
             echo "<summary>${HOSTNAME}</summary>"
-            echo
             echo "![${HOSTNAME} closure diff](${PAGE_URL}diffs/${RUN_ID}/${HOSTNAME}.svg)"
-            echo
             echo "</details>"
-            echo
           done < <(jq -r '.[].hostname' <<< "${HOSTS}")
+
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
 
     - name: "Create pull request"
-      uses: peter-evans/create-pull-request@v8
+      uses: peter-evans/create-pull-request@v8.1.1
       with:
         branch: tack/update-inputs
         delete-branch: true
         sign-commits: true
+        signoff: true
         assignees: ${{ github.repository_owner }}
         commit-message: "tack: update inputs"
         title: "tack: update inputs"

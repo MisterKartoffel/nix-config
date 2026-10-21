@@ -6,9 +6,8 @@ on:
     inputs:
       eval:
         description: "Outputs to evaluate"
-        required: false
+        required: true
         type: string
-        default: '["hosts", "packages", "shells"]'
     secrets:
       BWS_ACCESS_TOKEN:
         required: true
@@ -30,6 +29,11 @@ jobs:
 
     permissions:
       actions: read
+
+    outputs:
+      hosts: ${{ steps.discover.outputs.hosts }}
+      packages: ${{ steps.discover.outputs.packages }}
+      shells: ${{ steps.discover.outputs.shells }}
 
     steps:
     - name: "Get secrets"
@@ -79,8 +83,3 @@ jobs:
           echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
           echo "::endgroup::"
         done
-
-    outputs:
-      hosts: ${{ steps.discover.outputs.hosts }}
-      packages: ${{ steps.discover.outputs.packages }}
-      shells: ${{ steps.discover.outputs.shells }}

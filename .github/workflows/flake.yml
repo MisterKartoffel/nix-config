@@ -1,9 +1,18 @@
 ---
 name: "Build Outputs"
-run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
+run-name: "${{ github.workflow }} (${{ github.run_id }}-${{ github.run_attempt }}): ${{ github.ref_name }} ${{ github.sha }}"
 
 on:
   push:
+    branches:
+    - main
+    paths-ignore:
+    - ".github/**"
+    - "ci/**"
+    - "LICENSE"
+    - "README.md"
+    - "TODO.txt"
+  pull_request:
     branches:
     - main
     paths-ignore:
@@ -22,22 +31,57 @@ concurrency:
 
 jobs:
   formatter:
-    uses: $/.github/workflows/formatter.yml
+    name: "Check formatting"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     permissions: {}
 
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.2
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Run formatter"
+      run: nix fmt -- --ci
+
   check:
-    uses: $/.github/workflows/check.yml
+    name: "Check flake"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     permissions:
       actions: read
-    secrets:
-      BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.2
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Run flake check"
+      run: nix flake check --all-systems
 
   matrix:
     uses: $/.github/workflows/matrix.yml
-    with:
-      eval: '["shells", "packages", "hosts"]'
+    if: github.event_name != 'pull_request'
     permissions:
       actions: read
+    with:
+      eval: '["shells", "packages", "hosts"]'
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
@@ -46,10 +90,10 @@ jobs:
     needs:
     - check
     - matrix
-    with:
-      matrix: ${{ needs.matrix.outputs.hosts }}
     permissions:
       actions: read
+    with:
+      matrix: ${{ needs.matrix.outputs.hosts }}
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
@@ -58,10 +102,10 @@ jobs:
     needs:
     - check
     - matrix
-    with:
-      matrix: ${{ needs.matrix.outputs.packages }}
     permissions:
       actions: read
+    with:
+      matrix: ${{ needs.matrix.outputs.packages }}
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
@@ -70,9 +114,9 @@ jobs:
     needs:
     - check
     - matrix
-    with:
-      matrix: ${{ needs.matrix.outputs.shells }}
     permissions:
       actions: read
+    with:
+      matrix: ${{ needs.matrix.outputs.shells }}
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
