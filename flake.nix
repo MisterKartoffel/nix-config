@@ -39,6 +39,21 @@
         default = pkgs.callPackage ./shell.nix { };
       });
 
+      apps = forAllSystems (
+        pkgs:
+        lib.mapAttrs
+          (_: app: {
+            type = "app";
+            program = lib.getExe app;
+          })
+          (
+            lib.packagesFromDirectoryRecursive {
+              inherit (pkgs) callPackage;
+              directory = ./apps;
+            }
+          )
+      );
+
       packages = forAllSystems (
         pkgs:
         lib.packagesFromDirectoryRecursive {

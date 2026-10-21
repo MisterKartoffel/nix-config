@@ -3,27 +3,23 @@ name: "Matrix"
 
 on:
   workflow_call:
-    inputs:
-      eval:
-        description: "Outputs to evaluate"
-        required: true
-        type: string
     secrets:
       BWS_ACCESS_TOKEN:
         required: true
     outputs:
-      hosts:
-        value: ${{ jobs.eval.outputs.hosts }}
+      nixos:
+        value: ${{ jobs.eval.outputs.nixos }}
+      darwin:
+        value: ${{ jobs.eval.outputs.darwin }}
       packages:
         value: ${{ jobs.eval.outputs.packages }}
-      shells:
-        value: ${{ jobs.eval.outputs.shells }}
+      devshells:
+        value: ${{ jobs.eval.outputs.devshells }}
 
 permissions: {}
 
 jobs:
   eval:
-    name: "Generate builder matrix"
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -31,9 +27,10 @@ jobs:
       actions: read
 
     outputs:
-      hosts: ${{ steps.discover.outputs.hosts }}
+      nixos: ${{ steps.discover.outputs.nixos }}
+      darwin: ${{ steps.discover.outputs.darwin }}
       packages: ${{ steps.discover.outputs.packages }}
-      shells: ${{ steps.discover.outputs.shells }}
+      devshells: ${{ steps.discover.outputs.devshells }}
 
     steps:
     - name: "Get secrets"
@@ -69,17 +66,5 @@ jobs:
     - name: "Discover matrices"
       id: discover
       env:
-        EVAL: ${{ inputs.eval }}
-      working-directory: ./ci
-      run: |
-        for OUTPUT in $(jq --raw-output ".[]" <<< "${EVAL}"); do
-          echo "::group::Evaluating ${OUTPUT}"
-          VALUE=$(nix eval --json --file matrix.nix --apply "x: x.${OUTPUT}")
-
-          echo "Evaluated JSON for ${OUTPUT}:"
-          jq "." <<< "${VALUE}"
-
-          jq --raw-output ".[].drvPath" <<< "${VALUE}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
-          echo "${OUTPUT}=${VALUE}" >> "${GITHUB_OUTPUT}"
-          echo "::endgroup::"
-        done
+        INVENTORY_VERBOSE: "1"
+      run: nix run .#inventory

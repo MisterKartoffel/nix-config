@@ -1,6 +1,6 @@
 ---
 name: "Update Inputs"
-run-name: "${{ github.workflow }} (${{ github.run_id }}-${{ github.run_attempt }}): ${{ github.sha }}"
+run-name: "${{ github.workflow }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
   schedule:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   update:
-    name: "Update tack pins"
+    name: "Update inputs"
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -72,17 +72,16 @@ jobs:
         include-hidden-files: true
 
   matrix:
+    name: "Discover hosts"
     uses: $/.github/workflows/matrix.yml
     needs: update
     permissions:
       actions: read
-    with:
-      eval: '["hosts"]'
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
   diffs:
-    name: "Generate diffs"
+    name: "Generate diff for ${{ matrix.name }}"
     needs: matrix
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
@@ -94,7 +93,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
+        include: ${{ fromJSON(needs.matrix.outputs.nixos) }}
 
     steps:
     - name: "Get secrets"
@@ -122,7 +121,6 @@ jobs:
     - name: "Set up Hestia"
       uses: Mic92/hestia@v3.1.0
       with:
-        filter-drv-closures: true
         upstream-cache-filter: true
         upstream-cache-key-names: >
           cache.nixos.org-1
@@ -160,10 +158,10 @@ jobs:
     - name: "Build new closure"
       id: new
       env:
-        HOSTNAME: ${{ matrix.hostname }}
+        NAME: ${{ matrix.name }}
       run: >
         CLOSURE=$(nix build
-        ".#nixosConfigurations.${HOSTNAME}.config.system.build.toplevel"
+        ".#nixosConfigurations.${NAME}.config.system.build.toplevel"
         --no-link --print-out-paths)
 
         echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
@@ -183,11 +181,11 @@ jobs:
     - name: "Parse JSON"
       id: parse
       env:
-        HOSTNAME: ${{ matrix.hostname }}
+        NAME: ${{ matrix.name }}
       working-directory: ./ci
       run: >
         nix eval --raw --file diff.nix
-        > "${HOSTNAME}.svg"
+        > "${NAME}.svg"
 
     - name: "Upload diff JSON"
       if: always() && (steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure')
@@ -270,7 +268,7 @@ jobs:
         RUN_ID: ${{ github.run_id }}
         SUMMARY: ${{ needs.update.outputs.summary }}
         PAGE_URL: ${{ needs.pages.outputs.page_url }}
-        HOSTS: ${{ needs.matrix.outputs.hosts }}
+        HOSTS: ${{ needs.matrix.outputs.nixos }}
       run: |
         {
           echo "TEXT<<EOF"
@@ -280,12 +278,12 @@ jobs:
           echo '```'
           echo "## Closure diffs"
 
-          while read -r HOSTNAME; do
+          while read -r NAME; do
             echo "<details>"
-            echo "<summary>${HOSTNAME}</summary>"
-            echo "![${HOSTNAME} closure diff](${PAGE_URL}diffs/${RUN_ID}/${HOSTNAME}.svg)"
+            echo "<summary>${NAME}</summary>"
+            echo "![${NAME} closure diff](${PAGE_URL}diffs/${RUN_ID}/${NAME}.svg)"
             echo "</details>"
-          done < <(jq -r '.[].hostname' <<< "${HOSTS}")
+          done < <(jq -r '.[].name' <<< "${HOSTS}")
 
           echo "EOF"
         } >> "${GITHUB_OUTPUT}"
