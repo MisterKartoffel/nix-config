@@ -1,20 +1,30 @@
 # Inspired by the work done by wimpysworld in:
 # https://github.com/wimpysworld/nix-config/blob/main/home-manager/_mixins/scripts/flake-inventory/flake-inventory.sh
 {
-  writers,
-  nix,
+  # keep-sorted start
+
   jq,
   lib,
+  nix,
+  nix-eval-jobs,
+  writers,
+
+  # keep-sorted end
 }:
-writers.writeNuBin "inventory"
+writers.writeNuBin "inventory.nu"
   {
     makeWrapperArgs = [
       "--prefix"
       "PATH"
       ":"
       (lib.makeBinPath [
-        nix
+        # keep-sorted start
+
         jq
+        nix
+        nix-eval-jobs
+
+        # keep-sorted end
       ])
     ];
   }
@@ -48,7 +58,7 @@ writers.writeNuBin "inventory"
     def discover_names [attr_path: string] {
       let full_path = $"($FLAKE_DIR)#($attr_path)"
       try {
-        let res = (nix eval $full_path --apply "builtins.attrNames" --json e> /dev/null)
+        let res = (nix eval $"($FLAKE_DIR)#($attr_path)" --apply "builtins.attrNames" --json e> /dev/null)
         if ($res | is-empty) {
           []
         } else {
@@ -76,29 +86,34 @@ writers.writeNuBin "inventory"
       }
     }
 
-    log_info $"Discovering flake outputs..."
+    log_info $"Discovering flake outputs."
 
     def discover_outputs [category: string] {
       $PLATFORMS | reduce --fold [] { |system, acc|
+        log_debug $"Evaluating ($FLAKE_DIR)#($category).($system)"
+
         let runner = get_runner $system
         if ($runner == null) { return $acc }
+        let target = $"($FLAKE_DIR)#($category).($system)"
 
-        let attr_names = discover_names $"($category).($system)"
-        if ($attr_names | length) == 0 { return $acc }
-
-        let rows = $attr_names | reduce --fold [] { |attr, r_acc|
-          let drv = $"($FLAKE_DIR)#($category).($system).($attr)"
-          let drv_path = (nix_eval $"($drv).drvPath")
-          if ($drv_path | is-empty) { return $r_acc }
-
-          let name = (nix_eval $"($drv).name")
-          $r_acc | append {
-            name: $name
-            system: $system
-            runner: $runner
-            drvPath: $drv_path
+        let rows = (try {
+          nix-eval-jobs --flake $target
+          | lines
+          | each { try { from json } catch { null } }
+          | compact
+          | where drvPath? != null and name? != null
+          | select name drvPath
+          | each { |it|
+            {
+              name: $it.name
+              system: $system
+              runner: $runner
+              drvPath: $it.drvPath
+            }
           }
-        }
+        } catch {
+          []
+        })
 
         $acc | append $rows
       }
@@ -106,13 +121,14 @@ writers.writeNuBin "inventory"
 
     def discover_hosts [platform: string] {
       let names = discover_names $platform
+      log_info $"Found ($names | length) ($platform)"
 
-      let results = ($names | reduce --fold [] { |name, acc|
+      $names | reduce --fold [] { |name, acc|
         if ($name | is-empty) { return $acc }
         let drv = $"($FLAKE_DIR)#($platform).($name)"
 
         let system = (try {
-          nix_eval $"($drv).pkgs.stdenv.hostPlatform.system"
+          nix eval $"($drv).pkgs.stdenv.hostPlatform.system" --raw e> /dev/null
         } catch {
           "unknown"
         })
@@ -120,7 +136,7 @@ writers.writeNuBin "inventory"
         let runner = get_runner $system
         if ($runner == null) { return $acc }
 
-        let drv_path = (nix_eval $"($drv).config.system.build.toplevel.drvPath")
+        let drv_path = (nix eval $"($drv).config.system.build.toplevel.drvPath" --raw e> /dev/null)
         if ($drv_path | is-empty) { return $acc }
 
         $acc | append {
@@ -129,21 +145,18 @@ writers.writeNuBin "inventory"
           runner: $runner
           drvPath: $drv_path
         }
-      })
-
-      log_info $"Found ($names | length) ($platform)"
-      $results
+      }
     }
 
     log_info "Discovering devShells..."
     let devshells_json = discover_outputs "devShells"
     let unique_shells = if ($devshells_json | is-empty) { 0 } else { $devshells_json | get name | uniq | length }
-    log_info $"Found ($unique_shells) devShells"
+    log_info $"Found ($unique_shells) devShells."
 
     log_info "Discovering packages..."
     let packages_json = discover_outputs "packages"
     let unique_packages = if ($packages_json | is-empty) { 0 } else { $packages_json | get name | uniq | length }
-    log_info $"Found ($unique_packages) packages"
+    log_info $"Found ($unique_packages) packages."
 
     log_info "Discovering systems..."
     let nixos_json = discover_hosts "nixosConfigurations"
@@ -154,7 +167,6 @@ writers.writeNuBin "inventory"
     emit_output "packages" $packages_json
     emit_output "nixos" $nixos_json
     emit_output "darwin" $darwin_json
-
 
     print ""
     print "============================"
