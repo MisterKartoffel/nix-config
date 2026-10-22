@@ -68,3 +68,10 @@ jobs:
       env:
         INVENTORY_VERBOSE: "1"
       run: nix run .#inventory
+
+    - name: "Upload input closures"
+      env:
+        MATRIX: ${{ toJSON(steps.discover.outputs) }}
+      run: >
+        jq -r ".[] | fromjson? // [] | .[].drvPath" <<< "${MATRIX}"
+        | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
