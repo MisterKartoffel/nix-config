@@ -1,6 +1,6 @@
 ---
 name: "Validate Workflows"
-run-name: "${{ github.workflow }} (${{ github.run_id }}-${{ github.run_attempt }}): ${{ github.ref_name }} ${{ github.sha }}"
+run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_id }}-${{ github.run_attempt }})"
 
 on:
   push:
