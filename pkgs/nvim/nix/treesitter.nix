@@ -19,6 +19,7 @@ vimPlugins.nvim-treesitter.withPlugins (
       tree-sitter-markdown
       tree-sitter-muttrc
       tree-sitter-nix
+      tree-sitter-nu
       tree-sitter-ssh_config
       tree-sitter-toml
       tree-sitter-typst

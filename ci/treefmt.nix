@@ -30,6 +30,15 @@
         includes = [ "*.lua" ];
       };
 
+      nufmt = {
+        command = lib.getExe pkgs.nufmt;
+        options = [
+          "--config"
+          "./ci/nufmt.nuon"
+        ];
+        includes = [ "*.nu" ];
+      };
+
       keep-sorted = {
         command = lib.getExe pkgs.keep-sorted;
         includes = [ "*" ];

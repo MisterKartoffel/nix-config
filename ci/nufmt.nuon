@@ -1,0 +1,5 @@
+# vim: set ft=nu:
+{
+  indent: 2
+  consistent_branches: "always"
+}
