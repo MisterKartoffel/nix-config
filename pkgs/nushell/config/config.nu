@@ -16,13 +16,13 @@ $env.config.use_kitty_protocol = true
 $env.config.completions.algorithm = "fuzzy"
 $env.config.completions.persistent_menus = true
 
-$env.config.hinter.closure = { |ctx|
+$env.config.hinter.closure = {|ctx|
   if ($ctx.line | is-empty) { return null }
 
   let global = ($env.LOCAL_COMPLETIONS? | default 1) == 0 or ($ctx.line | str starts-with "$env.")
 
   let row = open $nu.history-path
-    | query db (
+  | query db (
       "SELECT command_line, exit_status FROM history
       WHERE substr(command_line, 1, :len) = :line
       ORDER BY"
@@ -32,14 +32,14 @@ $env.config.hinter.closure = { |ctx|
       {len: ($ctx.line | str length) line: $ctx.line}
       | if $global { } else { insert cwd $ctx.cwd }
     )
-    | get --optional 0
+  | get --optional 0
 
   if $row == null { return null }
 
   let candidate = $row.command_line | str replace --regex ' #exit_\d+$' ""
   let tag = $row.exit_status
-    | default 0
-    | if $in >= 1 { $" #exit_($in)" } else { "" }
+  | default 0
+  | if $in >= 1 { $" #exit_($in)" } else { "" }
 
   let hint = ($candidate | str substring ($ctx.line | str length)..) + $tag
   if $hint == "" { null } else { $hint }
