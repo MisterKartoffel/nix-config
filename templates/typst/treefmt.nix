@@ -8,11 +8,6 @@
         command = lib.getExe pkgs.typstyle;
         includes = [ "*.typ" ];
       };
-
-      keep-sorted = {
-        command = lib.getExe pkgs.keep-sorted;
-        includes = [ "*" ];
-      };
     };
   };
 }
