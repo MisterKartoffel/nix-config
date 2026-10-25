@@ -191,15 +191,15 @@ jobs:
       if: always() && (steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure')
       uses: actions/upload-artifact@v7
       with:
-        name: failure-${{ matrix.hostname }}
+        name: failure-${{ matrix.name }}
         path: ci/diff.json
 
     - name: "Upload diff SVG"
       if: steps.parse.outcome == 'success'
       uses: actions/upload-artifact@v7
       with:
-        name: diff-${{ matrix.hostname }}
-        path: ci/${{ matrix.hostname }}.svg
+        name: diff-${{ matrix.name }}
+        path: ci/${{ matrix.name }}.svg
 
   pages:
     name: "Publish diffs"
