@@ -1,3 +1,6 @@
+# Inspired by the work done by wimpysworld in:
+# https://github.com/wimpysworld/nix-config/blob/main/home-manager/_mixins/scripts/flake-inventory/flake-inventory.sh
+
 let FLAKE_DIR = $env.FLAKE_DIR? | default "."
 let VERBOSE = ($env.INVENTORY_VERBOSE? | default "0") == "1"
 let GITHUB_OUTPUT = $env.GITHUB_OUTPUT? | default ""
@@ -19,14 +22,9 @@ def log_debug [msg: string] {
 
 def discover_names [output: string] {
   try {
-    let res = (
-      nix eval $"($FLAKE_DIR)#($output)" --apply "builtins.attrNames" --json e> /dev/null
-    )
-    if ($res | is-empty) {
-      []
-    } else {
-      $res | str trim | from json
-    }
+    nix eval $"($FLAKE_DIR)#($output)" --apply "builtins.attrNames" --json e> /dev/null
+    | str trim
+    | from json
   } catch {
     []
   }
@@ -46,53 +44,51 @@ def nix_eval [expr: string] {
 
 def emit_output [name: string, value] {
   let serialized = $value | to json --raw
-  if $VERBOSE {
-    if not ($GITHUB_OUTPUT | is-empty) {
-      $"($name)=($serialized)\n" | save --append $GITHUB_OUTPUT
-    } else {
-      print $" ($name) = ($serialized)"
-    }
+
+  if not ($GITHUB_OUTPUT | is-empty) {
+    $"($name)=($serialized)\n" | save --append $GITHUB_OUTPUT
   }
+
+  log_debug $"($name) = ($serialized)"
 }
 
 log_info $"Discovering flake outputs..."
 
-def discover_outputs [category: string] {
-  let systems = discover_names $category
-
-  $systems | par-each { |system|
+def discover_outputs [output: string] {
+  discover_names $output
+  | par-each { |system|
     let runner = get_runner $system
     if ($runner == null) {
       []
     } else {
-      let attr_names = discover_names $"($category).($system)"
-      if ($attr_names | length) == 0 {
+      let names = discover_names $"($output).($system)"
+      if ($names | length) == 0 {
         []
       } else {
-        $attr_names | par-each { |attr|
-          let target_path = $"($FLAKE_DIR)#($category).($system).($attr)"
-          let drv_path = (nix_eval $"($target_path).drvPath")
+        $names | par-each { |name|
+          let drv = $"($FLAKE_DIR)#($output).($system).($name)"
+          let drv_path = (nix_eval $"($drv).drvPath")
           if ($drv_path | is-empty) {
             null
           } else {
-            let name = (nix_eval $"($target_path).name")
             {
-              name: $name
+              name: (nix_eval $"($drv).name")
               system: $system
               runner: $runner
               drvPath: $drv_path
             }
-          } | compact
+          }
         }
       }
     }
-  } | flatten
+  }
+  | flatten
+  | compact
 }
 
 def discover_hosts [platform: string] {
-  let names = discover_names $platform
-
-  let results = ($names | par-each { |name|
+  discover_names $platform
+  | par-each { |name|
     if ($name | is-empty) {
       null
     } else {
@@ -120,31 +116,43 @@ def discover_hosts [platform: string] {
         }
       }
     }
-  } | compact)
-
-  $results
+  }
+  | compact
 }
 
-[
+let tasks = [
   {name: "devshells", type: "derivation", target: "devShells"}
   {name: "packages", type: "derivation", target: "packages"}
   {name: "nixos", type: "host", target: "nixosConfigurations"}
   {name: "darwin", type: "host", target: "darwinConfigurations"}
-] | par-each { |task|
-  let res = if $task.type == "derivation" {
+]
+
+let results = $tasks | par-each { |task|
+  let data = if $task.type == "derivation" {
     discover_outputs $task.target
   } else {
     discover_hosts $task.target
   }
 
   let count = if $task.type == "derivation" {
-    if ($res | is-empty) { 0 } else { $res | get name | uniq | length }
+    $data | get -o name | default [] | uniq | length
   } else {
-    ($res | length)
+    ($data | length)
   }
 
   log_info $"Found ($count) ($task.target)."
-  emit_output $task.name $res
-}
+  emit_output $task.name $data
+
+  $data
+} | flatten
 
 print "󰄬 Inventory complete."
+
+if (($env.HESTIA_BIN? | default "") != "") and (($env.HESTIA_SOCKET? | default "") != "") {
+  let drv_paths = $results | get -o drvPath | compact | uniq
+  if not ($drv_paths | is-empty) {
+    log_info $"Registering ($drv_paths | length) input closure uploads with Hestia..."
+    ^$env.HESTIA_BIN hook --socket $env.HESTIA_SOCKET ...$drv_paths
+    print "󰄬 Registration complete."
+  }
+}
