@@ -14,7 +14,7 @@ let
   };
 in
 /*
-  All these outputs are composed by the common attributes (set by the matrix function):
+  All entries are composed by the common attributes:
   - name: hostname, used in GitHub for jobs' names.
   - drvPath: host's derivation path.
   - system: architecture + kernel string, used to map builds to runners.
