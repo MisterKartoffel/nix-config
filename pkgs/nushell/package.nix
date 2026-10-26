@@ -17,10 +17,13 @@ let
     '';
   };
 in
-writeShellApplication {
+(writeShellApplication {
   name = "nu";
   passthru.shellPath = "/bin/nu";
   text = ''
     exec ${lib.getExe nushell} --config-home ${config} "$@"
   '';
-}
+}).overrideAttrs
+  (_: {
+    name = "nushell";
+  })
