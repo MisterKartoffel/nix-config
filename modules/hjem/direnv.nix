@@ -25,7 +25,7 @@ in
     direnv_layout_dir() {
       local HASH
       HASH="$(printf '%s' "$PWD" | sha256sum)"
-      echo "${xdg.cache}/direnv/layouts/''${HASH:0:32}-$(basename "$PWD")"
+      echo "${xdg.cache}/direnv/layouts/''${HASH:0:32}-''${PWD##*/}"
     }
   '';
 
