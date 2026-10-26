@@ -18,6 +18,7 @@ in
       ".cache/nix"
       ".config/legcord"
       ".config/zen"
+      ".local/share/nushell"
       "Desktop"
       "Documents"
       "Downloads"
@@ -38,7 +39,6 @@ in
     ];
 
     files = [
-      ".local/share/fish/fish_history"
       {
         /*
           This will be here until nh can read tokens from nix.conf:
