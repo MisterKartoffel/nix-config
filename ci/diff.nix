@@ -382,8 +382,9 @@ let
         [
           (category "SUMMARY")
           "${row "PATHS: "}${span paths.old data.paths.old} → ${span paths.new data.paths.new} (${span "r" "+${toString data.paths.added}"}, ${span "g" "-${toString data.paths.removed}"})"
-          "${row "SIZE: "}${span size.old (format.bytes false data.size_old)} → ${span size.new (format.bytes false data.size_new)}"
-          "${row "DIFF: "}${span size.new (format.bytes true (data.size_new - data.size_old))}"
+          "${row "SIZE: "}${span size.old (format.bytes false data.size_old)} → ${span size.new (format.bytes false data.size_new)} (${
+            span size.new (format.bytes true (data.size_new - data.size_old))
+          })"
         ];
 
       svg = builtins.concatStringsSep "\n" sections.footer.list;
