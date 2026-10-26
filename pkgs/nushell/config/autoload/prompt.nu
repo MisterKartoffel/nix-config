@@ -17,7 +17,7 @@ def git_prompt [] {
 
 def nix_prompt [] {
   if ($env | get -o IN_NIX_SHELL | is-empty) { return "" }
-  $"\n(ansi cyan) impure (ansi reset)"
+  $"\n(ansi cyan) ($env.IN_NIX_SHELL) (ansi reset)"
 }
 
 def duration_prompt [time: int = 2000] {
