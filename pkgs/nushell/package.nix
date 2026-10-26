@@ -9,7 +9,7 @@
 }:
 let
   theme = import ./theme.nix { inherit fetchurl; };
-  configHome = symlinkJoin {
+  config = symlinkJoin {
     name = "nu-config-home";
     paths = configDirs;
     postBuild = ''
@@ -21,6 +21,6 @@ writeShellApplication {
   name = "nu";
   passthru.shellPath = "/bin/nu";
   text = ''
-    exec ${lib.getExe nushell} --config-home ${configHome} "$@"
+    exec ${lib.getExe nushell} --config-home ${config} "$@"
   '';
 }
