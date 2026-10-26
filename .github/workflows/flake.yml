@@ -73,7 +73,7 @@ jobs:
       run: nix flake check --all-systems
 
   matrix:
-    name: "Discover outputs"
+    name: "Discover hosts"
     uses: $/.github/workflows/matrix.yml
     if: github.event_name != 'pull_request'
     permissions:
@@ -81,58 +81,25 @@ jobs:
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
-  nixos:
-    name: "NixOS"
-    if: needs.matrix.outputs.nixos != '[]'
-    uses: $/.github/workflows/build.yml
+  hosts:
+    name: "Hosts"
+    if: needs.matrix.outputs.hosts != '[]'
+    uses: $/.github/workflows/hosts.yml
     needs:
     - check
     - matrix
     permissions:
       actions: read
     with:
-      matrix: ${{ needs.matrix.outputs.nixos }}
+      matrix: ${{ needs.matrix.outputs.hosts }}
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
-  darwin:
-    name: "Darwin"
-    if: needs.matrix.outputs.darwin != '[]'
-    uses: $/.github/workflows/build.yml
-    needs:
-    - check
-    - matrix
+  outputs:
+    name: "Outputs"
+    uses: $/.github/workflows/outputs.yml
+    needs: check
     permissions:
       actions: read
-    with:
-      matrix: ${{ needs.matrix.outputs.darwin }}
-    secrets:
-      BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
-
-  packages:
-    name: "Packages"
-    if: needs.matrix.outputs.packages != '[]'
-    uses: $/.github/workflows/build.yml
-    needs:
-    - check
-    - matrix
-    permissions:
-      actions: read
-    with:
-      matrix: ${{ needs.matrix.outputs.packages }}
-    secrets:
-      BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
-
-  devshells:
-    name: "devShells"
-    if: needs.matrix.outputs.devshells != '[]'
-    uses: $/.github/workflows/build.yml
-    needs:
-    - check
-    - matrix
-    permissions:
-      actions: read
-    with:
-      matrix: ${{ needs.matrix.outputs.devshells }}
     secrets:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}

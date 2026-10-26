@@ -1,11 +1,5 @@
 let
-  /*
-    Imports default.nix, which is a flake-compat wrapper for flake.nix.
-
-    This avoids having to pass an absolute path to builtins.getFlake,
-    at the cost of having to fetch edolstra/flake-compat during the job.
-  */
-  flake = import ../.;
+  flake = builtins.getFlake (toString ../.);
 
   runners = {
     x86_64-linux = "ubuntu-latest";
@@ -13,41 +7,27 @@ let
     aarch64-darwin = "macos-latest";
   };
 
-  platforms = map (platform: platform + "Configurations") [
-    "nixos"
-    "darwin"
-  ];
-
   # Helper for merging information common to all jobs into each output.
-  matrix = drv: rec {
-    inherit (drv) name drvPath system;
-    runner = runners.${system} or (abort "No runner defined for ${system}");
+  parse = drv: {
+    inherit (drv) drvPath system;
+    runner = runners.${drv.system} or (abort "No runner defined for ${drv.system}");
   };
-
-  # Creates the job matrix for GitHub actions for a given flake output.
-  jobs =
-    outputs:
-    builtins.concatMap (drv: map matrix (builtins.attrValues drv)) (builtins.attrValues outputs);
 in
 /*
   All these outputs are composed by the common attributes (set by the matrix function):
-  - name: the derivation's name, used in GitHub for jobs' names.
-  - drvPath: the derivation's path (package, shell, or configuration).
+  - name: hostname, used in GitHub for jobs' names.
+  - drvPath: host's derivation path.
   - system: architecture + kernel string, used to map builds to runners.
   - runner: GitHub Actions runner, used in 'runs-on' for each of the matrix's jobs.
 */
-{
-  shells = jobs flake.devShells;
-  packages = jobs flake.packages;
-
-  hosts = builtins.concatMap (
+builtins.concatMap
+  (
     platform:
-    map (
-      hostname:
-      (matrix flake.${platform}.${hostname}.config.system.build.toplevel)
-      // {
-        inherit hostname;
-      }
-    ) (builtins.attrNames (flake.${platform} or { }))
-  ) platforms;
-}
+    map (name: (parse flake.${platform}.${name}.config.system.build.toplevel) // { inherit name; }) (
+      builtins.attrNames (flake.${platform} or { })
+    )
+  )
+  [
+    "nixosConfigurations"
+    "darwinConfigurations"
+  ]

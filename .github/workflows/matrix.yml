@@ -7,14 +7,8 @@ on:
       BWS_ACCESS_TOKEN:
         required: true
     outputs:
-      nixos:
-        value: ${{ jobs.eval.outputs.nixos }}
-      darwin:
-        value: ${{ jobs.eval.outputs.darwin }}
-      packages:
-        value: ${{ jobs.eval.outputs.packages }}
-      devshells:
-        value: ${{ jobs.eval.outputs.devshells }}
+      hosts:
+        value: ${{ jobs.eval.outputs.hosts }}
 
 permissions: {}
 
@@ -27,10 +21,7 @@ jobs:
       actions: read
 
     outputs:
-      nixos: ${{ steps.discover.outputs.nixos }}
-      darwin: ${{ steps.discover.outputs.darwin }}
-      packages: ${{ steps.discover.outputs.packages }}
-      devshells: ${{ steps.discover.outputs.devshells }}
+      hosts: ${{ steps.generate.outputs.hosts }}
 
     steps:
     - name: "Get secrets"
@@ -63,8 +54,10 @@ jobs:
           cache.nixos.org-1
           misterkartoffel.cachix.org-1
 
-    - name: "Discover matrices"
-      id: discover
-      env:
-        INVENTORY_VERBOSE: "1"
-      run: nix run .#inventory
+    - name: "Generate matrix"
+      id: generate
+      working-directory: ./ci
+      run: >
+        MATRIX=$(nix eval --json --file matrix.nix)
+
+        echo "hosts=${MATRIX}" >> "${GITHUB_OUTPUT}"

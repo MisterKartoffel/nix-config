@@ -93,7 +93,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        include: ${{ fromJSON(needs.matrix.outputs.nixos) }}
+        include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
 
     steps:
     - name: "Get secrets"
@@ -268,7 +268,7 @@ jobs:
         RUN_ID: ${{ github.run_id }}
         SUMMARY: ${{ needs.update.outputs.summary }}
         PAGE_URL: ${{ needs.pages.outputs.page_url }}
-        HOSTS: ${{ needs.matrix.outputs.nixos }}
+        HOSTS: ${{ needs.matrix.outputs.hosts }}
       run: |
         {
           echo "TEXT<<EOF"

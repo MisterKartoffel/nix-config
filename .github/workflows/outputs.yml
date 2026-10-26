@@ -1,0 +1,71 @@
+---
+name: "Outputs"
+
+on:
+  workflow_call:
+    secrets:
+      BWS_ACCESS_TOKEN:
+        required: true
+
+permissions: {}
+
+jobs:
+  build:
+    name: "${{ matrix.name }} (${{ matrix.system }})"
+    runs-on: >
+      ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest'
+      || matrix.system == 'aarch64-linux' && 'ubuntu-24.04-arm' }}
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        system:
+        - x86_64-linux
+        - aarch64-linux
+        name:
+        - Packages
+        - devShells
+        include:
+        - name: Packages
+          output: .#packages
+        - name: devShells
+          output: .#devShells
+
+    permissions:
+      actions: read
+
+    steps:
+    - name: "Get secrets"
+      id: secrets
+      uses: bitwarden/sm-action@v3.0.1
+      with:
+        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
+        secrets: |
+          ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
+
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@v31.11.2
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Set up Hestia"
+      uses: Mic92/hestia@v3.1.0
+      with:
+        upstream-cache-filter: true
+        upstream-cache-key-names: >
+          cache.nixos.org-1
+          misterkartoffel.cachix.org-1
+
+    - name: "Build"
+      run: >
+        nix run nixpkgs#nix-fast-build --
+        --skip-cached --push-build-closure
+        --cachix-cache misterkartoffel
+        --flake ${{ matrix.output }}.${{ matrix.system }}
