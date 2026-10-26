@@ -18,7 +18,8 @@ let
   };
 in
 writeShellApplication {
-  inherit (nushell) name passthru;
+  name = "nu";
+  passthru.shellPath = "/bin/nu";
   text = ''
     exec ${lib.getExe nushell} --config-home ${configHome} "$@"
   '';
