@@ -53,7 +53,7 @@ jobs:
             overlays
 
       - name: "Install Nix"
-        uses: cachix/install-nix-action@v31.11.2
+        uses: cachix/install-nix-action@31.11.3
         with:
           extra_nix_config: |
             keep-going = true
