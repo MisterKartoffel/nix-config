@@ -59,5 +59,5 @@ jobs:
       working-directory: ./ci
       run: |
         MATRIX=$(nix eval --json --file matrix.nix)
-        jq -r ".drvPath" <<< "${MATRIX}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
+        jq -r ".[].drvPath" <<< "${MATRIX}" | xargs "${HESTIA_BIN}" hook --socket "${HESTIA_SOCKET}"
         echo "hosts=${MATRIX}" >> "${GITHUB_OUTPUT}"
