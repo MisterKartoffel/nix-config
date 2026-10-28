@@ -81,129 +81,26 @@ jobs:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
   diffs:
-    name: "Generate diff for ${{ matrix.name }}"
+    name: "Diff ${{ matrix.name }}"
+    uses: $/.github/workflows/diff.yml
     needs: matrix
-    runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
-
     permissions:
       actions: read
-
+    with:
+      name: ${{ matrix.name }}
+      drvPath: ${{ matrix.drvPath }}
+      runner: ${{ matrix.runner }}
+    secrets:
+      BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
     strategy:
       fail-fast: false
       max-parallel: 3
       matrix:
         include: ${{ fromJSON(needs.matrix.outputs.hosts) }}
 
-    steps:
-    - name: "Get secrets"
-      id: secrets
-      uses: bitwarden/sm-action@v3.0.1
-      with:
-        access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
-        set_env: false
-        secrets: |
-          ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
-
-    - parallel:
-      - name: "Checkout repository"
-        uses: actions/checkout@v7.0.1
-
-      - name: "Install Nix"
-        uses: cachix/install-nix-action@31.11.3
-        with:
-          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
-          extra_nix_config: |
-            keep-going = true
-            cores = 0
-
-    - name: "Set up Hestia"
-      uses: Mic92/hestia@v3.1.0
-      with:
-        upstream-cache-filter: true
-        upstream-cache-key-names: >
-          cache.nixos.org-1
-          misterkartoffel.cachix.org-1
-
-    - name: "Set up Cachix"
-      uses: cachix/cachix-action@v17
-      continue-on-error: true
-      with:
-        name: misterkartoffel
-        authToken: ${{ steps.secrets.outputs.CACHIX_AUTH_TOKEN }}
-
-    - name: "Prefetch derivation closure"
-      env:
-        DRV_PATH: ${{ matrix.drvPath }}
-      run: ${HESTIA_BIN} prefetch "${DRV_PATH}"
-
-    - name: "Build old closure"
-      id: old
-      env:
-        DRV_PATH: ${{ matrix.drvPath }}
-      run: >
-        CLOSURE=$(nix build
-        "${DRV_PATH}^*"
-        --no-link --print-out-paths)
-
-        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
-
-    - name: "Download changes"
-      uses: actions/download-artifact@v8.0.2
-      with:
-        name: tack
-        path: .tack
-
-    - name: "Build new closure"
-      id: new
-      env:
-        NAME: ${{ matrix.name }}
-      run: >
-        CLOSURE=$(nix build
-        ".#nixosConfigurations.${NAME}.config.system.build.toplevel"
-        --no-link --print-out-paths)
-
-        echo "closure=${CLOSURE}" >> "${GITHUB_OUTPUT}"
-
-    - name: "Generate diff"
-      id: generate
-      env:
-        OLD_CLOSURE: ${{ steps.old.outputs.closure }}
-        NEW_CLOSURE: ${{ steps.new.outputs.closure }}
-      working-directory: ./ci
-      run: >
-        nix run nixpkgs#dix --
-        "${OLD_CLOSURE}" "${NEW_CLOSURE}"
-        --force-correctness --output json
-        > "diff.json"
-
-    - name: "Parse JSON"
-      id: parse
-      env:
-        NAME: ${{ matrix.name }}
-      working-directory: ./ci
-      run: >
-        nix eval --raw --file diff.nix
-        > "${NAME}.svg"
-
-    - name: "Upload diff JSON"
-      if: always() && (steps.generate.outcome == 'failure' || steps.parse.outcome == 'failure')
-      uses: actions/upload-artifact@v7
-      with:
-        name: failure-${{ matrix.name }}
-        path: ci/diff.json
-
-    - name: "Upload diff SVG"
-      if: steps.parse.outcome == 'success'
-      uses: actions/upload-artifact@v7
-      with:
-        name: diff-${{ matrix.name }}
-        path: ci/${{ matrix.name }}.svg
-
   pages:
     name: "Publish diffs"
-    if: ${{ !cancelled() }}
+    if: false
     needs: diffs
     runs-on: ubuntu-latest
     timeout-minutes: 5
