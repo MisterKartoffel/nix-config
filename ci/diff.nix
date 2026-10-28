@@ -136,7 +136,7 @@ let
                 name,
                 amount ? 1,
               }:
-              name + (if amount == 1 then "" else " ×${toString amount}");
+              if name == null then null else name + (if amount == 1 then "" else " ×${toString amount}");
           in
           {
             changed = v: {
