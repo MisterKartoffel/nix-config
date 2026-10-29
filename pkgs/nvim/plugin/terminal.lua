@@ -44,7 +44,7 @@ local function floating_terminal()
       end
     end, map_opts)
 
-    terminal.job_id = vim.fn.jobstart("fish", {
+    terminal.job_id = vim.fn.jobstart("nu", {
       term = true,
       on_exit = function()
         if vim.api.nvim_win_is_valid(terminal.win) then
