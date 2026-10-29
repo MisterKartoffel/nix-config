@@ -1,4 +1,4 @@
-use std/config *
+use std/config env-conversions
 
 $env.config.hooks.env_change.PWD = $env.config.hooks.env_change.PWD? | default []
 $env.config.hooks.env_change.PWD ++= [
