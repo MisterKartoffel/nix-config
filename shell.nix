@@ -10,6 +10,8 @@
   # keep-sorted end
 }:
 mkShellNoCC {
+  name = "NixOS";
+
   packages = builtins.attrValues {
     inherit
       # keep-sorted start
