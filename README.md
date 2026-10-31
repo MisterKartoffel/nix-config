@@ -26,7 +26,7 @@ flake/
 ├── overlays/
 │   └── default.nix
 ├── ci/
-│   ├── matrix.nix        ◄ [8]
+│   ├── matrix.nix
 │   ├── treefmt.nix
 │   └── ...
 ├── default.nix           ◄ [8]
