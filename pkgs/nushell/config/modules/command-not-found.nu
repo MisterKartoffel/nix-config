@@ -46,7 +46,5 @@ export def --wrapped main [command: string, ...args: string]: nothing -> record<
 }
 
 export-env {
-  $env.config.hooks.command_not_found = {|command|
-    main $command
-  }
+  $env.config.hooks.command_not_found = {|command| main $command }
 }
