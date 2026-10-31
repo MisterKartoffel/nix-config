@@ -25,8 +25,6 @@ flake/
 │   └── zen-browser/      ◄ [7]
 ├── overlays/
 │   └── default.nix
-├── lib/
-│   └── default.nix
 ├── ci/
 │   ├── matrix.nix        ◄ [8]
 │   ├── treefmt.nix
