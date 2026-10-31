@@ -62,4 +62,5 @@
 
   # Closure size optimizations
   services.speechd.enable = false;
+  programs.command-not-found.enable = false;
 }
