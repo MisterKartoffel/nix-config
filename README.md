@@ -20,6 +20,7 @@ flake/
 │       └── ...
 ├── pkgs/
 │   ├── fish/
+│   ├── nushell/
 │   ├── nvim/
 │   └── zen-browser/      ◄ [7]
 ├── overlays/

@@ -1,29 +1,35 @@
 {
   fetchurl,
   lib,
+  makeBinaryWrapper,
   nushell,
-  symlinkJoin,
-  writeShellApplication,
-
-  configDirs ? [ ./config ],
+  path,
+  stdenvNoCC,
 }:
 let
   theme = import ./theme.nix { inherit fetchurl; };
-  config = symlinkJoin {
-    name = "nu-config-home";
-    paths = configDirs;
-    postBuild = ''
-      ln -s ${theme} $out/autoload/${theme.name}
-    '';
-  };
 in
-(writeShellApplication {
-  name = "nu";
-  passthru.shellPath = "/bin/nu";
-  text = ''
-    exec ${lib.getExe nushell} --config-home ${config} "$@"
+stdenvNoCC.mkDerivation {
+  inherit (nushell) name version passthru;
+  src = ./config;
+  nativeBuildInputs = [ makeBinaryWrapper ];
+
+  installPhase = ''
+    runHook preInstall
+
+    mkdir -p $out/share/config/autoload
+    cp -r . $out/share/config
+
+    substituteInPlace $out/share/config/modules/command-not-found.nu \
+      --replace-fail "@dbPath@" "${path + "/programs.sqlite"}"
+
+    ln -sf ${theme} $out/share/config/autoload/${theme.name}
+
+    mkdir -p $out/bin
+    makeBinaryWrapper ${lib.getExe nushell} $out/bin/nu \
+      --inherit-argv0 \
+      --add-flags "--config-home $out/share/config"
+
+    runHook postInstall
   '';
-}).overrideAttrs
-  (_: {
-    name = "nushell";
-  })
+}
