@@ -3,33 +3,27 @@
   neovim-unwrapped,
   wrapNeovimUnstable,
   vimPlugins,
-  linkFarm,
 
   appName ? "nvim",
   treesitter ? import ./nix/treesitter.nix { inherit vimPlugins; },
   runtimePaths ? import ./nix/runtime.nix { inherit lib; },
   plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
   extraPackages ? [ ],
-  viAlias ? appName == "nvim",
-  vimAlias ? appName == "nvim",
   initLuaPre ? "",
   wrapRc ? true,
 }:
-assert appName == "" -> throw "Neovim appName cannot be set to an empty string.";
-assert appName == null -> throw "Neovim appName cannot be set to null.";
+assert lib.assertMsg (appName != null && appName != "") "Neovim appName must be a non-empty string";
 
 let
-  nvimRtp = linkFarm "nvim-rtp" (
-    map (path: {
-      name = baseNameOf (toString path);
-      inherit path;
-    }) runtimePaths
-  );
+  nvimRtp = lib.fileset.toSource {
+    root = ./.;
+    fileset = lib.fileset.unions runtimePaths;
+  };
 
   neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
     inherit wrapRc;
-    vimAlias = vimAlias && appName == "nvim";
-    viAlias = viAlias && appName == "nvim";
+    vimAlias = appName == "nvim";
+    viAlias = appName == "nvim";
     plugins = plugins ++ [ treesitter ];
 
     luaRcContent = ''
@@ -52,15 +46,12 @@ let
       ];
   };
 in
-if appName == "nvim" then
-  neovim-wrapped
-else
-  neovim-wrapped.overrideAttrs (oldAttrs: {
-    postBuild = (oldAttrs.postBuild or "") + ''
-      mv "$out/bin/nvim" "$out/bin/${lib.escapeShellArg appName}"
-    '';
+neovim-wrapped.overrideAttrs (oldAttrs: lib.optionalAttrs (appName != "nvim") {
+  postBuild = (oldAttrs.postBuild or "") + ''
+    mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
+  '';
 
-    meta = (oldAttrs.meta or { }) // {
-      mainProgram = appName;
-    };
-  })
+  meta = (oldAttrs.meta or { }) // {
+    mainProgram = appName;
+  };
+})
