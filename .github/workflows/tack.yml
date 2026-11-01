@@ -100,7 +100,7 @@ jobs:
 
   pages:
     name: "Publish diffs"
-    if: false
+    if: ${{ !cancelled() }}
     needs: diffs
     runs-on: ubuntu-latest
     timeout-minutes: 5
