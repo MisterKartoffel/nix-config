@@ -7,7 +7,6 @@ vimPlugins.nvim-treesitter.withPlugins (
 
       tree-sitter-bash
       tree-sitter-editorconfig
-      tree-sitter-fish
       tree-sitter-git_config
       tree-sitter-gitcommit
       tree-sitter-gitignore
@@ -26,7 +25,6 @@ vimPlugins.nvim-treesitter.withPlugins (
       tree-sitter-vim
       tree-sitter-vimdoc
       tree-sitter-yaml
-      tree-sitter-zsh
 
       # keep-sorted end
       ;
