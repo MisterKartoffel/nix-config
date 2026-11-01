@@ -10,26 +10,22 @@ let
   theme = import ./theme.nix { inherit fetchurl; };
 in
 stdenvNoCC.mkDerivation {
-  inherit (nushell) name version passthru;
+  inherit (nushell) name meta passthru;
   src = ./config;
   nativeBuildInputs = [ makeBinaryWrapper ];
+  phases = [ "installPhase" ];
 
   installPhase = ''
-    runHook preInstall
+    mkdir -p $out/share $out/bin
+    cp -r --no-preserve=mode $src $out/share/nushell
 
-    mkdir -p $out/share/config/autoload
-    cp -r . $out/share/config
+    ln -sf ${theme} $out/share/nushell/autoload/${theme.name}
 
-    substituteInPlace $out/share/config/modules/command-not-found.nu \
+    substituteInPlace $out/share/nushell/modules/command-not-found.nu \
       --replace-fail "@dbPath@" "${path + "/programs.sqlite"}"
 
-    ln -sf ${theme} $out/share/config/autoload/${theme.name}
-
-    mkdir -p $out/bin
     makeBinaryWrapper ${lib.getExe nushell} $out/bin/nu \
       --inherit-argv0 \
-      --add-flags "--config-home $out/share/config"
-
-    runHook postInstall
+      --add-flags "--config-home $out/share/nushell"
   '';
 }
