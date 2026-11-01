@@ -8,7 +8,6 @@ builtins.attrValues {
     lualine-nvim
     lz-n
     neogit
-    nvim-treesitter
     nvim-web-devicons
     oil-git-status-nvim
     oil-nvim
