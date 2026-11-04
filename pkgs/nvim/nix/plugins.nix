@@ -1,20 +1,27 @@
 { vimPlugins }:
-builtins.attrValues {
-  inherit (vimPlugins)
+let
+  opt = map (plugin: {
+    inherit plugin;
+    optional = true;
+  });
+in
+with vimPlugins;
+(
+  [ lz-n ]
+  ++ opt [
     # keep-sorted start
 
     catppuccin-nvim
     gitsigns-nvim
     lualine-nvim
-    lz-n
     neogit
     nvim-web-devicons
-    oil-git-status-nvim
+    oil-git-nvim
     oil-nvim
     snacks-nvim
     typst-preview-nvim
     which-key-nvim
 
     # keep-sorted end
-    ;
-}
+  ]
+)

@@ -24,12 +24,18 @@ let
     inherit wrapRc;
     vimAlias = appName == "nvim";
     viAlias = appName == "nvim";
-    plugins = plugins ++ [ treesitter ];
+    plugins = plugins ++ [
+      {
+        plugin = treesitter;
+        optional = true;
+      }
+    ];
 
     luaRcContent = ''
       ${initLuaPre}
       vim.opt.rtp:prepend("${nvimRtp}")
       ${builtins.readFile ./init.lua}
+      vim.opt.rtp:append("${nvimRtp}/after")
     '';
 
     wrapperArgs =
@@ -46,12 +52,15 @@ let
       ];
   };
 in
-neovim-wrapped.overrideAttrs (oldAttrs: lib.optionalAttrs (appName != "nvim") {
-  postBuild = (oldAttrs.postBuild or "") + ''
-    mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
-  '';
+neovim-wrapped.overrideAttrs (
+  oldAttrs:
+  lib.optionalAttrs (appName != "nvim") {
+    postBuild = (oldAttrs.postBuild or "") + ''
+      mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
+    '';
 
-  meta = (oldAttrs.meta or { }) // {
-    mainProgram = appName;
-  };
-})
+    meta = (oldAttrs.meta or { }) // {
+      mainProgram = appName;
+    };
+  }
+)

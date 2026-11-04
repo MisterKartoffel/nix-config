@@ -30,8 +30,15 @@ local opts = {
   },
 }
 
-local snacks = require("snacks")
-snacks.setup(opts)
+local lzn = require("lz.n")
+lzn.load({
+  "snacks.nvim",
+  event = "UIEnter",
+  after = function()
+    vim.cmd.packadd("nvim-web-devicons")
+    require("snacks").setup(opts)
+  end,
+})
 
 local map_opts = { silent = true }
 

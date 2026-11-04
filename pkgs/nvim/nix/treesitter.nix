@@ -5,26 +5,22 @@ vimPlugins.nvim-treesitter.withPlugins (
     inherit (plugins)
       # keep-sorted start
 
-      tree-sitter-bash
-      tree-sitter-editorconfig
-      tree-sitter-git_config
-      tree-sitter-gitcommit
-      tree-sitter-gitignore
-      tree-sitter-json
-      tree-sitter-just
-      tree-sitter-kdl
-      tree-sitter-lua
-      tree-sitter-luadoc
-      tree-sitter-markdown
+      bash
+      editorconfig
+      git_config
+      gitcommit
+      gitignore
+      json
+      just
+      kdl
+      luadoc
+      nix
+      nu
+      ssh_config
+      toml
       tree-sitter-muttrc
-      tree-sitter-nix
-      tree-sitter-nu
-      tree-sitter-ssh_config
-      tree-sitter-toml
-      tree-sitter-typst
-      tree-sitter-vim
-      tree-sitter-vimdoc
-      tree-sitter-yaml
+      typst
+      yaml
 
       # keep-sorted end
       ;

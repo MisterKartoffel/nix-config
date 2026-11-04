@@ -13,15 +13,15 @@ local opts = {
   },
 }
 
-local map = require("lz.n").keymap({
-  "oil",
+local lzn = require("lz.n")
+lzn.load({
+  "oil.nvim",
+  cmd = "Oil",
+  keys = {
+    { "-", vim.cmd.Oil, desc = "Open parent directory", silent = true },
+  },
   after = function()
     require("oil").setup(opts)
-    require("oil-git-status").setup()
+    lzn.trigger_load("oil-git.nvim")
   end,
-}).set
-
-local map_opts = { silent = true }
-
-map_opts.desc = "Open parent directory in Oil"
-map("n", "-", vim.cmd.Oil, map_opts)
+})

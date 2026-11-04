@@ -1,3 +1,5 @@
+local M = {}
+
 local terminal = {
   buf = nil,
   win = nil,
@@ -6,7 +8,7 @@ local terminal = {
 
 local map_opts = { silent = true }
 
-local function floating_terminal()
+function M.open()
   if terminal.win and vim.api.nvim_win_is_valid(terminal.win) then
     vim.api.nvim_win_close(terminal.win, false)
     return
@@ -62,5 +64,4 @@ local function floating_terminal()
   vim.cmd.startinsert()
 end
 
-map_opts.desc = "Toggle floating terminal"
-vim.keymap.set("n", "<leader>t", floating_terminal, map_opts)
+return M

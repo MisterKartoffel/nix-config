@@ -1,15 +1,16 @@
 local opts = {
   flavor = "mocha",
+  auto_integrations = false,
   integrations = {
-    snacks = true,
     which_key = true,
   },
 }
 
 require("lz.n").load({
   "catppuccin-nvim",
-  colorscheme = { "catppuccin" },
-  config = function()
+  event = "UIEnter",
+  after = function()
     require("catppuccin").setup(opts)
+    vim.cmd.colorscheme("catppuccin")
   end,
 })

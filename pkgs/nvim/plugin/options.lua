@@ -19,9 +19,7 @@ vim.opt.smartcase = true
 vim.opt.hlsearch = false
 
 -- Visual settings
-vim.cmd.colorscheme("catppuccin")
 vim.opt.signcolumn = "yes"
-vim.opt.autocomplete = true
 vim.opt.complete = { ".^5", "b^5", "t^5", "o^5" }
 vim.opt.completeopt = { "fuzzy", "menuone", "popup", "noselect" }
 vim.opt.wildmode = { "noselect", "full" }
@@ -47,14 +45,11 @@ vim.opt.undodir = undodir
 vim.opt.iskeyword:append("-")
 vim.opt.path:append("**")
 vim.opt.mouse = "a"
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+
+-- Clipboard settings
+vim.g.clipboard = "osc52"
 vim.schedule(function()
   vim.opt.clipboard:append("unnamedplus")
 end)
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.formatoptions:remove({ "c", "r", "o" })
-
--- Folding settings
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevel = 99

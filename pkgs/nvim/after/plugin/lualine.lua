@@ -39,5 +39,11 @@ local opts = {
   },
 }
 
-local lualine = require("lualine")
-lualine.setup(opts)
+local lzn = require("lz.n")
+lzn.load({
+  "lualine.nvim",
+  event = "DeferredUIEnter",
+  after = function()
+    require("lualine").setup(opts)
+  end,
+})
