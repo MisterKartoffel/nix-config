@@ -82,7 +82,7 @@ jobs:
       BWS_ACCESS_TOKEN: ${{ secrets.BWS_ACCESS_TOKEN }}
 
   hosts:
-    name: "${{ matrix.hostname }} (${{ matrix.system }})"
+    name: "${{ matrix.name }} (${{ matrix.system }})"
     if: needs.matrix.outputs.hosts != '[]'
     needs:
     - check
