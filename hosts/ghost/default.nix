@@ -50,12 +50,6 @@
     watt.enable = true;
   };
 
-  environment.pathsToLink = map (path: "/share/fish/vendor_${path}.d") [
-    "conf"
-    "completions"
-    "functions"
-  ];
-
   hardware.amdgpu.legacySupport.enable = true;
   hardware.facter.reportPath = ./facter.json;
   boot.zswap.enable = true;
