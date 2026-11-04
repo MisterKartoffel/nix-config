@@ -115,7 +115,7 @@ in
         binds {
           // General use binds
           Menu repeat=false { spawn "${lib.getExe' pkgs.tofi "tofi-drun"}"; }
-          Mod+T repeat=false { spawn "${lib.getExe pkgs.ghostty}"; }
+          Mod+T repeat=false { spawn "${lib.getExe pkgs.ghostty}" "+new-window"; }
           Mod+F repeat=false { spawn "${lib.getExe zen-browser}"; }
 
           Mod+Shift+Delete { quit; }

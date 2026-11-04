@@ -19,17 +19,16 @@ in
       quit-after-last-window-closed = false;
       gtk-single-instance = true;
 
-      shell-integration = "zsh";
+      shell-integration = "nushell";
       shell-integration-features = [
         "cursor"
         "sudo"
-        "title"
       ];
 
-      bell-features = "border";
+      app-notifications = "no-clipboard-copy";
       notify-on-command-finish = "unfocused";
       notify-on-command-finish-action = [
-        "bell"
+        "no-bell"
         "notify"
       ];
 
@@ -46,8 +45,6 @@ in
         "performable:escape=end_search"
         "performable:alt+u=navigate_search:next"
         "performable:alt+d=navigate_search:previous"
-
-        "global:super+enter=toggle_quick_terminal"
 
         # Font keybinds
         "alt+equal=increase_font_size:1"
