@@ -178,6 +178,7 @@ jobs:
           while read -r NAME; do
             echo "<details>"
             echo "<summary>${NAME}</summary>"
+            echo
             echo "![${NAME} closure diff](${PAGE_URL}diffs/${RUN_ID}/${NAME}.svg)"
             echo "</details>"
           done < <(jq -r '.[].name' <<< "${HOSTS}")
