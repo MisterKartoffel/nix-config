@@ -15,7 +15,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: hestia-gc
+  group: "${{ github.workflow }}"
   cancel-in-progress: false
 
 jobs:

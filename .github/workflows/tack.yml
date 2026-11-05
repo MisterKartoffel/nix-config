@@ -10,7 +10,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: tack-update
+  group: "${{ github.workflow }}"
   cancel-in-progress: false
 
 jobs:
