@@ -4,17 +4,6 @@ run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_numbe
 
 on:
   push:
-    branches:
-    - main
-    paths-ignore:
-    - ".github/**"
-    - "ci/**"
-    - "LICENSE"
-    - "README.md"
-    - "TODO.txt"
-  pull_request:
-    branches:
-    - main
     paths-ignore:
     - ".github/**"
     - "ci/**"
