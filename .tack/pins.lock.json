@@ -25,9 +25,9 @@
   },
   "nixpkgs": {
     "type": "tarball",
-    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1105037.1c89083e451e/nixexprs.tar.zst",
-    "rev": "1c89083e451e891152365b799595cf7790a43325",
-    "narHash": "sha256-LOv16TsMYV2/8BUYnhSxHkOASe7es2ORbqMeLlZJ8Hc="
+    "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1108983.f9a75f41be3a/nixexprs.tar.zst",
+    "rev": "f9a75f41be3a74eab55d3a7679d34ad6cc0da977",
+    "narHash": "sha256-Q62pssAT9r01POiSyXW0IPXBWhntiKqMhzlsp3bsl5I="
   },
   "preservation": {
     "type": "github",
@@ -41,16 +41,16 @@
     "type": "github",
     "owner": "Mic92",
     "repo": "sops-nix",
-    "rev": "60182817ee048ac94b4c68ea76d5ef2e8aac730d",
-    "narHash": "sha256-Y/JIHTnMlOabDfyaSBubWGLDIVGihLEUuoMhFvQKaDo=",
-    "lastModified": 1793052255
+    "rev": "89a234ce2daf6e568a7d4b4fe250afdd23d84e20",
+    "narHash": "sha256-ZlE4BtMjWhfC6rFXLO9Qimn36Ene1INqCgKDDvazjhc=",
+    "lastModified": 1793995029
   },
   "zen-browser": {
     "type": "github",
     "owner": "youwen5",
     "repo": "zen-browser-flake",
-    "rev": "532b9a848c6b96d9f607e8856d1a458bdb7dcf66",
-    "narHash": "sha256-3ddg7v2Ya11zEeQghXELyFwYIpv+nCTm2uVmu3LmvfU=",
-    "lastModified": 1793356942
+    "rev": "590d492da41cab84758361ef15d504c966f35474",
+    "narHash": "sha256-soIwkenBdT+xSXv9iARxkGuyrq4/kF1u2vXK811LFUM=",
+    "lastModified": 1794048739
   }
 }
