@@ -187,7 +187,7 @@ jobs:
         } >> "${GITHUB_OUTPUT}"
 
     - name: "Create pull request"
-      uses: peter-evans/create-pull-request@v8.1.1
+      uses: peter-evans/create-pull-request@v8.1.2
       with:
         branch: tack/update-inputs
         delete-branch: true
