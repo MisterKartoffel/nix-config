@@ -11,6 +11,7 @@ with vimPlugins;
   ++ opt [
     # keep-sorted start
 
+    (import ./treesitter.nix { inherit vimPlugins; })
     catppuccin-nvim
     gitsigns-nvim
     lualine-nvim

@@ -34,8 +34,10 @@ local lzn = require("lz.n")
 lzn.load({
   "snacks.nvim",
   event = "UIEnter",
-  after = function()
+  before = function()
     vim.cmd.packadd("nvim-web-devicons")
+  end,
+  after = function()
     require("snacks").setup(opts)
   end,
 })

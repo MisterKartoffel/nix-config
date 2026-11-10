@@ -2,6 +2,9 @@
 -- https://github.com/neovim/neovim/issues/38248
 -- Pull request: feat(options): support 'completepopup'
 -- https://github.com/neovim/neovim/pull/40943
+
+---@param winid integer Window ID
+---@return nil
 local function set_popup_border(winid)
   if winid and winid >= 0 and vim.api.nvim_win_is_valid(winid) then
     pcall(vim.api.nvim_win_set_config, winid, { border = "rounded" })

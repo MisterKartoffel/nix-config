@@ -4,63 +4,39 @@
   wrapNeovimUnstable,
   vimPlugins,
 
-  appName ? "nvim",
-  treesitter ? import ./nix/treesitter.nix { inherit vimPlugins; },
-  runtimePaths ? import ./nix/runtime.nix { inherit lib; },
-  plugins ? import ./nix/plugins.nix { inherit vimPlugins; },
-  extraPackages ? [ ],
-  initLuaPre ? "",
-  wrapRc ? true,
+  plugins ? import ./plugins.nix { inherit vimPlugins; },
+  excludes ? import ./excludes.nix,
 }:
-assert lib.assertMsg (appName != null && appName != "") "Neovim appName must be a non-empty string";
-
 let
-  nvimRtp = lib.fileset.toSource {
-    root = ./.;
-    fileset = lib.fileset.unions runtimePaths;
-  };
-
-  neovim-wrapped = wrapNeovimUnstable neovim-unwrapped {
-    inherit wrapRc;
-    vimAlias = appName == "nvim";
-    viAlias = appName == "nvim";
-    plugins = plugins ++ [
-      {
-        plugin = treesitter;
-        optional = true;
-      }
-    ];
-
-    luaRcContent = ''
-      ${initLuaPre}
-      vim.opt.rtp:prepend("${nvimRtp}")
-      ${builtins.readFile ./init.lua}
-      vim.opt.rtp:append("${nvimRtp}/after")
-    '';
-
-    wrapperArgs =
-      lib.optionals (appName != "nvim") [
-        "--set"
-        "NVIM_APPNAME"
-        appName
-      ]
-      ++ lib.optionals (extraPackages != [ ]) [
-        "--prefix"
-        "PATH"
-        ":"
-        (lib.makeBinPath extraPackages)
-      ];
+  nvimRtp = builtins.path {
+    name = "nvim-rtp";
+    path = ./runtime;
   };
 in
-neovim-wrapped.overrideAttrs (
-  oldAttrs:
-  lib.optionalAttrs (appName != "nvim") {
-    postBuild = (oldAttrs.postBuild or "") + ''
-      mv $out/bin/nvim $out/bin/${lib.escapeShellArg appName}
-    '';
+(wrapNeovimUnstable neovim-unwrapped {
+  inherit plugins;
+  vimAlias = true;
+  viAlias = true;
 
-    meta = (oldAttrs.meta or { }) // {
-      mainProgram = appName;
-    };
-  }
-)
+  wrapperArgs = [
+    "--set"
+    "VIMRUNTIME"
+    "${placeholder "out"}/share/nvim/runtime"
+  ];
+
+  luaRcContent = /* lua */ ''
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = " "
+
+    vim.opt.rtp:prepend("${nvimRtp}")
+    vim.opt.rtp:append("${nvimRtp}/after")
+  '';
+}).overrideAttrs
+  (
+    oldAttrs:
+    lib.optionalAttrs (excludes != [ ]) {
+      postBuild =
+        oldAttrs.postBuild
+        + lib.concatMapStringsSep "\n" (target: "rm -f $out/share/nvim/runtime/${target}") excludes;
+    }
+  )
