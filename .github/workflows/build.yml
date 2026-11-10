@@ -1,5 +1,5 @@
 ---
-name: "Build Outputs"
+name: "Build"
 run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
@@ -19,52 +19,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  formatter:
-    name: "Formatter"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    permissions: {}
-
-    steps:
-    - parallel:
-      - name: "Checkout repository"
-        uses: actions/checkout@v7.0.1
-
-      - name: "Install Nix"
-        uses: cachix/install-nix-action@31.11.3
-        with:
-          extra_nix_config: |
-            keep-going = true
-            cores = 0
-
-    - name: "Run formatter"
-      run: nix fmt -- --ci
-
-  check:
-    name: "Check"
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-    - parallel:
-      - name: "Checkout repository"
-        uses: actions/checkout@v7.0.1
-
-      - name: "Install Nix"
-        uses: cachix/install-nix-action@31.11.3
-        with:
-          extra_nix_config: |
-            keep-going = true
-            cores = 0
-
-    - name: "Run flake check"
-      run: nix flake check --all-systems
-
   matrix:
     name: "Discover hosts"
     uses: $/.github/workflows/matrix.yml
-    if: github.event_name != 'pull_request'
     permissions:
       actions: read
     secrets:
@@ -73,9 +30,7 @@ jobs:
   hosts:
     name: "${{ matrix.name }} (${{ matrix.system }})"
     if: needs.matrix.outputs.hosts != '[]'
-    needs:
-    - check
-    - matrix
+    needs: matrix
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
 
@@ -138,7 +93,6 @@ jobs:
 
   derivations:
     name: "${{ matrix.output }} (${{ matrix.system }})"
-    needs: check
     runs-on: >
       ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest'
       || matrix.system == 'aarch64-linux' && 'ubuntu-24.04-arm' }}

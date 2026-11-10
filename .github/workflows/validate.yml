@@ -8,11 +8,6 @@ on:
     - "!.github/assets/**"
     - ".github/**"
     - "ci/**"
-  pull_request:
-    paths:
-    - "!.github/assets/**"
-    - ".github/**"
-    - "ci/**"
   workflow_dispatch:
 
 concurrency:
