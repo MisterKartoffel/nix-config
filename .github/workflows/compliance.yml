@@ -21,6 +21,7 @@ jobs:
 
   build:
     name: "Execute builds"
+    needs: check
     uses: $/.github/workflows/build.yml
     permissions:
       actions: read
