@@ -30,6 +30,8 @@ jobs:
       with:
         filters: |
           flake:
+          - '.tack/**'
+          - 'overlays/**'
           - 'flake.nix'
           - 'shell.nix'
           - 'ci/treefmt.nix'

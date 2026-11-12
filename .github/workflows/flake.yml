@@ -1,8 +1,9 @@
 ---
-name: "Build"
+name: "Build Outputs"
 run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
+  merge_group:
   workflow_call:
     secrets:
       BWS_ACCESS_TOKEN:
@@ -11,9 +12,20 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
+  cancel-in-progress: true
+
 jobs:
+  checks:
+    name: "Required checks"
+    uses: $/.github/workflows/checks.yml
+    permissions:
+      pull-requests: read
+
   matrix:
-    if: github.event_name != 'pull_request'
+    name: "Discover hosts"
+    needs: checks
     uses: $/.github/workflows/matrix.yml
     permissions:
       actions: read
@@ -23,7 +35,9 @@ jobs:
   hosts:
     name: "${{ matrix.name }} (${{ matrix.system }})"
     if: needs.matrix.outputs.hosts != '[]'
-    needs: matrix
+    needs:
+    - checks
+    - matrix
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
 
@@ -86,6 +100,7 @@ jobs:
 
   derivations:
     name: "${{ matrix.output }} (${{ matrix.system }})"
+    needs: checks
     runs-on: >
       ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest'
       || matrix.system == 'aarch64-linux' && 'ubuntu-24.04-arm' }}
