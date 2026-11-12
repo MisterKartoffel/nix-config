@@ -31,9 +31,8 @@ jobs:
       uses: bitwarden/sm-action@v3.0.1
       with:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
-        set_env: false
         secrets: |
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout tack directory"
@@ -45,7 +44,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ steps.secrets.outputs.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -197,7 +196,4 @@ jobs:
         commit-message: "tack: update inputs"
         title: "tack: update inputs"
         body: ${{ steps.body.outputs.text }}
-        labels: |
-          dependencies
-          CI/CD
-          tack
+        labels: CI/CD

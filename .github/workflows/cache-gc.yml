@@ -1,5 +1,5 @@
 ---
-name: "Hestia Cache GC"
+name: "Cache GC"
 run-name: "${{ github.workflow }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
@@ -26,7 +26,6 @@ jobs:
 
     permissions:
       actions: write
-      contents: read
 
     steps:
     - parallel:
