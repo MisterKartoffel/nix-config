@@ -1,0 +1,122 @@
+---
+name: "Checks"
+
+on:
+  workflow_call:
+
+permissions: {}
+
+jobs:
+  evaluate:
+    name: "Evaluate needed checks"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions:
+      pull-requests: read
+
+    outputs:
+      flake: ${{ steps.filter.outputs.flake }}
+      workflows: ${{ steps.filter.outputs.workflows }}
+
+    steps:
+    - name: "Checkout repository"
+      uses: actions/checkout@v7.0.1
+
+    - name: "Filter paths"
+      id: filter
+      uses: dorny/paths-filter@v4.0.3
+      with:
+        filters: |
+          flake:
+          - 'flake.nix'
+          - 'shell.nix'
+          - 'ci/treefmt.nix'
+          - 'hosts/**'
+          - 'modules/**'
+          - 'overlays/**'
+          - 'pkgs/**'
+          - 'templates/**'
+          - 'users/**'
+
+          workflows:
+          - '!.github/assets'
+          - '.github/**'
+
+  formatter:
+    name: "Formatter"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    permissions: {}
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@31.11.3
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Run formatter"
+      run: nix fmt -- --ci
+
+  check:
+    name: "Flake check"
+    needs: evaluate
+    if: needs.evaluate.outputs.flake == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - parallel:
+      - name: "Checkout repository"
+        uses: actions/checkout@v7.0.1
+
+      - name: "Install Nix"
+        uses: cachix/install-nix-action@31.11.3
+        with:
+          extra_nix_config: |
+            keep-going = true
+            cores = 0
+
+    - name: "Run flake check"
+      run: nix flake check --all-systems
+
+  workflows:
+    name: "Actionlint"
+    needs: evaluate
+    if: needs.evaluate.outputs.workflows == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: "Checkout .github"
+      uses: actions/checkout@v7.0.1
+      with:
+        sparse-checkout: .github
+
+    - name: "Actionlint"
+      uses: kjanat/actionlint@v1.17.0
+
+  sentinel:
+    name: "Gate required checks"
+    needs:
+    - evaluate
+    - formatter
+    - check
+    - workflows
+    if: always()
+    runs-on: ubuntu-slim
+    timeout-minutes: 1
+
+    steps:
+    - name: "Check upstream results"
+      if: >
+        contains(needs.*.result, 'failure') ||
+        contains(needs.*.result, 'cancelled')
+      run: exit 1

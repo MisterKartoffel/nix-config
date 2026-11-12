@@ -3,24 +3,18 @@ name: "Build"
 run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
-  push:
-    paths-ignore:
-    - ".github/**"
-    - "ci/**"
-    - "LICENSE"
-    - "README.md"
-    - "TODO.txt"
+  workflow_call:
+    secrets:
+      BWS_ACCESS_TOKEN:
+        required: false
   workflow_dispatch:
 
 permissions: {}
 
-concurrency:
-  group: "${{ github.workflow }}"
-  cancel-in-progress: true
-
 jobs:
   matrix:
     name: "Discover hosts"
+    if: github.event_name != 'pull_request'
     uses: $/.github/workflows/matrix.yml
     permissions:
       actions: read
@@ -50,7 +44,7 @@ jobs:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
         secrets: |
           ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout repository"
@@ -59,7 +53,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ env.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -113,6 +107,7 @@ jobs:
 
     steps:
     - name: "Get secrets"
+      if: github.event_name != 'pull_request'
       id: secrets
       uses: bitwarden/sm-action@v3.0.1
       with:
@@ -134,6 +129,7 @@ jobs:
     - name: "Set up Hestia"
       uses: Mic92/hestia@v3.1.0
       with:
+        read-only: ${{ github.event_name == 'pull_request' }}
         upstream-cache-filter: true
         upstream-cache-key-names: >
           cache.nixos.org-1
