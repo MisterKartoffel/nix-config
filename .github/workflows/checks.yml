@@ -116,7 +116,7 @@ jobs:
         sparse-checkout: .github
 
     - name: "Actionlint"
-      uses: kjanat/actionlint@v1.17.0
+      uses: kjanat/actionlint@v1.17.1
 
   sentinel:
     name: "Gate required checks"
