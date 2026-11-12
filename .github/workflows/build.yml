@@ -13,7 +13,6 @@ permissions: {}
 
 jobs:
   matrix:
-    name: "Discover hosts"
     if: github.event_name != 'pull_request'
     uses: $/.github/workflows/matrix.yml
     permissions:
