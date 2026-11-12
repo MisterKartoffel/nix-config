@@ -30,7 +30,7 @@ jobs:
       with:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
         secrets: |
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout repository"
@@ -39,7 +39,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ env.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0

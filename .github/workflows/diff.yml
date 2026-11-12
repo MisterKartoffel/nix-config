@@ -36,7 +36,7 @@ jobs:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
         secrets: |
           ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout repository"
@@ -45,7 +45,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ env.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: cores = 0
 
     - name: "Set up Hestia"
@@ -105,7 +105,7 @@ jobs:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
         secrets: |
           ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout repository"
@@ -114,7 +114,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ env.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: cores = 0
 
     - name: "Set up Hestia"
@@ -151,7 +151,6 @@ jobs:
     - name: "Generate snapshot"
       env:
         CLOSURE: ${{ steps.build.outputs.closure }}
-        NAME: ${{ inputs.name }}
       run: nix run nixpkgs#dix -- snapshot "${CLOSURE}" > "new.json"
 
     - name: "Upload snapshot"

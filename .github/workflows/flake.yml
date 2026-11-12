@@ -1,26 +1,28 @@
 ---
-name: "Build"
+name: "Build Outputs"
 run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_number }}-${{ github.run_attempt }})"
 
 on:
-  push:
-    paths-ignore:
-    - ".github/**"
-    - "ci/**"
-    - "LICENSE"
-    - "README.md"
-    - "TODO.txt"
+  merge_group:
+  workflow_call:
+    secrets:
+      BWS_ACCESS_TOKEN:
+        required: false
   workflow_dispatch:
 
 permissions: {}
 
 concurrency:
-  group: "${{ github.workflow }}"
+  group: "${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}"
   cancel-in-progress: true
 
 jobs:
+  checks:
+    name: "Required checks"
+    uses: $/.github/workflows/checks.yml
+
   matrix:
-    name: "Discover hosts"
+    needs: checks
     uses: $/.github/workflows/matrix.yml
     permissions:
       actions: read
@@ -30,7 +32,9 @@ jobs:
   hosts:
     name: "${{ matrix.name }} (${{ matrix.system }})"
     if: needs.matrix.outputs.hosts != '[]'
-    needs: matrix
+    needs:
+    - checks
+    - matrix
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 30
 
@@ -50,7 +54,7 @@ jobs:
         access_token: ${{ secrets.BWS_ACCESS_TOKEN }}
         secrets: |
           ad184127-0d3f-4115-8801-b4e501565b66 > CACHIX_AUTH_TOKEN
-          ec6c99d6-ceb6-4954-b487-b4e50156014e > GH_PAT_SECRETS_RO
+          ec6c99d6-ceb6-4954-b487-b4e50156014e > NIVOLOGY_SECRETS_RO
 
     - parallel:
       - name: "Checkout repository"
@@ -59,7 +63,7 @@ jobs:
       - name: "Install Nix"
         uses: cachix/install-nix-action@31.11.3
         with:
-          github_access_token: ${{ env.GH_PAT_SECRETS_RO }}
+          github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: |
             keep-going = true
             cores = 0
@@ -93,6 +97,7 @@ jobs:
 
   derivations:
     name: "${{ matrix.output }} (${{ matrix.system }})"
+    needs: checks
     runs-on: >
       ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest'
       || matrix.system == 'aarch64-linux' && 'ubuntu-24.04-arm' }}
