@@ -20,8 +20,11 @@ jobs:
   checks:
     name: "Required checks"
     uses: $/.github/workflows/checks.yml
+    permissions:
+      pull-requests: read
 
   matrix:
+    name: "Discover hosts"
     needs: checks
     uses: $/.github/workflows/matrix.yml
     permissions:
@@ -118,6 +121,7 @@ jobs:
 
     steps:
     - name: "Get secrets"
+      if: github.event_name != 'pull_request'
       id: secrets
       uses: bitwarden/sm-action@v3.0.1
       with:
@@ -139,6 +143,7 @@ jobs:
     - name: "Set up Hestia"
       uses: Mic92/hestia@v3.1.0
       with:
+        read-only: ${{ github.event_name == 'pull_request' }}
         upstream-cache-filter: true
         upstream-cache-key-names: >
           cache.nixos.org-1
