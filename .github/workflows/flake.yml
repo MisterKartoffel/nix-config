@@ -19,12 +19,15 @@ jobs:
   checks:
     name: "Required checks"
     uses: $/.github/workflows/checks.yml
+    permissions:
+      pull-requests: read
 
   eval:
     name: "Evaluate required rebuilds"
     if: needs.checks.outputs.flake == 'true'
     needs: checks
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     outputs:
       hosts: >-
