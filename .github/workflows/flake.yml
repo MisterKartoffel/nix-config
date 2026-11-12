@@ -155,3 +155,22 @@ jobs:
         --skip-cached --push-build-closure
         --cachix-cache misterkartoffel
         --flake .#${{ matrix.output }}.${{ matrix.system }}
+
+  sentinel:
+    name: "Gate required checks"
+    needs:
+    - checks
+    - eval
+    - matrix
+    - hosts
+    - derivations
+    if: always()
+    runs-on: ubuntu-slim
+    timeout-minutes: 1
+
+    steps:
+    - name: "Check upstream results"
+      if: >-
+        contains(needs.*.result, 'failure') ||
+        contains(needs.*.result, 'cancelled')
+      run: exit 1
