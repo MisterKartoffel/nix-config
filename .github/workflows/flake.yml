@@ -4,11 +4,10 @@ run-name: "${{ github.workflow }}: ${{ github.ref_name }} (#${{ github.run_numbe
 
 on:
   merge_group:
-  workflow_call:
-    secrets:
-      BWS_ACCESS_TOKEN:
-        required: false
   workflow_dispatch:
+
+env:
+  DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
 
 permissions: {}
 
@@ -23,9 +22,71 @@ jobs:
     permissions:
       pull-requests: read
 
+  eval:
+    name: "Evaluate required rebuilds"
+    if: needs.checks.outputs.flake == 'true'
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    outputs:
+      hosts: >-
+        ${{ env.DISPATCH == 'true' && 'true' ||
+        steps.filter.outputs.hosts }}
+      matrix: ${{ steps.generate.outputs.matrix }}
+
+    steps:
+    - name: "Checkout repository"
+      if: env.DISPATCH != 'true'
+      uses: actions/checkout@v7.0.1
+
+    - name: "Filter paths"
+      if: env.DISPATCH != 'true'
+      id: filter
+      uses: dorny/paths-filter@v4.0.3
+      with:
+        filters: |
+          rebuild: &rebuild
+          - '.tack/**'
+          - 'overlays/**'
+          - 'flake.nix'
+
+          packages: &packages
+          - *rebuild
+          - 'pkgs/**'
+
+          devShells:
+          - *rebuild
+          - 'shell.nix'
+
+          hosts:
+          - *rebuild
+          - *packages
+          - 'hosts/**'
+          - 'modules/**'
+          - 'users/**'
+
+    - name: "Derivation matrix"
+      id: generate
+      env:
+        FILTERS: ${{ toJSON(steps.filter.outputs) }}
+      run: |
+        MATRIX=$(jq --null-input --compact-output \
+          --argjson filters "${FILTERS}" --argjson dispatch "${DISPATCH}" '
+          [ ("x86_64-linux", "aarch64-linux") as $system
+          | ("devShells", "packages") as $output
+          | select($dispatch or $filters[$output] == "true")
+          | {$output, $system} ]
+        ')
+
+        echo "matrix=${MATRIX}" >> "${GITHUB_OUTPUT}"
+
   matrix:
     name: "Discover hosts"
-    needs: checks
+    if: needs.eval.outputs.hosts == 'true'
+    needs:
+    - checks
+    - eval
     uses: $/.github/workflows/matrix.yml
     permissions:
       actions: read
@@ -64,7 +125,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: "Install Nix"
-        uses: cachix/install-nix-action@31.11.3
+        uses: cachix/install-nix-action@v31.11.3
         with:
           github_access_token: ${{ env.NIVOLOGY_SECRETS_RO }}
           extra_nix_config: |
@@ -100,8 +161,11 @@ jobs:
 
   derivations:
     name: "${{ matrix.output }} (${{ matrix.system }})"
-    needs: checks
-    runs-on: >
+    if: needs.eval.outputs.matrix != '[]'
+    needs:
+    - checks
+    - eval
+    runs-on: >-
       ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest'
       || matrix.system == 'aarch64-linux' && 'ubuntu-24.04-arm' }}
     timeout-minutes: 30
@@ -112,12 +176,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        system:
-        - x86_64-linux
-        - aarch64-linux
-        output:
-        - packages
-        - devShells
+        include: ${{ fromJSON(needs.eval.outputs.matrix) }}
 
     steps:
     - name: "Get secrets"
@@ -134,7 +193,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: "Install Nix"
-        uses: cachix/install-nix-action@31.11.3
+        uses: cachix/install-nix-action@v31.11.3
         with:
           extra_nix_config: |
             keep-going = true

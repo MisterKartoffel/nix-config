@@ -4,11 +4,17 @@ name: "Checks"
 on:
   pull_request:
   workflow_call:
+    outputs:
+      flake:
+        value: ${{ jobs.eval.outputs.flake }}
+
+env:
+  DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
 
 permissions: {}
 
 jobs:
-  evaluate:
+  eval:
     name: "Evaluate needed checks"
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -17,14 +23,20 @@ jobs:
       pull-requests: read
 
     outputs:
-      flake: ${{ steps.filter.outputs.flake }}
-      workflows: ${{ steps.filter.outputs.workflows }}
+      flake: >-
+        ${{ env.DISPATCH == 'true' && 'true' ||
+        steps.filter.outputs.flake }}
+      workflows: >-
+        ${{ env.DISPATCH == 'true' && 'true' ||
+        steps.filter.outputs.workflows }}
 
     steps:
     - name: "Checkout repository"
+      if: env.DISPATCH != 'true'
       uses: actions/checkout@v7.0.1
 
     - name: "Filter paths"
+      if: env.DISPATCH != 'true'
       id: filter
       uses: dorny/paths-filter@v4.0.3
       with:
@@ -70,8 +82,8 @@ jobs:
 
   check:
     name: "Flake check"
-    needs: evaluate
-    if: needs.evaluate.outputs.flake == 'true'
+    needs: eval
+    if: needs.eval.outputs.flake == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -92,8 +104,8 @@ jobs:
 
   workflows:
     name: "Actionlint"
-    needs: evaluate
-    if: needs.evaluate.outputs.workflows == 'true'
+    needs: eval
+    if: needs.eval.outputs.workflows == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -109,9 +121,9 @@ jobs:
   sentinel:
     name: "Gate required checks"
     needs:
-    - evaluate
-    - formatter
     - check
+    - eval
+    - formatter
     - workflows
     if: always()
     runs-on: ubuntu-slim
