@@ -8,7 +8,8 @@ end
 ---@return fun():nil run_tinymist_command, string cmd_name, string cmd_desc
 local function create_tinymist_command(command_name, client, bufnr)
   local raw_name = command_name:match("tinymist%.(.+)")
-  local cmd_display = raw_name:gsub("^export", "Export to "):gsub("^get", "Get "):gsub("^pin", "Pin "):gsub("^start", "Start ")
+  local cmd_display =
+    raw_name:gsub("^export", "Export to "):gsub("^get", "Get "):gsub("^pin", "Pin "):gsub("^start", "Start ")
 
   local cmd_name = "Tinymist" .. raw_name:sub(1, 1):upper() .. raw_name:sub(2)
   local cmd_desc = cmd_display
