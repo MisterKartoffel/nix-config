@@ -20,7 +20,6 @@ with vimPlugins;
     oil-git-nvim
     oil-nvim
     snacks-nvim
-    typst-preview-nvim
     which-key-nvim
 
     # keep-sorted end
