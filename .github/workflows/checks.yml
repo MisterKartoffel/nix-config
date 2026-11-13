@@ -55,8 +55,8 @@ jobs:
           - 'users/**'
 
           workflows:
-          - '!.github/assets'
           - '.github/**'
+          - '!.github/assets/**'
 
   formatter:
     name: "Formatter"
