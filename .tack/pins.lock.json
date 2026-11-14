@@ -29,7 +29,7 @@
     "narHash": "sha256-s/A2rSO2Ndf8Y5yiouesnI/3Zkn9pmVGF2NxFxOUvx8=",
     "lastModified": 1792953443
   },
-  "nix-secrets": {
+  "secrets": {
     "type": "github",
     "owner": "Nivology",
     "repo": "secrets",
