@@ -15,14 +15,6 @@
     "narHash": "sha256-hmlUXxCk6On7Hrop/TyS3//dgI2BLvaN4TEsOq1ma+Y=",
     "lastModified": 1793333241
   },
-  "nix-secrets": {
-    "type": "github",
-    "owner": "MisterKartoffel",
-    "repo": "nix-secrets",
-    "rev": "af781718661f63dc606b75d409cd17d3974a4034",
-    "narHash": "sha256-5tpqjYRxg9HTiKGHo5E3pAcc6rfyxBi1GiJjFmBpbqI=",
-    "lastModified": 1793038379
-  },
   "nixpkgs": {
     "type": "tarball",
     "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1108983.f9a75f41be3a/nixexprs.tar.zst",
@@ -36,6 +28,14 @@
     "rev": "00be7f7dd1a11ae0605386f2272288de7cf33abe",
     "narHash": "sha256-s/A2rSO2Ndf8Y5yiouesnI/3Zkn9pmVGF2NxFxOUvx8=",
     "lastModified": 1792953443
+  },
+  "nix-secrets": {
+    "type": "github",
+    "owner": "Nivology",
+    "repo": "secrets",
+    "rev": "cbf0f299efc35aca2cb13680f1cb3b5635402617",
+    "narHash": "sha256-WvSaY+eltnbds7PNGiaAJ02yhk03oZck3VYnwD0PFgE=",
+    "lastModified": 1794672193
   },
   "sops-nix": {
     "type": "github",
