@@ -19,8 +19,8 @@ url = "github:nix-community/preservation"
 [inputs.sops-nix]
 url = "github:Mic92/sops-nix"
 
-[inputs.nix-secrets]
-url = "github:MisterKartoffel/nix-secrets"
+[inputs.secrets]
+url = "github:Nivology/secrets"
 
 [inputs.zen-browser]
 url = "github:youwen5/zen-browser-flake"

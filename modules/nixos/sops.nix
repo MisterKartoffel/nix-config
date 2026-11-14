@@ -18,7 +18,7 @@ in
 
   sops = {
     age.keyFile = "/var/lib/sops-nix/key.txt";
-    defaultSopsFile = "${inputs.nix-secrets}/sops/hosts/common.yaml";
+    defaultSopsFile = "${inputs.secrets}/sops/hosts/common.yaml";
     validateSopsFiles = true;
 
     secrets = lib.mkIf sops.enable (
@@ -27,7 +27,7 @@ in
       }
       // lib.optionalAttrs openssh.enable {
         "ssh_key" = {
-          sopsFile = "${inputs.nix-secrets}/sops/hosts/${hostName}.yaml";
+          sopsFile = "${inputs.secrets}/sops/hosts/${hostName}.yaml";
           mode = "0600";
           path = lib.mkIf (etc.overlay.enable -> etc.overlay.mutable) "/etc/ssh/ssh_host_ed25519_key";
         };
@@ -40,7 +40,7 @@ in
         map (
           username:
           let
-            sopsFile = "${inputs.nix-secrets}/sops/users/${username}.yaml";
+            sopsFile = "${inputs.secrets}/sops/users/${username}.yaml";
           in
           {
             "${username}/password" = {
